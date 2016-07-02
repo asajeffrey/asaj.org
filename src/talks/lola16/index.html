@@ -63,29 +63,222 @@
     </section>
   </div></div>  
 
-  <div id="rust1" class="slide"><div>
+  <div id="rust:website" class="slide"><div>
     <section>
       <header>
         <h2>Rust</h2>
       </header>
-      <p>Stuff about Rust.</p>
+      <img src="pictures/rust-lang.org.png" height="450" alt="rust-lang.org" class="middle shadow">
     </section>
   </div></div>
 
-  <div id="LL" class="slide oneline"><div>
+  <div id="rust:loved" class="slide"><div>
     <section>
       <header>
-        <h2>Linear logic</h2>
+        <h2>Rust</h2>
+      </header>
+      <img src="pictures/stackoverflow-most-loved.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
+  <div id="rust:goals" class="slide"><div>
+    <section>
+      <header>
+        <h2>Rust</h2>
+      </header>
+      <p>Systems programming language.</p>
+      <ul>
+	<li>Arrays without buffer overflow attacks.</li>
+	<li>Manual memory management without segfaults.</li>
+	<li>Threads without data races.</li>
+      </ul>
+      <p><i>Hack without fear!</i></p>
+    </section>
+  </div></div>
+
+  <div id="rust:how" class="slide"><div>
+    <section>
+      <header>
+        <h2>Rust</h2>
+      </header>
+      <p>Safety guarantees based on two 1990s ideas:</p>
+      <ul>
+	<li>Linear types.</li>
+	<li>Region analysis.</li>
+      </ul>
+    </section>
+  </div></div>
+
+  <div id="linear" class="slide oneline"><div>
+    <section>
+      <header>
+        <h2>Linear types</h2>
       </header>
     </section>
   </div></div>  
 
-  <div id="LL1" class="slide"><div>
+  <div id="linear:logic" class="slide"><div>
     <section>
       <header>
         <h2>Linear logic</h2>
       </header>
-      <p>Stuff about LL.</p>
+      <img src="pictures/jy-girard.jpg" height="450" alt="rust-lang.org" class="middle shadow">
+      <small class="credits right">Jean-Yves Girard</small>
+    </section>
+  </div></div>
+
+  <div id="linear:logic-tensor" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <div style="text-align:center;">
+	<img src="pictures/jy-girard.jpg" height="150" alt="rust-lang.org" class="shadow">
+	<p>Got <i>water</i><br>
+	  and <i>flowers</i></p>
+      </div>
+    </section>
+  </div></div>
+
+  <div id="linear:logic-lollipop" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>	
+      <div style="text-align:center;">
+	<img src="pictures/jy-girard.jpg" height="150" alt="rust-lang.org" class="shadow"> 
+	<p>Got <i>water</i><br>
+	  and <i>flowers</i><br>
+	  and a friend who will barter <i>flowers</i> for <i>cigagrettes</i><br></p>
+      </div>
+   </section>
+  </div></div>
+
+  <div id="linear:logic-derivation" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <div style="text-align:center;">
+	<img src="pictures/jy-girard.jpg" height="150" alt="rust-lang.org" class="shadow"> 
+	<p>Got <i>water</i><br>
+	  and <i>flowers</i><br>
+	  and a friend who will barter <i>flowers</i> for <i>cigagrettes</i><br>
+	  <b>...later...</b><br>
+          Got <i>water</i><br>
+	  and <i>cigarettes</i></p>
+      </div>
+   </section>
+  </div></div>
+
+  <div id="linear:logic-formal" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <div style="text-align:center;">
+	<img src="pictures/jy-girard.jpg" height="150" alt="rust-lang.org" class="shadow"> 
+	<p><i>water</i><br>
+	  ⊗ <i>flowers</i><br>
+	  ⊗ (<i>flowers</i> ⊸ <i>cigagrettes</i>)<br>
+	  ⊢ <br>
+          <i>water</i><br>
+	  ⊗ <i>cigarettes</i></p>
+      </div>
+   </section>
+  </div></div>
+
+  <div id="linear:logic-recap" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <p style="text-align:center;"><i>water</i>
+	⊗ <i>flowers</i>
+	⊗ (<i>flowers</i> ⊸ <i>cigagrettes</i>)
+	<br> ⊢ <br>
+        <i>water</i>
+	⊗ <i>cigarettes</i></p>
+   </section>
+  </div></div>
+
+  <div id="linear:logic-problem" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <p style="text-align:center;"><i>water</i>
+	⊗ <i>flowers</i>
+	⊗ (<i>flowers</i> ⊸ <i>cigagrettes</i>)
+	<br> ⊢ <br>
+        <i>water</i>
+	⊗ <i>cigarettes</i></p>
+      <p style="text-align:center;">models a friend who barters once and then vanishes<p>
+   </section>
+  </div></div>
+
+  <div id="linear:logic-bang" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <p style="text-align:center;"><i>water</i>
+	⊗ <i>flowers</i>
+	⊗ !(<i>flowers</i> ⊸ <i>cigagrettes</i>)
+	<br> ⊢ <br>
+        <i>water</i>
+	⊗ <i>cigarettes</i>
+	⊗ !(<i>flowers</i> ⊸ <i>cigagrettes</i>)
+      <p style="text-align:center;">models a friend who barters as much as you like<p>
+   </section>
+  </div></div>
+
+  <div id="linear:logic-structural" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <p>
+	LL does not have <i>weaking</i> (discard)
+	or <i>contraction</i> (copy):</p>
+      <p style="text-align:center;">
+	<i>A</i> ⊬
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+	<i>A</i> ⊬ <i>A</i> ⊗ <i>A</i>
+      </p>
+      <p>but recovers them for banged formulae:</p>
+      <p style="text-align:center;">
+	!<i>A</i> ⊢ 
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+	!<i>A</i> ⊢ !<i>A</i> ⊗ !<i>A</i>
+      </p>
+   </section>
+  </div></div>
+
+  <div id="linear:types" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear types</h2>
+      </header>
+      <img src="pictures/go4.jpg" height="450" alt="rust-lang.org" class="middle shadow">
+      <small class="credits right">Gavin Bierman, Valeria de Paiva, Martin Hyland (seated) and Nick Benton</small>
+    </section>
+  </div></div>
+
+  <div id="linear:curry-howard" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear types</h2>
+      </header>
+      <div style="text-align:center;"><img src="pictures/go4.jpg" height="150" alt="rust-lang.org" class="shadow"></div>
+      <p>
+	<b>Curry-Howard</b> (constructive logic):<br>
+	&nbsp; &nbsp; propositions are types,<br>
+	&nbsp; &nbsp; proofs are typed programs<br>
+	<b>Gang of Four</b> (constructive linear logic):<br>
+	&nbsp; &nbsp; propositions are linear types,<br>
+	&nbsp; &nbsp; proofs are linearly typed programs</p>
+      </p>
     </section>
   </div></div>
 
@@ -119,7 +312,7 @@
       <header>
         <h2>Servo</h2>
       </header>
-      <p>Stuff about Servo.</p>
+      <iframe width="420" height="315" src="https://www.youtube.com/embed/jJXW072MatI?autoplay=1&loop=1&playlist=jJXW072MatI" frameborder="0" class="middle shadow"></iframe>
     </section>
   </div></div>
 
