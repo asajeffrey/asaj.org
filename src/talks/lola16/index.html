@@ -81,6 +81,15 @@
     </section>
   </div></div>
 
+  <div id="rust:hello" class="slide"><div>
+    <section>
+      <header>
+        <h2>Rust</h2>
+      </header>
+      <img src="pictures/hello-alice.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
   <div id="rust:goals" class="slide"><div>
     <section>
       <header>
@@ -283,6 +292,158 @@
     </section>
   </div></div>
 
+  <div id="linear:hello-alice-liddell" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear types</h2>
+      </header>
+      <img src="pictures/hello-alice-liddell.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
+  <div id="linar:hello-alice-alice" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear types</h2>
+      </header>
+      <img src="pictures/hello-alice-alice.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
+  <div id="linar:hello-world" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear types</h2>
+      </header>
+      <img src="pictures/hello-world.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
+  <div id="linar:hello-world-drops" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear types</h2>
+      </header>
+      <img src="pictures/hello-world-drops.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
+  <div id="refs" class="slide oneline"><div>
+    <section>
+      <header>
+        <h2>Mutable References</h2>
+      </header>
+    </section>
+  </div></div>  
+
+  <div id="refs:mutation-plus" class="slide"><div>
+    <section>
+      <header>
+        <h2>Mutation</h2>
+      </header>
+      <p>Mutating in-place is attractive:</p>
+      <ul>
+	<li>Less copying.</li>
+	<li>Existing APIs use it.</li>
+      </ul>
+    </section>
+  </div></div>
+
+  <div id="refs:mutation-minus" class="slide"><div>
+    <section>
+      <header>
+        <h2>Mutation</h2>
+      </header>
+      <p>Mutating in-place has problems:</p>
+      <ul>
+	<li>Thread safety.</li>
+	<li>Aliasing (e.g. iterator invalidation).</li>
+	<li>Semantics?</li>
+      </ul>
+    </section>
+  </div></div>
+
+  <div id="refs:mutation-vr" class="slide"><div>
+    <section>
+      <header>
+        <h2>Mutation</h2>
+      </header>
+      <p>Linear types make this simpler.</p>
+
+      <p>Model in-place mutation by consuming the old value<br>
+	and producing a new one: <i>A</i> ⊸ <i>A</i></p>
+
+      <p>This is <i>call-by-value-return</i>.</p>
+    </section>
+  </div></div>
+
+  <div id="refs:hello-alice-vr1" class="slide"><div>
+    <section>
+      <header>
+        <h2>Mutation</h2>
+      </header>
+      <img src="pictures/hello-alice-vr1.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
+  <div id="refs:hello-alice-vr3" class="slide"><div>
+    <section>
+      <header>
+        <h2>Mutation</h2>
+      </header>
+      <img src="pictures/hello-alice-vr3.png" height="450" alt="rust-lang.org" class="middle shadow">
+      <small class="credits right">Problem 1: doesn't scale well with multiple arguments.</small>
+    </section>
+  </div></div>
+
+  <div id="refs:hello-alice-vr-oops" class="slide"><div>
+    <section>
+      <header>
+        <h2>Mutation</h2>
+      </header>
+      <img src="pictures/hello-alice-vr-oops.png" height="450" alt="rust-lang.org" class="middle shadow">
+      <small class="credits right">Problem 2: doesn't cope with arguments that aren't mutated, so can be aliased.</small>
+    </section>
+  </div></div>
+
+  <div id="refs:cbr" class="slide"><div>
+    <section>
+      <header>
+        <h2>References</h2>
+      </header>
+      <p>Solution: use <i>call-by-reference</i> rather than <i>call-by-value-result</i>.</p>
+    </section>
+  </div></div>
+
+  <div id="refs:ref-types" class="slide"><div>
+    <section>
+      <header>
+        <h2>References</h2>
+      </header>
+      <p>Rust has two reference types:</p>
+      <ul>
+	<li><b>&amp;</b><i>A</i>: a copyable reference to an immutable <i>A</i>.</li>
+	<li><b>&amp;mut</b><i>A</i>: a linear reference to a mutable <i>A</i>.</li>
+      </ul>
+      <p>References are <i>borrowed</i>:
+	if <i>v</i>&nbsp;:&nbsp;<i>A</i>
+	then &amp;<i>v</i>&nbsp;:&nbsp;&amp;<i>A</i>
+	(ditto &amp;mut).</p>
+
+      <p>Rather than (<i>A</i> ⊗ <i>B</i>) ⊸ (<i>A</i> ⊗ <i>C</i>),<br>
+	mutating functions have type (&amp;mut<i>A</i> ⊗ <i>B</i>) ⊸ <i>C</i>.</p>
+    </section>
+  </div></div>
+
+  <div id="refs:hello-alice-ref" class="slide"><div>
+    <section>
+      <header>
+        <h2>References</h2>
+      </header>
+      <img src="pictures/hello-alice-ref.png" height="450" alt="rust-lang.org" class="middle shadow">
+    </section>
+  </div></div>
+
   <div id="regions" class="slide oneline"><div>
     <section>
       <header>
@@ -323,10 +484,9 @@
         <h2>Thanks</h2>
       </header>
       <ul class="nobull">
-        <li><strong>IRL</strong>: Alan Jeffrey</li>
-        <li><strong>EMail</strong>: ajeffrey@mozilla.com</li>
-        <li><strong>Twitter</strong>: @asajeffrey</li>
+        <li><strong>Me</strong>: Alan Jeffrey</li>
         <li><strong>Rust</strong>: https://rust-lang.org/</li>
+        <li><strong>Playground</strong>: https://play.rust-lang.org/</li>
         <li><strong>Servo</strong>: https://servo.org/</li>
       </ul>
     </section>
