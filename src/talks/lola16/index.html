@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html lang="en-US" class="fade nonumbers">
+<head>
+  <meta charset="UTF-8">
+  <title>Rust for Semanticists</title>
+  <meta name="viewport" content="width=device-width, user-scalable=yes">
+  <link rel="stylesheet" href="themes/mozilla/styles/style.css">
+</head>
+<body class="list">
+  <header class="caption">
+  <h1>Rust for Semanticists</h1>
+    <p class="footer">
+      Alan Jeffrey, Mozilla Research
+    </p>
+  </header>
+  <aside class="talkdescription">
+    <p class="abstract">
+      <strong>Abstract: </strong>
+      Rust is a low-level systems programming language from Mozilla,
+      which is being used to develop the Servo next generation
+      browsing engine. In 2016 it was voted "Most Loved Technology" in
+      the Stack Overflow Developers' Survey.  It focuses on finding a
+      balance between performance and safety, by using techniques from
+      the programming languages research community: affine types and
+      region analysis. Rust uses affine types to track aliasing: each
+      object either has many readers, or a single writer, never both,
+      and so avoids many problems associated with simultaneous write
+      access such as concurrent data races and iterator
+      invalidation. Rust does not have automatic memory management,
+      and instead uses region analysis to ensure that there are no
+      use-after-free errors. These features have been in the
+      programming languages research community since the late 20th
+      century, but Rust is the first widely-adopted systems
+      programming language to take advantage of them. In this talk, I
+      will present Rust for an audience familiar with programming
+      language semantics, and discuss the experience of using affine
+      types and region analysis as part of a large systems programming
+      effort.
+    </p>
+  </aside>
+
+  <div id="cover" class="slide"><div>
+    <section>
+      <header>
+        <h2>Rust for Semanticists</h2>
+      </header>
+      <img src="pictures/rust-logo.png" 
+           class="middle" height="300"
+           alt="Rust">
+      <small class="byline">
+        Alan Jeffrey,
+	Mozilla Research,
+	LOLA 2016
+      </small>
+    </section>
+  </div></div>
+
+  <div id="rust" class="slide oneline"><div>
+    <section>
+      <header>
+        <h2>Rust</h2>
+      </header>
+    </section>
+  </div></div>  
+
+  <div id="rust1" class="slide"><div>
+    <section>
+      <header>
+        <h2>Rust</h2>
+      </header>
+      <p>Stuff about Rust.</p>
+    </section>
+  </div></div>
+
+  <div id="LL" class="slide oneline"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+    </section>
+  </div></div>  
+
+  <div id="LL1" class="slide"><div>
+    <section>
+      <header>
+        <h2>Linear logic</h2>
+      </header>
+      <p>Stuff about LL.</p>
+    </section>
+  </div></div>
+
+  <div id="regions" class="slide oneline"><div>
+    <section>
+      <header>
+        <h2>Region analysis</h2>
+      </header>
+    </section>
+  </div></div>  
+
+  <div id="regions1" class="slide"><div>
+    <section>
+      <header>
+        <h2>Region analysis</h2>
+      </header>
+      <p>Stuff about regions.</p>
+    </section>
+  </div></div>
+
+  <div id="servo" class="slide oneline"><div>
+    <section>
+      <header>
+        <h2>Servo</h2>
+      </header>
+    </section>
+  </div></div>  
+
+  <div id="servo1" class="slide"><div>
+    <section>
+      <header>
+        <h2>Servo</h2>
+      </header>
+      <p>Stuff about Servo.</p>
+    </section>
+  </div></div>
+
+  <div id="thanks" class="slide"><div>
+    <section>
+      <header>
+        <h2>Thanks</h2>
+      </header>
+      <ul class="nobull">
+        <li><strong>IRL</strong>: Alan Jeffrey</li>
+        <li><strong>EMail</strong>: ajeffrey@mozilla.com</li>
+        <li><strong>Twitter</strong>: @asajeffrey</li>
+        <li><strong>Rust</strong>: https://rust-lang.org/</li>
+        <li><strong>Servo</strong>: https://servo.org/</li>
+      </ul>
+    </section>
+  </div></div>
+
+  <div class="progress"><div></div></div>
+  <script src="scripts/script.js"></script>
+</body>
+</html>
