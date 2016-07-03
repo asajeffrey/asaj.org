@@ -125,6 +125,8 @@
 	<li>Linear types.</li>
 	<li>Region-based memory management.</li>
       </ul>
+      <p><i>Nothing can be included in Rust that isn't at least a decade old.</i><br>
+        &nbsp; &nbsp; — Graydon Hoare, Rust founder.</p>
     </section>
   </div></div>
 
@@ -367,7 +369,7 @@
       <p>Mutating in-place has problems:</p>
       <ul>
 	<li>Thread safety.</li>
-	<li>Aliasing (e.g. iterator invalidation).</li>
+	<li>Aliasing (e.g. simultaneously iterating and mutating a container).</li>
 	<li>Semantics?</li>
       </ul>
     </section>
@@ -433,7 +435,7 @@
       <p>Rust has two reference types:</p>
       <ul>
 	<li><b>&amp;</b><i>A</i>: a copyable reference to an immutable <i>A</i>.</li>
-	<li><b>&amp;mut</b><i>A</i>: a linear reference to a mutable <i>A</i>.</li>
+	<li><b>&amp;mut</b> <i>A</i>: a linear reference to a mutable <i>A</i>.</li>
       </ul>
       <p>References are <i>borrowed</i>:
 	if <i>v</i>&nbsp;:&nbsp;<i>A</i>
@@ -441,7 +443,7 @@
 	(ditto &amp;mut).</p>
 
       <p>Rather than (<i>A</i> ⊗ <i>B</i>) ⊸ (<i>A</i> ⊗ <i>C</i>),<br>
-	mutating functions have type (&amp;mut<i>A</i> ⊗ <i>B</i>) ⊸ <i>C</i>.</p>
+	mutating functions have type (&amp;mut <i>A</i> ⊗ <i>B</i>) ⊸ <i>C</i>.</p>
     </section>
   </div></div>
 
@@ -509,8 +511,8 @@
       </header>
       <p>Rust reference types actually carry <i>lifetimes</i>:</p>
       <ul>
-	<li><b>&amp;</b><i>αA</i>: a copyable reference with lifetime <i>α</i> to an immutable <i>A</i>.</li>
-	<li><b>&amp;</b><i>α</i><b>mut</b><i>A</i>: a linear reference with lifetime <i>α</i> to a mutable <i>A</i>.</li>
+	<li><b>&amp;</b><i>α A</i>: a copyable reference with lifetime <i>α</i> to an immutable <i>A</i>.</li>
+	<li><b>&amp;</b><i>α</i> <b>mut</b> <i>A</i>: a linear reference with lifetime <i>α</i> to a mutable <i>A</i>.</li>
       </ul>
       <p>Functions are lifetime-polymorphic.</p>
       <p>Lifetime inference usually allows lifetimes to be omitted.</p>
@@ -571,8 +573,7 @@
       </header>
       <ul>
 	<li>Next generation web rendering engine.</li>
-	<li>150kLOC in https://github.com/servo/servo.</li>
-	<li>About 250 dependencies.</li>
+	<li>About 1 million Rust LoC, incluing about 250 dependencies.</li>
 	<li>Mostly Rust, some C/C++ (Spidermonkey, openssl, ...)</li>
 	<li>Some Rust code is unsafe or uses dynamic checks.</li>
 	<li>No buffer overflows in safe Rust code.<li>
@@ -605,9 +606,9 @@
       </header>
       <ul>
 	<li>Linear types and region analysis scale up.</li>
-	<li>It often takes 20 years for research to get into production.</li>
 	<li>People care about safety+efficiency (most loved technology).</li>
-	<li>Sometimes you need to switch off the safety guarantees.</li>
+	<li>It often takes 20 years for research to get into production.</li>
+	<li>“Industrially relevant” research is not always the most relevant to industry.</li>
       </ul>
     </section>
   </div></div>
