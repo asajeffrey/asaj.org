@@ -123,7 +123,7 @@
       <p>Safety guarantees based on two 1990s ideas:</p>
       <ul>
 	<li>Linear types.</li>
-	<li>Region analysis.</li>
+	<li>Region-based memory management.</li>
       </ul>
     </section>
   </div></div>
@@ -168,7 +168,7 @@
 	<img src="pictures/jy-girard.jpg" height="150" alt="rust-lang.org" class="shadow"> 
 	<p>Got <i>water</i><br>
 	  and <i>flowers</i><br>
-	  and a friend who will barter <i>flowers</i> for <i>cigagrettes</i><br></p>
+	  and a friend who will barter <i>flowers</i> for <i>cigarettes</i><br></p>
       </div>
    </section>
   </div></div>
@@ -182,7 +182,7 @@
 	<img src="pictures/jy-girard.jpg" height="150" alt="rust-lang.org" class="shadow"> 
 	<p>Got <i>water</i><br>
 	  and <i>flowers</i><br>
-	  and a friend who will barter <i>flowers</i> for <i>cigagrettes</i><br>
+	  and a friend who will barter <i>flowers</i> for <i>cigarettes</i><br>
 	  <b>...later...</b><br>
           Got <i>water</i><br>
 	  and <i>cigarettes</i></p>
@@ -199,7 +199,7 @@
 	<img src="pictures/jy-girard.jpg" height="150" alt="rust-lang.org" class="shadow"> 
 	<p><i>water</i><br>
 	  ⊗ <i>flowers</i><br>
-	  ⊗ (<i>flowers</i> ⊸ <i>cigagrettes</i>)<br>
+	  ⊗ (<i>flowers</i> ⊸ <i>cigarettes</i>)<br>
 	  ⊢ <br>
           <i>water</i><br>
 	  ⊗ <i>cigarettes</i></p>
@@ -214,7 +214,7 @@
       </header>
       <p style="text-align:center;"><i>water</i>
 	⊗ <i>flowers</i>
-	⊗ (<i>flowers</i> ⊸ <i>cigagrettes</i>)
+	⊗ (<i>flowers</i> ⊸ <i>cigarettes</i>)
 	<br> ⊢ <br>
         <i>water</i>
 	⊗ <i>cigarettes</i></p>
@@ -228,7 +228,7 @@
       </header>
       <p style="text-align:center;"><i>water</i>
 	⊗ <i>flowers</i>
-	⊗ (<i>flowers</i> ⊸ <i>cigagrettes</i>)
+	⊗ (<i>flowers</i> ⊸ <i>cigarettes</i>)
 	<br> ⊢ <br>
         <i>water</i>
 	⊗ <i>cigarettes</i></p>
@@ -243,11 +243,11 @@
       </header>
       <p style="text-align:center;"><i>water</i>
 	⊗ <i>flowers</i>
-	⊗ !(<i>flowers</i> ⊸ <i>cigagrettes</i>)
+	⊗ !(<i>flowers</i> ⊸ <i>cigarettes</i>)
 	<br> ⊢ <br>
         <i>water</i>
 	⊗ <i>cigarettes</i>
-	⊗ !(<i>flowers</i> ⊸ <i>cigagrettes</i>)
+	⊗ !(<i>flowers</i> ⊸ <i>cigarettes</i>)
       <p style="text-align:center;">models a friend who barters as much as you like<p>
    </section>
   </div></div>
@@ -258,7 +258,7 @@
         <h2>Linear logic</h2>
       </header>
       <p>
-	LL does not have <i>weaking</i> (discard)
+	LL does not have <i>weakening</i> (discard)
 	or <i>contraction</i> (copy):</p>
       <p style="text-align:center;">
 	<i>A</i> ⊬
@@ -466,7 +466,7 @@
   <div id="regions" class="slide oneline"><div>
     <section>
       <header>
-        <h2>Region analysis</h2>
+        <h2>Region-based<br>memory management</h2>
       </header>
     </section>
   </div></div>  
@@ -474,7 +474,7 @@
   <div id="regions:splash" class="slide"><div>
     <section>
       <header>
-        <h2>Region analisis</h2>
+        <h2>Region-based memory management</h2>
       </header>
       <img src="pictures/tofte-talpin.jpg" height="450" alt="rust-lang.org" class="middle shadow">
       <small class="credits right">Mads Tofte and Jean-Pierre Talpin, 
@@ -482,12 +482,67 @@
     </section>
   </div></div>
 
-  <div id="regions1" class="slide"><div>
+  <div id="regions:hello-alice-unsound" class="slide"><div>
     <section>
       <header>
-        <h2>Region analysis</h2>
+        <h2>Region-based memory management</h2>
       </header>
-      <p>Stuff about regions.</p>
+      <img src="pictures/hello-alice-unsound.png" height="450" alt="rust-lang.org" class="middle shadow">
+      <small class="credits right">Problem: this program suffers from use-after-free.</small>
+    </section>
+  </div></div>
+
+  <div id="regions:hello-alice-unsound-drop" class="slide"><div>
+    <section>
+      <header>
+        <h2>Region-based memory management</h2>
+      </header>
+      <img src="pictures/hello-alice-unsound-drop.png" height="450" alt="rust-lang.org" class="middle shadow">
+      <small class="credits right">Problem: this program suffers from use-after-free.</small>
+    </section>
+  </div></div>
+
+  <div id="regions:ref-types" class="slide"><div>
+    <section>
+      <header>
+        <h2>Region-based memory management</h2>
+      </header>
+      <p>Rust reference types actually carry <i>lifetimes</i>:</p>
+      <ul>
+	<li><b>&amp;</b><i>αA</i>: a copyable reference with lifetime <i>α</i> to an immutable <i>A</i>.</li>
+	<li><b>&amp;</b><i>α</i><b>mut</b><i>A</i>: a linear reference with lifetime <i>α</i> to a mutable <i>A</i>.</li>
+      </ul>
+      <p>Functions are lifetime-polymorphic.</p>
+      <p>Lifetime inference usually allows lifetimes to be omitted.</p>
+    </section>
+  </div></div>
+
+  <div id="regions:hello-alice-unsound-explicit-lifetimes" class="slide"><div>
+    <section>
+      <header>
+        <h2>Region-based memory management</h2>
+      </header>
+      <img src="pictures/hello-alice-unsound-different-lifetimes.png" height="450" alt="rust-lang.org" class="middle shadow">
+      <small class="credits right">Example after lifetime inference.</small>
+    </section>
+  </div></div>
+
+  <div id="regions:tofte-talpin" class="slide"><div>
+    <section>
+      <header>
+        <h2>Region-based memory management</h2>
+      </header>
+      <p>Rust lifetimes are very similar to Tofte-Talpin regions:</p>
+      <ul>
+	<li>Lifetimes are nominal (gensym-like).</li>
+	<li>Types and lifetimes are separate kinds.</li>
+	<li>References are annotated with lifetimes.</li>
+      </ul>
+      <p>There are some differences:</p>
+      <ul>
+	<li>Lifetimes do not form a stack.</li>
+	<li>Lifetimes do not exist at run-time.</li>
+      </ul>
     </section>
   </div></div>
 
@@ -509,12 +564,51 @@
     </section>
   </div></div>
   
+  <div id="servo:summary" class="slide"><div>
+    <section>
+      <header>
+        <h2>Servo</h2>
+      </header>
+      <ul>
+	<li>Next generation web rendering engine.</li>
+	<li>150kLOC in https://github.com/servo/servo.</li>
+	<li>About 250 dependencies.</li>
+	<li>Mostly Rust, some C/C++ (Spidermonkey, openssl, ...)</li>
+	<li>Some Rust code is unsafe or uses dynamic checks.</li>
+	<li>No buffer overflows in safe Rust code.<li>
+	<li>The largest linearly typed program in the world?</li>
+      </ul>
+    </section>
+  </div></div>
+
   <div id="servo1" class="slide"><div>
     <section>
       <header>
         <h2>Servo</h2>
       </header>
       <iframe width="600" height="450" src="https://www.youtube.com/embed/jJXW072MatI?autoplay=1&loop=1&playlist=jJXW072MatI" frameborder="0" class="middle shadow"></iframe>
+    </section>
+  </div></div>
+
+  <div id="lessons" class="slide oneline"><div>
+    <section>
+      <header>
+        <h2>Lessons Learned</h2>
+      </header>
+    </section>
+  </div></div>  
+
+  <div id="lessons:list" class="slide"><div>
+    <section>
+      <header>
+        <h2>Lessons learned</h2>
+      </header>
+      <ul>
+	<li>Linear types and region analysis scale up.</li>
+	<li>It often takes 20 years for research to get into production.</li>
+	<li>People care about safety+efficiency (most loved technology).</li>
+	<li>Sometimes you need to switch off the safety guarantees.</li>
+      </ul>
     </section>
   </div></div>
 
