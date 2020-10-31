@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of full sub-symmetric-premonoidal-category</h1>
+<p>
+
+<a href="paper-state.html#full-subcat"><b>Proposition 
+(Full sub-strict-symmetric-premonoidal-category).</b></a><i>
+<font color=magenta>C</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>P</font>
+is a full sub-strict-symmetric-premonoidal category of
+<font color=magenta>D</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>Q</font>.
+</i><p>
+
+</nolatex>
+
+<b>Proof.</b>
+Throughout this proof, we shall give the reasoning for the premonoidal
+category, since the reasoning for the central category is identical.
+<p>
+We have a functor 
+<i>F</i> :
+<font color=red>P</font>
+<img src="img-rightarrow.gif">
+<font color=red>Q</font> given by the pushout diagram.  We will first show
+that this functor is monic.
+<p>
+For any strict symmetric premonoidal category 
+<font color=red>P</font>
+let
+<font color=red>P</font><sub><img src="img-bot.gif"></sub>
+be the strict symmetric premonoidal category given by adjoining a new object
+<img src="img-bot.gif"> and making the tensors strict.
+Let lift be the functor 
+<font color=red>P</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>P</font><sub><img src="img-bot.gif"></sub>.
+
+<p>
+We can find a strict symmetric premonoidal functor test such that:<p>
+<center><table>
+<tr>
+   <td>lift&nbsp;: </td>
+   <td align=right><font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)</td>
+   <td><img src="img-rightarrow.gif"></td>
+   <td><font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)<sub><img src="img-bot.gif"></sub></td>
+</tr><tr>
+   <td></td>
+   <td align=center><img src="img-hookdownarrow.gif"></td>
+   <td></td>
+   <td align=center><img src="img-downeq.gif"></td>
+</tr><tr>
+   <td>test&nbsp;: </td>
+   <td align=right><font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>)))</td>
+   <td><img src="img-rightarrow.gif"></td>
+   <td><font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)<sub><img src="img-bot.gif"></sub></td>
+</tr>
+</table></center>
+<p>
+such that test(<font color=red>S</font>)&nbsp;=&nbsp;<img src="img-bot.gif">.
+<p>
+Then:
+<center><table>
+<tr>
+   <td align=right><font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)</td>
+   <td align=center><img src="img-rrightarrow.gif"></td>
+   <td><font color=red>P</font></td>
+</tr>
+<tr align=center>
+   <td align=center><img src="img-hookdownarrow.gif"></td>
+   <td></td>
+   <td><img src="img-downarrow.gif"></td>
+</tr>
+<tr>
+   <td align=right><font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>)))</td>
+   <td>
+      <img src="img-rightarrow.gif">
+      <font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)<sub><img src="img-bot.gif"></sub>
+      <img src="img-rrightarrow.gif">
+   </td>
+   <td><font color=red>P</font><sub><img src="img-bot.gif"></sub></td>
+</tr>
+</table>
+</center>
+<p>
+and since we defined 
+<font color=red>Q</font>
+as a pushout, this means we have a unique symmetric premonoidal functor
+test<img src="img-primesup.gif"> :
+<font color=red>Q</font>
+<img src="img-rightarrow.gif">
+<font color=red>P</font><sub><img src="img-bot.gif"></sub>
+making the pushout diagram commute.  In particular, we have
+<i>F</i> ; test<img src="img-primesup.gif"> = lift, and since lift is monic, so is <i>F</i>.
+<p>
+For fullness, for any <font color=red>f</font> : <i>F</i>(<i>X</i>)
+<img src="img-rightarrow.gif"> <i>F</i>(<i>Y</i>) 
+in <font color=red>Q</font>
+we can find
+(since [[_]]<sub>Q</sub> is epi) a graph
+<i>G</i> : <b>X</b> <img src="img-rightarrow.gif"> <b>Y</b>
+such that:<p>
+<center>
+   [[<i>G</i> : <b>X</b> <img src="img-rightarrow.gif"> <b>Y</b>]]<sub>Q</sub>
+   = 
+   <font color=red>f</font> : <i>F</i>(<i>X</i>)
+   <img src="img-rightarrow.gif"> <i>F</i>(<i>Y</i>)
+</center>
+<p>
+Since test<img src="img-primesup.gif">(<i>F</i>(<i>X</i>)) <img src="img-neq.gif"> 
+<img src="img-bot.gif"> we have
+<font color=red>S</font> <img src="img-nin.gif"> <b>X</b>, so <b>X</b> is in
+<font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>),
+and similarly for <b>Y</b>.  Since
+<font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)
+<img src="img-hookrightarrow.gif">
+<font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>)))
+is a full subcategory,
+<i>G</i> is in
+<font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)
+and so [[<i>G</i>]]<sub>P</sub> is in <font color=red>P</font>.
+By the pushout diagram, <i>F</i>[[<i>G</i>]]<sub>P</sub> =
+<font color=red>f</font>, and so 
+<font color=red>P</font> is a full sub-strict-symmetric-premonoidal-category of
+<font color=red>Q</font>.
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-state.html#full-subcat">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

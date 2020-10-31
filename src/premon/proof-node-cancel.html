@@ -1,0 +1,1074 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of cancellation of nodes</h1>
+<p>
+
+<a href="paper-complete-cfp.html#shuffle-complete"><b>Proposition (Completeness for shuffles).</b></a>
+<i>If [[<font color=blue>s1</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>s2</font>]]
+   then <img src="img-vdash.gif"><font color=blue>s1&nbsp;=&nbsp;s2</font>.</i><p>
+
+<b>Proposition (Cancellation of nodes).</b></a>
+<i>For any:</i>
+<center>
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+<i>we can find <font color=blue>h</font> such that:</i>
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+</center>
+<p>
+
+</nolatex>
+
+<b>Proof.</b>
+<a name="primality">First, show a result about bisimulation on graphs;</a> 
+if:
+<center>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val f(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+then either:
+<center>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val f(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=120 height=190 align=absmiddle>
+   <param name="base" value="
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; w1:W1; wl:Wl; x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=120 height=190 align=absmiddle>
+   <param name="base" value="
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; w1:W1; wl:Wl; x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+or we can find <font color=blue>h</font> such that:
+<center>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val f(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+We now proceed by induction on <font color=blue>f</font>,
+which (by normalization) we can assume is in normal form.
+We have three cases:<p>
+<ul>
+
+<li> If <font color=blue>f</font> is:
+<center>
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val s(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = s(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+</center>
+   then we have a contradiction, since <font color=blue>f</font>
+   is bisimilar to a graph with a node connected to an outgoing edge.<p>
+
+<li> If <font color=blue>f</font> is:
+<center>
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val f1(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = f1(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+</center>
+   then:
+<center>
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f1(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = f1(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=200 height=190 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val p_inv(V1...Vk,R,X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      let (y1:Y1...yn:Yn) = p_inv (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+      return (y1...yn);
+   ">
+   </applet>
+</center>
+   then find permutation <font color=blue>q</font> such that:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=180 height=190 align=absmiddle>
+   <param name="base" value="
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val q(V1...Vk,W1...Wl,X1...Xm) : (T1...Ti,W1...Wl,U1...Uj);
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; w1:W1; wl:Wl; x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = q (v1...vk,w1...wl,x1...xm);      
+      return (
+         t1...ti,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         u1...uj
+      );
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=200 height=190 align=absmiddle>
+   <param name="base" value="
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val p_inv(V1...Vk,R,X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; w1:W1; wl:Wl; x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = p_inv (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+      return (y1...yn);
+   ">
+   </applet>
+</center>
+   so we have:
+<center>
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f1(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = f1(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=180 height=190 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val q(V1...Vk,W1...Wl,X1...Xm) : (T1...Ti,W1...Wl,U1...Uj);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = q (v1...vk,w1...wl,x1...xm);      
+      return (
+         t1...ti,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         u1...uj
+      );
+   ">
+   </applet>
+</center>
+   By induction, we can find <font color=blue>h1</font> such that:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f1(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = f1(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=180 height=190 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (T1...Ti,W1...Wl,U1...Uj);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = h1 (u1...uj); 
+      return (
+         t1...ti,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         u1...uj
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (T1...Ti,W1...Wl,U1...Uj);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = h1 (u1...uj); 
+      return (t1...ti,w1...wl,u1...uj);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=140 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val q(V1...Vk,W1...Wl,X1...Xm) : (T1...Ti,W1...Wl,U1...Uj);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = q (v1...vk,w1...wl,x1...xm);      
+      return (t1...ti,w1...wl,u1...uj);
+   ">
+   </applet>
+</center>
+   so:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val f1(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = f1(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=200 height=190 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (T1...Ti,W1...Wl,U1...Uj);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val p(T1...Ti,R,U1...Uj) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = h1 (u1...uj); 
+      let (z1:Z1...zo:Zo) = p(
+         t1...ti,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         u1...uj
+      );
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=300 height=190 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (T1...Ti,W1...Wl,U1...Uj);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val p(T1...Ti,R,U1...Uj) : (Z1...Zo);
+      val q(V1...Vk,W1...Wl,X1...Xm) : (T1...Ti,W1...Wl,U1...Uj);
+      val q_inv(T1...Ti,W1...Wl,U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = h1 (u1...uj); 
+      let (v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = q_inv (t1...ti,w1...wl,u1...uj);
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = q (v1...vk,w1...wl,x1...xm);      
+      let (z1:Z1...zo:Zo) = p(
+         t1...ti,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         u1...uj
+      );
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=350 height=190 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (T1...Ti,W1...Wl,U1...Uj);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val p(T1...Ti,R,U1...Uj) : (Z1...Zo);
+      val p_inv(V1...Vk,R,X1...Xm) : (T1...Ti,R,U1...Uj);
+      val q_inv(T1...Ti,W1...Wl,U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = h1 (u1...uj); 
+      let (v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = q_inv (t1...ti,w1...wl,u1...uj);
+      let (t1:T1...ti:Ti,r:R,u1:U1...uj:Uj) = p_inv (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+      let (z1:Z1...zo:Zo) = p (t1...ti,r,u1...uj);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=240 height=190 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (T1...Ti,W1...Wl,U1...Uj);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+      val q_inv(T1...Ti,W1...Wl,U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = h1 (u1...uj); 
+      let (v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = q_inv (t1...ti,w1...wl,u1...uj);
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+   and:
+<center>
+   <applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (T1...Ti,W1...Wl,U1...Uj);
+      val q_inv(T1...Ti,W1...Wl,U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = h1 (u1...uj); 
+      let (v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = q_inv (t1...ti,w1...wl,u1...uj);
+      return (v1...vk,w1...wl,x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val q(V1...Vk,W1...Wl,X1...Xm) : (T1...Ti,W1...Wl,U1...Uj);
+      val q_inv(T1...Ti,W1...Wl,U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      let (t1:T1...ti:Ti,w1:W1...wl:Wl,u1:U1...uj:Uj) = q (v1...vk,w1...wl,x1...xm);      
+      let (v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = q_inv (t1...ti,w1...wl,u1...uj);
+      return (v1...vk,w1...wl,x1...xm);
+   ">
+   </applet>   
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val q(V1...Vk,W1...Wl,X1...Xm) : (T1...Ti,W1...Wl,U1...Uj);
+      val q_inv(T1...Ti,W1...Wl,U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk,w1...wl,x1...xm);
+   ">
+   </applet>   
+</center>
+
+<li> If <font color=blue>f</font> is:
+<center>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val f1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f1 (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+   then by <a href="#primality">the above result about bisimulation</a>
+   either:<p>
+<ul>
+
+<li> we have:
+<center>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val f1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f1 (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=120 height=190 align=absmiddle>
+   <param name="base" value="
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; w1:W1; wl:Wl; x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=120 height=190 align=absmiddle>
+   <param name="base" value="
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; w1:W1; wl:Wl; x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+   and we are finished,<p>
+
+<li> or we can find <font color=blue>g1</font> such that:
+<center>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val f1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f1 (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val g1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g1 (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val g1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g1 (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+   so by induction we can find <font color=blue>h1</font> such that:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val f1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f1 (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h1 (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h1 (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g1 (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+</center>
+   Then we have two cases depending on the relative positions of
+   <font color=blue>c</font> and <font color=blue>d</font>, but the
+   proofs are identical:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val f1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = f1 (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=250 height=300 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (S1...Sh,T1...Ti,V1...Vk,W1...Wl,X1...Xm);
+      val c(T1...Ti) : (Y1...Yn,Rc,Z1...Zo);
+      val d(W1...Wl) : (Y1...Yn,Rd,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (s1:S1...sh:Sh,t1:T1...ti:Ti,v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = h1 (u1...uj); (
+         let (s1:S1...sh:Sh,t1:T1...ti:Ti,v1:V1...vk:Vk) = (s1...sh,t1...ti,v1...vk);
+         let (y1:Y1...yn:Yn, rd:Rd, z1:Z1...zo:Zo) = d(w1...wl); 
+         let (y1:Y1...yn:Yn, rd:Rd, z1:Z1...zo:Zo) = (y1...yn, rd, z1...zo); 
+         let (x1:X1...xm:Xm) = (x1...xm); (
+            let (s1:S1...sh:Sh) = (s1...sh);
+            let (y1:Y1...yn:Yn, rc:Rc, z1:Z1...zo:Zo) = c(t1...ti); 
+            let (y1:Y1...yn:Yn, rc:Rc, z1:Z1...zo:Zo) = (y1...yn, rc, z1...zo);
+            let (v1:V1...vk:Vk,rd:Rd,x1:X1...xm:Xm) = (v1...vk,rd,x1...xm);
+            return (s1...sh,rc,v1...vk,rd,x1...xm);     
+         )
+      )
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=250 height=300 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (S1...Sh,T1...Ti,V1...Vk,W1...Wl,X1...Xm);
+      val c(T1...Ti) : (Y1...Yn,Rc,Z1...Zo);
+      val d(W1...Wl) : (Y1...Yn,Rd,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (s1:S1...sh:Sh,t1:T1...ti:Ti,v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = h1 (u1...uj); (
+         let (s1:S1...sh:Sh) = (s1...sh);
+         let (y1:Y1...yn:Yn, rc:Rc, z1:Z1...zo:Zo) = c(t1...ti); 
+         let (y1:Y1...yn:Yn, rc:Rc, z1:Z1...zo:Zo) = (y1...yn, rc, z1...zo);
+         let (v1:V1...vk:Vk,w1:W1...wl:Wl,x1:X1...xm:Xm) = (v1...vk,w1...wl,x1...xm); (
+            let (s1:S1...sh:Sh,rc:Rc,v1:V1...vk:Vk) = (s1...sh,rc,v1...vk);
+            let (y1:Y1...yn:Yn, rd:Rd, z1:Z1...zo:Zo) = d(w1...wl); 
+            let (y1:Y1...yn:Yn, rd:Rd, z1:Z1...zo:Zo) = (y1...yn, rd, z1...zo); 
+            let (x1:X1...xm:Xm) = (x1...xm); 
+            return (s1...sh,rc,v1...vk,rd,x1...xm);     
+         )
+      )
+   ">
+   </applet>
+</center>
+   and:
+<center>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val h1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h1 (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val g1(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g1 (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+</center>
+
+</ul>
+
+
+</ul>
+
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-cfp.html#node-cancel">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Semantics</h1>
+
+Consider a typed programming language where we divide the 
+constructors into three colours:<p>
+<ul>
+
+<li> <font color=blue>Value</font> constructors,
+   which can be copied or discarded,
+   such as <font color=blue>0</font>, <font color=blue>succ</font>,
+   <font color=blue>true</font>, <font color=blue>cons</font>.<p>
+
+<li> <font color=magenta>Central</font> constructors,
+   which cannot be copied or discarded,
+   such as <font color=magenta>ref</font> or 
+   <font color=magenta>rand</font>.<p>
+
+<li> <font color=red>Process</font> constructors,
+   where order of evaluation is important,
+   such as <font color=red>:=</font> or 
+   <font color=red>print</font>.<p>
+
+</ul>
+We have seen example flow graphs for such a language, but
+what structures are necessary to give it a semantics?
+<p>
+
+  </body>
+</html>

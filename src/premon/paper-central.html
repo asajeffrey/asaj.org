@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Central category</h1>
+<p>
+
+<h2>Syntax</h2>
+<p>
+
+Given two signatures <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> and <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> with the same sorts, define the
+language Exp(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>) as
+as extending Exp(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) with:<p>
+<center>
+<table>
+   <tr><td><i>M</i> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td><font color=magenta>c</font> <i>M</i></td><td>(Central constructor, <font color=magenta>c</font> in <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)</td></tr>
+</table>
+</center>
+<p>
+and add a new category:<p>
+<center>
+<table>
+   <tr><td><b>C</b> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td> <font color=magenta>central</font></td></tr>
+</table>
+</center>
+<p>
+The judgements 
+<img src="img-Gamma.gif"> <img src="img-vdash.gif"> <i>M</i> : <i>T</i>
+in <font color=magenta>central</font> are as before, but we now have
+two new rules, one for value constructors:<p>
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i>) in <font color=magenta>central</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=blue>c</font> <i>M</i> : (<i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub>) in <font color=magenta>central</font></td>
+   </tr>
+</table>
+</td><td>
+[<font color=blue>c</font> : <i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i> <img src="img-rightarrow.gif"> <i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub> in <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>]
+</td></tr>
+</table>
+</center>
+<p>
+and one for central constructors:<p>
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i>) in <font color=magenta>central</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=magenta>c</font> <i>M</i> : (<i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub>) in <font color=magenta>central</font></td>
+   </tr>
+</table>
+</td><td>
+[<font color=magenta>c</font> : <i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i> <img src="img-rightarrow.gif"> <i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub> in <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>]
+</td></tr>
+</table>
+</center>
+<p>
+Note that the two subsumption rules are sound, one for expressions:<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=blue>val</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=magenta>central</font></td>
+   </tr>
+</table>
+</center>
+<p>
+and one for declarations:<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <img src="img-Gamma.gif"><img src="img-primesup.gif"> in <font color=blue>val</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <img src="img-Gamma.gif"><img src="img-primesup.gif"> in <font color=magenta>central</font></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<h2>Graphical semantics</h2>
+<p>
+
+The graphical semantics of <font color=magenta>central</font> is the
+same as for <font color=blue>val</font>, but we now have two colours
+of nodes.  Nodes labelled with constructors from 
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> are drawn: 
+<center>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val c(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = c(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+Nodes labelled with constructors from 
+<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> are drawn: 
+<center>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      central c(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = c(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+Graphs which only contain <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> nodes
+are drawn:
+<center>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+Graphs which contain <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> nodes
+and <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> nodes are drawn:
+<center>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      central G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+The graphical semantics of <font color=magenta>central</font>
+expressions is the same as that of <font color=blue>val</font> expressions:
+<center>
+<table>
+<tr>
+   <td>[[<i>x</i> in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+<param name="free" value="
+   y1:Y1; yn:Yn; x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm,z1:Z1...zo:Zo) = (y1...yn,x1...xm,z1...zo);
+   return (x1...xm);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<font color=blue>c</font> <i>M</i> in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="base" value="
+   val c (B1...Bm) : (C1...Cn);
+   central M (Z1...Zo) : (B1...Bm);
+">
+<param name="free" value="
+   z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (b1:B1...bm:Bm) = M(z1...zo);
+   let (c1:C1...cn:Cn) = c(b1...bm);
+   return (c1...cn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<font color=magenta>c</font> <i>M</i> in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="base" value="
+   central c (B1...Bm) : (C1...Cn);
+   central M (Z1...Zo) : (B1...Bm);
+">
+<param name="free" value="
+   z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (b1:B1...bm:Bm) = M(z1...zo);
+   let (c1:C1...cn:Cn) = c(b1...bm);
+   return (c1...cn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[(<i>M</i><sub>1</sub>,...,<i>M</i><sub><i>n</i></sub>) in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=120 align=absmiddle>
+<param name="base" value="
+   central M1 (X1...Xm) : (Y11...Y1n);
+   central Mn (X1...Xm) : (Yn1...Ynn);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let ((y11:Y11...y1n:Y1n)...(yn1:Yn1...ynn:Ynn)) = (M1(x1...xm)...Mn(x1...xm));
+   return ((y11...y1n)...(yn1...ynn));
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>D M</i> in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=120 align=absmiddle>
+<param name="base" value="
+   central D (X1...Xm) : (Y1...Yn);
+   central M (X1...Xm,Y1...Yn) : (Z1...Zo);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = D(x1...xm);
+   let (z1:Z1...zo:Zo) = M(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+The graphical semantics of <font color=magenta>central</font>
+declarations is the same as that of <font color=blue>val</font> declarations:
+<center>
+<table>
+<tr>
+   <td>[[<b>let</b> <i>P</i> = <i>M</i>; in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="base" value="
+   central M (X1...Xm) : (Y1...Yn);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = M(x1...xm);
+   return (y1...yn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>D1 D2</i> in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+<param name="base" value="
+   central D1 (X1...Xm) : (Y1...Yn);
+   central D2 (Y1...Yn,X1...Xm) : (Z1...Zo);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm) = (D1(x1...xm),x1...xm);
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm) = (y1...yn,x1...xm);
+   let (z1:Z1...zo:Zo) = D2(y1...yn,x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[  in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   return ();
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+In an 
+<a href="paper-complete-smc.html">appendix</a> we adapt the notion
+of bisimulation between graphs to require that any bisimulation is
+an isomorphism on <font color=magenta>central</font> nodes.
+This means that for <font color=magenta>central</font> nodes 
+there is no natural diagonal:
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   central c(X):Y;
+">
+<param name="exp" value="
+   let y:Y = c(x); (y,y)
+">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   central c(X):Y;
+">
+<param name="exp" value="
+   let x:X = x; (c(x),c(x))
+">
+</applet>
+</center>
+<p>
+
+nor a natural terminal:
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   central c(X):Y;
+">
+<param name="exp" value="
+   c(x); ()
+">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=45 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   x; ()
+">
+</applet>
+</center>
+<p>
+For example, the following graphs are bisimilar:
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=150 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let r:ref = ref(1+1);
+   return (r,r);
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=150 height=50 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let y:int = 1;
+   let r:ref = ref(y+y);
+   return (r,r);
+">
+</applet>
+</td>
+</tr>
+<tr><td>
+   <b>let</b> <i>r</i>:ref = <font color=magenta>ref</font>(<font color=blue>1+1</font>);
+</td><td>
+   <b>let</b>&nbsp;<i>y</i>:int = <font color=blue>1</font>;
+</td>
+</tr>
+<tr><td>
+   <b>return</b>&nbsp;(<i>r</i>,<i>r</i>);
+</td><td>
+   <b>let</b> <i>r</i>:ref = <font color=magenta>ref</font>(<i>y</i><font color=blue>+</font><i>y</i>);
+</td>
+<tr><td></td><td>
+   <b>return</b>&nbsp;(<i>r</i>,<i>r</i>);
+</td>
+</tr>
+</table>
+</center>
+<p>
+but they are <i>not</i> bisimilar to:<p>
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=150 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let x:int = 1+1;
+   return (ref(x),ref(x));
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=150 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let y:int = 1;
+   let x:int = y+y;
+   return (ref(x),ref(x));
+">
+</applet>
+</td></tr>
+<tr><td>
+   <b>let</b> <i>x</i>:int = <font color=blue>1+1</font>;
+</td><td>
+   <b>let</b>&nbsp;<i>y</i>:int =  <font color=blue>1</font>;
+</td></tr>
+<tr><td>
+   <b>return</b>&nbsp;(<font color=magenta>ref</font>(<i>x</i>),<font color=magenta>ref</font>(<i>x</i>));
+</td><td>
+   <b>let</b> <i>x</i>:int = <i>y</i><font color=blue>+</font><i>y</i>;
+</td></tr>
+<tr><td></td><td>
+   <b>return</b>&nbsp;(<font color=magenta>ref</font>(<i>x</i>),<font color=magenta>ref</font>(<i>x</i>));
+</td></tr>
+</table>
+</center>
+<p>
+
+In <a href="paper-complete-smc.html">an appendix</a> we construct a
+category <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>) with:<p>
+<center>
+   <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+</center>
+<p>
+and show that this is the initial pair of categories:<p>
+<center>
+   <font color=blue>V</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>C</font>
+</center>
+<p>
+with:<p>
+<ul>
+<li> <font color=blue>V</font> a strict cartesian category
+   over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.<p>
+<li> <font color=magenta>C</font> a strict symmetric monoidal category
+   over <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>.<p>
+<li> The inclusion an identity on objects symmetric monoidal functor.<p>
+</ul>
+Thus the
+graphical semantics defined above uniquely determines a semantics in
+<i>any</i> such pairs of categories.
+<p>
+Such pairs of categories have been studied by 
+<a href="paper-bib.html#ben95">Benton</a> in the form of
+mixed linear/non-linear logic, although he allows <font color=blue>V</font>
+and <font color=magenta>C</font> to have different objects.
+The presentation here is based on
+<a href="paper-bib.html#has97">Hasegawa's</a>,
+although we have provided a graphical presentation rather than
+a term model construction.  These categories form a natural
+model of computation where order of evaluation is unimportant,
+such as nondeterminism or unique name generation.  In the next
+section we shall allow more general computations.
+<p>
+
+<nolatex>
+<p>
+<center>
+<a href="paper-value.html">Previous</a> |
+<a href="paper-process.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

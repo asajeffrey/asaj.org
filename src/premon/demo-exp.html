@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>A flow graph applet</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Expressions</h1>
+<p>
+
+<h2>Lexical tokens</h2>
+<p>
+
+Premon ignores C-style comments, delimited by /*...*/ or 
+line-delimited comments starting //.
+<p>
+The following are keywords:
+<blockquote>
+   central fn let local proc rec return val
+</blockquote>
+Premon identifiers are either alphanumerics (strings including a-z, A-Z,
+digits and underscore beginning with a letter) or symbolics
+(strings made up of the following characters):
+<blockquote>
+   ! # $ &amp; * + - . / : &lt; = &gt; ? @ [ \ ] ^ | ~
+</blockquote>
+For example the phrase `f_1=++([[y]])' consists of tokens:
+<blockquote>
+   f_1 = ++ ( [[ y ]] )
+</blockquote>
+Premon literals are strings delimited by "..." or '...', integers or
+doubles.
+<p>
+
+<h2>Simple expressions</h2>
+<p>
+
+Simple expressions are:
+<ul>
+
+<li> Identifiers, such as name or ^.<p>
+
+<li> Literals, such as 'Hello, '.<p>
+
+<li> Prefix function application 
+      <i>M</i>(<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>),
+     for example ^('Hello, ', name).<p>
+
+<li> Infix function application <i>M x M'</i> for example 'Hello, ' ^
+     name.<p>
+
+<li> Tuples
+      (<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>),
+     for example the pair ('Hello, ', name).<p>
+
+<li> Sequential composition <i>M</i>; <i>M'</i> for example
+     println ('Hello'); println ('World').<p>
+
+</ul>
+All identifiers used in a simple expression must be typed, either in
+the context or the constructors.  For example the graph:
+<center>
+<applet code="AppletPremon.class" width=480 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   print ('What is your name?');
+   print ('Hello, ' ^ read () ^ '.')
+">
+</applet>
+</center>
+is given by the expression:
+<blockquote>
+   print ('What is your name?'); <br>
+   print ('Hello, ' ^ read () ^ '.')
+</blockquote>
+with the constructors:
+<blockquote>
+   proc print (string);<br>
+   proc read() : string;<br>
+   val ^ (string,string) : string;
+</blockquote>
+<p>
+
+<h2>Declarations</h2>
+<p>
+
+As well as simple expressions, we can bind variables.  The simplest
+form of declaration binds a variable, for example we can change the
+above graph slightly:
+<center>
+<applet code="AppletPremon.class" width=480 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   print ('What is your name?');
+   let name:string = read();
+   print ('Hello, ' ^ name ^ '.')
+">
+</applet>
+</center>
+by declaraing a variable for the user's name:
+<blockquote>
+   print ('What is your name?');<br>
+   let name:string = read();<br>
+   print ('Hello, ' ^ name ^ '.')
+</blockquote>
+Variables can be used more than once in an expression, introducing
+forks into the resulting flow graph, for example four ways to write
+the same expression are:
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=100 height=150 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   (1 + 1) * (1 + 1)
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = (1 + 1);
+   x*x
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let y:int = 1;
+   (y+y)*(y+y)
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=120 height=75 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let y:int = 1; (
+      let x:int = (y + y);
+      x*x
+   )
+">
+</applet>
+</td></tr>
+<tr><td>
+   (1 + 1) * (1 + 1)
+</td><td>
+   let x:int = (1 + 1);<br>
+   x*x
+</td><td>
+   let y:int = 1;<br>
+   (y+y)*(y+y)
+</td><td>
+   let y:int = 1;<br>
+   let x:int = (y + y);<br>
+   x*x
+</td></tr>
+</table>
+</center>
+<p>
+Variables can also be declared but never used.  This can result in
+disconnected subgraphs, for example:
+<center>
+<table><tr><td>
+<applet code="AppletPremon.class" width=120 height=60 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let y:int = 1; (
+      let x:int = (y + y);
+      4
+   )
+">
+</applet>
+</td></tr><tr><td>
+   let y:int = 1;<br>
+   let x:int = (y + y);<br>
+   4
+</td></tr></table>
+</center>
+<p>
+Premon functions can return more than one result, so
+let-expressions can bind more than one variable.  For example the
+function coords takes a point and returns its coordinates as two
+floating point numbers:
+<center>
+<applet code="AppletPremon.class" width=100 height=50 align=middle>
+<param name="base" value="
+   val coords (point) : (double,double);
+">
+<param name="free" value="
+   p1:point;
+">
+<param name="exp" value="
+   coords (p1)
+">
+</applet><br>
+   val coords (point) : (double,double);
+</center>
+<p>
+We can find the distance between two points as:
+<center>
+<applet code="AppletPremon.class" width=250 height=80 align=middle>
+<param name="base" value="
+   val sqrt (double) : double;
+   val * (double, double) : double;
+   val + (double, double) : double;
+   val - (double, double) : double;
+   val / (double, double) : double;
+   val coords (point) : (double,double);
+">
+<param name="free" value="
+   p1:point; p2:point;
+">
+<param name="exp" value="
+   let (x1:double,y1:double) = coords (p1);
+   let (x2:double,y2:double) = coords(p2); 
+   (
+      let x:double = x1-x2;
+      let y:double = y1-y2;
+      sqrt ((x*x) + (y*y))
+   )
+">
+</applet><br>
+<table><tr><td>
+   let (x1:double,y1:double) = coords (p1);<br>
+   let (x2:double,y2:double) = coords(p2);<br>
+   (<br>&nbsp;&nbsp;&nbsp;
+      let x:double = x1-x2;<br>&nbsp;&nbsp;&nbsp;
+      let y:double = y1-y2;<br>&nbsp;&nbsp;&nbsp;
+      sqrt ((x*x) + (y*y))<br>
+   )
+</td></tr></table>
+</center>
+<p>
+
+<nolatex>
+<center>
+<a href="demo-example.html">Previous</a> |
+<a href="demo-fun.html">Next</a> 
+</center>
+</nolatex>
+
+  </body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>A flow graph applet</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Examples</h1>
+<p>
+
+Here are some example programs, with their flow graphs, to give
+a flavour of the language and the resulting graphs.  Note that in many
+cases what they demonstrate is that program texts are easier to read
+than flow graphs.  You can click on a flow graph to see the source code.
+<p>
+
+<h2>Boolean expression</h2>
+
+<center>
+<applet code="AppletPremon.class" width=300 height=150 align=middle>
+<param name="base" value="
+   val < (int,int) : bool;
+   val > (int,int) : bool;
+   val && (bool,bool) : bool;
+   val || (bool,bool) : bool;
+">
+<param name="free" value="
+   x:int; y:int; z:int;
+">
+<param name="exp" value="
+   return ((x < y) && (y < z)) || ((x > y) && (y > z));
+">
+</applet>
+</center>
+
+<h2>4-bit adder</h2>
+
+<center>
+<applet code="AppletPremon.class" width=300 height=150 align=middle>
+<param name="base" value="
+   val split (nibble) : (bit,bit,bit,bit);
+   val merge (bit,bit,bit,bit) : nibble;
+   val +(bit,bit,bit) : (bit,bit);
+">
+<param name="free" value="
+   l:nibble;
+   r:nibble;
+   carryIn:bit;
+">
+<param name="exp" value="
+   let carry0:bit = carryIn;
+   let (l0:bit,l1:bit,l2:bit,l3:bit) = split (l);
+   let (r0:bit,r1:bit,r2:bit,r3:bit) = split (r); (
+   let (res0:bit,carry1:bit) = +(carry0,l0,r0);
+   let (res1:bit,carry2:bit) = +(carry1,l1,r1);
+   let (res2:bit,carry3:bit) = +(carry2,l2,r2);
+   let (res3:bit,carryOut:bit) = +(carry3,l3,r3);
+   return (merge(res0,res1,res2,res3),carryOut);
+   )
+">
+</applet>
+</center>
+
+
+<h2>Imperative programming</h2>
+
+<center>
+<applet code="AppletPremon.class" width=150 height=100 align=middle>
+<param name="base" value="
+   val ~(int) : int;
+   central ref(int) : ref;
+   proc !(ref) : int;
+   proc :=(ref,int);
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x);
+   r := ~(!(r));
+">
+</applet>
+</center>
+
+<h2>Conditionals</h2>
+
+<center>
+<applet code="AppletPremon.class" width=300 height=150 align=middle>
+<param name="base" value="
+   val ~(int) : int;
+   central ref(int) : ref;
+   proc !(ref) : int;
+   val <(int,int) : bool;
+   proc :=(ref,int);
+   proc if (bool) (proc()) (proc());
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x);
+   let y:int = !(r);
+   if (y < 0) {
+      r := ~(!(r));
+   }{
+   }
+">
+</applet>
+</center>
+
+<h2>Function declaration and use</h2>
+
+<center>
+<applet code="AppletPremon.class" width=500 height=150 align=middle>
+<param name="base" value="
+   proc println (string);
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   proc hello (name:string) {
+      println ('Hello, ' ^ name ^ '.');
+   }
+   hello ('Ethel');
+   hello ('Fred');
+">
+</applet>
+</center>
+
+<h2>Factorial</h2>
+
+<center>
+<applet code="AppletPremon.class" width=400 height=200 align=middle>
+<param name="base" value="
+   val == (int,int) : bool;
+   proc if (bool) (proc():int) (proc():int) : int;
+   val - (int,int) : int;
+   val * (int,int) : int;
+">
+<param name="exp" value="
+   rec fact;
+   proc fact (x:int) : int {
+      if (x==0) {
+         return 1;
+      } {
+         return x * fact (x-1);
+      }
+   }
+   return fact;
+">
+</applet>
+</center>
+
+<h2>Tail recursive factorial</h2>
+
+<center>
+<applet code="AppletPremon.class" width=400 height=200 align=middle>
+<param name="base" value="
+   val == (int,int) : bool;
+   proc if (bool) (proc():int) (proc():int) : int;
+   val - (int,int) : int;
+   val * (int,int) : int;
+">
+<param name="exp" value="
+   local rec factR;
+   proc factR (x:int,a:int) : int {
+      if (x==0) {
+         return a;
+      } {
+         return factR (x-1, x*a);
+      }
+   }
+   proc fact (x:int) : int {
+      return factR (x,1);
+   }
+   return fact;
+">
+</applet>
+</center>
+
+<h2>Quick sort</h2>
+
+<center>
+<applet code="AppletPremon.class" width=700 height=200 align=middle>
+<param name="base" value="
+   val isNil (list) : bool;
+   proc hd (list) : int;
+   proc tl (list) : list;
+   proc partition (int,list) : (list,list);
+   val append (list,list) : list;
+   val cons (int,list) : list;
+   proc if (bool) (proc():list) (proc():list) : list;
+">
+<param name="exp" value="
+   rec quicksort;
+   proc quicksort (xs : list) : list {
+      if (isNil (xs)) {
+         return xs;
+      } {
+         let x:int = hd(xs);
+         let (ys:list, zs:list) = partition (x, tl(xs));
+         return quicksort (ys) append (x cons quicksort (zs));
+      }
+   }
+   return quicksort;
+">
+</applet>
+</center>
+
+<h2>Quick sort partitioning</h2>
+
+<center>
+<applet code="AppletPremon.class" width=700 height=370 align=middle>
+<param name="base" value="
+   val isNil (list) : bool;
+   proc hd (list) : int;
+   proc tl (list) : list;
+   proc partition (int,list) : (list,list);
+   val append (list,list) : list;
+   nil : list;
+   val cons (int,list) : list;
+   proc if (bool) (proc():(list,list)) (proc():(list,list)) : (list,list);
+   val <(int,int) : bool;
+">
+<param name="exp" value="
+   local rec partitionR;
+   proc partitionR (x:int, xs:list, less:list, gtr:list) : (list, list) {
+      if (isNil (xs)) {
+         return (less,gtr);
+      } {
+         let y:int = hd(xs);
+         if (y<x) {
+            return partitionR (x, tl(xs), y cons less, gtr);
+         } {
+            return partitionR (x, tl(xs), less, y cons gtr);
+         }
+      }
+   }
+   proc partition (x:int, xs:list) : (list, list) {
+      return partitionR (x, xs, nil, nil);
+   }
+   return partition;
+">
+</applet>
+</center>
+
+<p>
+
+<nolatex>
+<center>
+<a href="demo-title.html">Previous</a> |
+<a href="demo-exp.html">Next</a> 
+</center>
+</nolatex>
+
+  </body>
+</html>

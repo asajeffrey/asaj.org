@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of completeness for shuffles</h1>
+<p>
+
+<a href="paper-complete-cfp.html#complete-shuffle"><b>Proposition (Completeness for shuffles).</b></a>
+<i>If [[<font color=blue>s1</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>s2</font>]]
+   then <img src="img-vdash.gif"><font color=blue>s1&nbsp;=&nbsp;s2</font>.</i><p>
+
+</nolatex>
+
+<b>Proof.</b>
+First show by induction on <font color=blue>s</font> that:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val s(X1...Xm);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      return s(x1...xm);
+   ">
+   </applet>   
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      (x1...xm); return ();
+   ">
+   </applet>   
+</center>
+Then show by induction on <font color=blue>s</font> that:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+   <param name="base" value="
+      val s(X1...Xm) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn,r:R,z1:Z1...zo:Zo) = s(x1...xm);
+      let (y1:Y1...yn:Yn,r:R,z1:Z1...zo:Zo) = (y1...yn,r,z1...zo);
+      return (r);
+   ">
+   </applet>   
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+   <param name="base" value="
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; r:R; w1:W1; wl:Wl;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk,r:R,w1:W1...wl:Wl) = (v1...vk,r,w1...wl);
+      return (r);
+   ">
+   </applet>   
+</center>
+Then show by induction on <font color=blue>s</font> that we can
+find a shuffle <font color=blue>t</font> such that:
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=150 height=80 align=absmiddle>
+   <param name="base" value="
+      val s(X1...Xm) : (Y1...Yn,R);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn,r:R) = s(x1...xm);
+      return (y1...yn,r);
+   ">
+   </applet>   
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=200 align=absmiddle>
+   <param name="base" value="
+      val t(V1...Vk,R,W1...Wl) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      v1:V1; vk:Vk; r:R; w1:W1; wl:Wl;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk,r:R,w1:W1...wl:Wl) = (v1...vk,r,w1...wl); (
+         let (y1:Y1...yn:Yn) = t(v1...vk,r,w1...wl);
+         let (v1:V1...vk:Vk,r:R,w1:W1...wl:Wl) = (v1...vk,r,w1...wl);
+         return (y1...yn,r);
+      )
+   ">
+   </applet>   
+</center>
+(The previous result is needed in the case of composition).
+<p>
+Finally, iteratively use the first and last properties to show that
+if [[<font color=blue>s1</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>s2</font>]]
+then <img src="img-vdash.gif"><font color=blue>s1&nbsp;=&nbsp;s2</font>.
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-cfp.html#complete-shuffle">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

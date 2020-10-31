@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Completeness proof</font></b></center>
+<p>
+
+The graphs we consider in this paper are finite edge-labelled, node 
+labelled graphs where the incoming and outgoing edges to each node are
+ordered.  We also impose a type discipline to ensure that the edge and
+node labels match.
+<p>
+A <em>generator</em> for such a graph is:
+<ul>
+
+<li> A set of sorts (ranged over by <i>X, Y, Z</i>).<p>
+
+<li> A set of constructors (ranged over by <i>c, d</i>).<p>
+
+<li> For each constructor, a source and target list of sorts,
+   written <i>c</i> : <i>X</i><sub>1</sub>,...,<i>X<sub>m</sub></i>
+   <img src="img-rightarrow.gif"> 
+   <i>Y</i><sub>1</sub>,...,<i>Y<sub>n</sub></i>.<p>
+
+</ul>
+<p>
+
+This is the usual notion of a generator for a term algebra, except that
+we are allowing constructors to have multiple result sorts, since we
+will be generating syntax graphs rather than syntax trees.
+<p>
+
+A <em>flow graph</em> <i>G</i> for a given generator is:
+<ul>
+
+<li> A finite set of edges (ranged over by <i>E</i>).<p>
+
+<li> A finite set of nodes (ranged over by <i>N</i>).<p>
+
+<li> A list of incoming edges and a list of outgoing edges,
+   written <i>G</i> : <i>E</i><sub>1</sub>,...,<i>E<sub>m</sub></i>
+   <img src="img-rightarrow.gif"> 
+   <i>E'</i><sub>1</sub>,...,<i>E'<sub>n</sub></i>.<p>
+
+<li> For each edge, a label sort, written <i>E</i> : <i>X</i>.<p>
+
+<li> For each node, a label constructor, written <i>N</i> : <i>c</i>.<p>
+
+<li> For each node, a list of incoming edges and a list of outgoing 
+   edges, written
+   <i>N</i> : <i>E</i><sub>1</sub>,...,<i>E<sub>m</sub></i>
+   <img src="img-rightarrow.gif"> 
+   <i>E'</i><sub>1</sub>,...,<i>E'<sub>n</sub></i>, such that
+   <i>E<sub>i</sub></i> : <i>X<sub>i</sub></i>, 
+   <i>E'<sub>i</sub></i> : <i>X'<sub>i</sub></i>, 
+   <i>N</i> : <i>c</i> and
+   <i>c</i> : <i>X</i><sub>1</sub>,...,<i>X<sub>m</sub></i>
+   <img src="img-rightarrow.gif"> 
+   <i>X'</i><sub>1</sub>,...,<i>X'<sub>n</sub></i>.<p>
+
+<li> Each edge occurs exactly once either as an incoming edge of the
+graph, or an outgoing edge of a node.
+
+<li> Each edge occurs exactly once either as an outgoing edge of the
+graph, or an incoming edge of a node.
+
+</ul>
+<p>
+
+A morphism <i>F</i> between flow graphs <i>G</i> and <i>G'</i> is:
+<p>
+<ul>
+
+<li> A map from the edges of <i>G</i> to the edges of <i>G'</i>.<p>
+
+<li> A map from the nodes of <i>G</i> to the nodes of <i>G'</i>.<p>
+
+<li> The maps respect labels, incoming edges and outgoing edges.
+
+</ul>
+
+<p>
+Acyclic flow graphs over a given generator form a category where:
+<p>
+<ul>
+
+<li> Objects are lists of sorts <i>X</i><sub>1</sub>,...,<i>X<sub>n</sub></i>.<p>
+
+<li> Morphisms from 
+   <i>X</i><sub>1</sub>,...,<i>X<sub>m</sub></i> to 
+   <i>Y</i><sub>1</sub>,...,<i>Y<sub>n</sub></i> are
+   acyclic graphs <i>G</i> : <i>E</i><sub>1</sub>,...,<i>E<sub>m</sub></i>
+   <img src="img-rightarrow.gif"> 
+   <i>E'</i><sub>1</sub>,...,<i>E'<sub>n</sub></i>
+    such that
+   <i>E<sub>i</sub></i> : <i>X<sub>i</sub></i>, and
+   <i>E'<sub>i</sub></i> : <i>X'<sub>i</sub></i>.
+   We view graphs up to graph isomorphism.
+
+</ul>
+<p>
+
+(If we wanted to be completely formal here, we would define this to
+be a bicategory, and make the use of isomorphisms explicit, however
+we leave such a construction to the interested reader.)
+<p>
+
+We have <a href="value.html">already seen</a> how such graphs form
+a symmetric monoidal category.  We shall now show that this is the 
+free symmetric monoidal category over a set of generators, by showing
+that the smc axioms are sound and complete for acyclic flow graphs.
+<p>
+
+We can construct the term algebra for the free smc over a generator 
+as having vectors of sorts for objects, and morphisms given by the
+grammar (together with the familiar graphical interpretation):
+<center><table>
+   <tr>
+      <td><font color=blue>f</font>,<font color=blue>g</font></td>
+      <td>::=</td>
+      <td><font color=blue>id</font><sub><b>X</b></sub></td>
+      <td>
+         <applet code="AppletPremon.class" width=100 height=50 align=absmiddle>
+         <param name="free" value="
+            x:X;
+         ">
+         <param name="exp" value="
+            x
+         ">
+         </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>f ; g</font></td>
+      <td>
+         <applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+         <param name="free" value="
+            x:X;
+         ">
+         <param name="base" value="
+            val f(X):Y; val g(Y):Z;
+         ">
+         <param name="exp" value="
+            g(f(x))
+         ">
+         </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>f <img src="img-blue-otimes.gif"> g</font></td>
+      <td>
+         <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+         <param name="free" value="
+            w:W; x:X;
+         ">
+         <param name="base" value="
+            val f(W):Y; val g(X):Z;
+         ">
+         <param name="exp" value="
+            (f(w),g(x))
+         ">
+         </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>symm</font><sub><b>X</b> <b>Y</b></sub></td>
+      <td>
+         <applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+         <param name="free" value="
+            w:W; x:X;
+         ">
+         <param name="exp" value="
+            let (w:W, x:X) = (w,x); (x,w)
+         ">
+         </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><i>c</i></td>
+      <td>
+         <applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+         <param name="free" value="
+            x:X;
+         ">
+         <param name="base" value="
+            val c(X):Y;
+         ">
+         <param name="exp" value="
+            c(x)
+         ">
+         </applet>
+      </td>
+   </tr>
+</table></center>
+<p>
+
+together with the obvious typings.  We shall write 
+<img src="img-vdash.gif"><font color=blue>f = g</font>
+if <font color=blue>f</font> and <font color=blue>g</font>
+are provably equal using the smc axioms.  We shall write
+[[<font color=blue>f</font>]] for the interpretation of 
+<font color=blue>f</font> as an acyclic flow graph.
+<p>
+
+We can now show that acyclic flow graphs are the free smc over a
+generator, by showing that the smc axioms are sound and complete
+for the graph semantics of a term.  As usual, soundness is routine,
+but completeness requires a normal form result.
+<p>
+
+<b>Proposition (Soundness).</b><i>
+   If <img src="img-vdash.gif"><font color=blue>f = g</font>
+   then [[<font color=blue>f</font>]] = [[<font color=blue>g</font>]].
+</i><p>
+
+<b>Proof.</b>
+   Inspection of each of the smc axioms shows that they are all
+   graph isomorphisms.
+<img src="img-Box.gif"><p>
+
+We can now lead up to the definition of the normal form.  We shall
+first show completeness for terms without constructors, which we
+shall call <em>permutations</em>, ranged over by <font color=blue>p</font>.
+<p>
+
+
+<a name="permute-normal"></a>
+<b>Proposition (Normalization of permutations).</b><i>
+   For any permutation 
+   <font color=blue>p</font> : <b>X<sub>1</sub></b>,X,<b>X<sub>2</sub></b> 
+   <img src="img-rightarrow.gif"> <b>Y</b> we can find
+   <b>Y<sub>1</sub></b>,X,<b>Y<sub>2</sub></b> = <b>Y</b> 
+   and <font color=blue>q</font> : <b>X<sub>1</sub></b>,<b>X<sub>2</sub></b> 
+   <img src="img-rightarrow.gif"> <b>Y<sub>1</sub></b>,<b>Y<sub>2</sub></b>
+   such that:
+   </i><p>
+   <center>
+      <img src="img-vdash.gif">
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         val p(X1,X,X2) : (Y1,Y,Y2);
+      ">
+      <param name="exp" value="
+         p(x1,x,x2)
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=85 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         val q (X1,X2) : (Y1,Y2);
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x2:X2) = (x1,x,x2);
+         (let (y1:Y1, y2:Y2) = q(x1,x2); (y1,x,y2))
+      ">
+      </applet>
+   </center>
+<p>
+
+<latexinput src="proof-permute-normal.html">
+<a href="proof-permute-normal.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+From this we can show completeness of the proof system for
+permutations.
+<p>
+
+
+<b>Proposition (Completeness for permutations).</b><i>
+   If [[<font color=blue>p</font>]] = [[<font color=blue>q</font>]]
+   then <img src="img-vdash.gif"><font color=blue>p = q</font>.
+</i><p>
+
+<b>Proof.</b>
+   An induction on the type of <font color=blue>p</font>
+   and <font color=blue>q</font>.<p>
+   <ul>
+
+   <li> If <font color=blue>p</font>, <font color=blue>q</font>
+      : <img src="img-rightarrow.gif"> <b>Y</b>
+      then show by induction on <font color=blue>p</font>
+      that <img src="img-vdash.gif"><font color=blue>p = id</font>,
+      similarly for <font color=blue>q</font>, and so
+      <img src="img-vdash.gif"><font color=blue>p = q</font>.<p>
+
+   <li> If <font color=blue>p</font>, <font color=blue>q</font>
+      : <i>X</i>,<b>X</b> <img src="img-rightarrow.gif"> <b>Y</b>
+      then by the above we can normalize <font color=blue>p</font>:
+   <center>
+      <img src="img-vdash.gif">
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x2:X2; x:X;
+      ">
+      <param name="base" value="
+         val p (X,X2) : (Y1,X,Y2);
+      ">
+      <param name="exp" value="
+         p(x,x2)
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=85 align=absmiddle>
+      <param name="free" value="
+         x:X; x2:X2;
+      ">
+      <param name="base" value="
+         val p1(X2) : (Y1,Y2);
+      ">
+      <param name="exp" value="
+         let (x:X, x2:X2) = (x,x2);
+         (let (y1:Y1, y2:Y2) = p1(x2); (y1,x,y2))
+      ">
+      </applet>
+   </center>
+      and similarly for <font color=blue>q</font>.  
+      Since [[<font color=blue>p</font>]] = [[<font color=blue>q</font>]],
+      we have  [[<font color=blue>p1</font>]] = [[<font color=blue>q1</font>]]
+      so by induction 
+      <img src="img-vdash.gif"><font color=blue>p1 = q1</font>
+      and hence <img src="img-vdash.gif"><font color=blue>p = q</font>.
+<img src="img-Box.gif"><p>
+
+   </ul>
+
+<a name="permute-cancel"></a>
+<b>Proposition (Cancellation of permutations).</b><i>
+   For any term <font color=blue>f</font> 
+   such that [[<font color=blue>f</font>]] =
+   [[<font color=blue>p ; g</font>]] we can find 
+   <font color=blue>f'</font> such that
+   <img src="img-vdash.gif"><font color=blue>f = p ; f'</font>
+   and [[<font color=blue>f'</font>]] =
+   [[<font color=blue>g</font>]].
+</i><p>
+
+<latexinput src="proof-permute-cancel.html">
+<a href="proof-permute-cancel.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+A <em>vine</em> is a term of the form:
+<p>
+<center>
+      <applet code="AppletPremon.class" width=300 height=85 align=absmiddle>
+      <param name="free" value="
+         x0:X0;
+      ">
+      <param name="base" value="
+         val p0 (X0):(Y1,Z1);
+         val c1 (Y1):X1; val p1 (X1,Z1):(Y2,Z2);
+         val c2 (Y2):X2; val p2 (X2,Z2):(Y3,Z3);
+         val ... (Y3,Z3):(Yn,Zn);
+         val cn (Yn):Xn; val pn (Xn,Zn):Yn;
+      ">
+      <param name="exp" value="
+         let (y1:Y1, z1:Z1) = p0(x0);
+         (let (y2:Y2, z2:Z2) = p1(c1(y1),z1);
+         (let (y3:Y3, z3:Z3) = p2(c2(y2),z2);
+         (let (yn:Yn, zn:Zn) = (... (y3,z3));
+         pn(cn(yn),zn))))
+      ">
+      </applet>
+</center>
+<p>
+
+<b>Proposition.</b><i>
+   For any term <font color=blue>f</font> there is a vine
+   <font color=blue>g</font> such that
+   <img src="img-vdash.gif"><font color=blue>f = g</font>.
+</i><p>
+
+<b>Proof.</b>
+   An induction on <font color=blue>f</font>.
+<img src="img-Box.gif"><p>
+
+<a name="node-cancel"></a>
+<b>Proposition (Cancellation of nodes).</b><i>
+   For any term <font color=blue>f</font> 
+   such that [[<font color=blue>f</font>]] =
+   [[<font color=blue>c <img src="img-blue-otimes.gif"> id ; g</font>]] 
+   we can find 
+   <font color=blue>f'</font> such that
+   <img src="img-vdash.gif"><font color=blue>f = c <img src="img-blue-otimes.gif"> id ; f'</font>
+   and [[<font color=blue>f'</font>]] =
+   [[<font color=blue>g</font>]].
+</i><p>
+
+<latexinput src="proof-node-cancel.html">
+<a href="proof-node-cancel.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+<b>Proposition (Completeness).</b><i>
+   If [[<font color=blue>f</font>]] = [[<font color=blue>g</font>]]
+   then <img src="img-vdash.gif"><font color=blue>f = g</font>.
+</i><p>
+
+<b>Proof.</b>
+   Find the vine equal to <font color=blue>g</font>, and then 
+   cancel permutations and nodes iteratively
+   to prove <img src="img-vdash.gif"><font color=blue>f = g</font>.
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="implement.html">Previous</a> |
+<a href="tracedef.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

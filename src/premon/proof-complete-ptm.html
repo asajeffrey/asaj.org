@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of completeness for cyclic graphs</h1>
+<p>
+
+<a href="paper-complete-ptm.html#complete-ptm"><b>Proposition (Completeness).</b></a><i>
+   If [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>g</font>]]
+   then
+   <img src="img-vdash.gif"><font color=blue>f</font>&nbsp;<font color=blue>=</font>&nbsp;<font color=blue>g</font>.   
+</i><p>
+
+</nolatex>
+
+<b>Proof.</b>
+   Let <i>R</i> be the bisimulation between 
+   [[<font color=blue>f</font>]] and [[<font color=blue>g</font>]].
+   We can regard this as a graph <i>G</i>:
+   <ul>
+   <li> Nodes are pairs (<i>N</i>,<i>N<img src="img-primesup.gif"></i>)&nbsp;<img src="img-in.gif">&nbsp;<i>R</i>.<p>
+   <li> Edges are pairs (<i>E</i>,<i>E<img src="img-primesup.gif"></i>)&nbsp;<img src="img-in.gif">&nbsp;<i>R</i>.<p>
+   <li> Incoming edges, outgoing edges, and labellings inherited from
+      [[<font color=blue>f</font>]] and [[<font color=blue>g</font>]]
+      (since <i>R</i> is a graph relation, this is consistent).<p>   
+   </ul>
+   By expressivity, let <font color=blue>h</font> be the term such that
+   [[<font color=blue>h</font>]]&nbsp;<img src="img-sim.gif">&nbsp;<i>G</i>.
+   Find normal forms for <font color=blue>f</font>, <font color=blue>g</font>
+   and <font color=blue>h</font>:
+   <center>
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f1 (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = f1(x1...xm,a1...ai);
+   let (y:(Y1...Yn), proc a1():A1...proc ai():Ai) = (y1...yn,a1...ai);
+   return (y);
+">
+</applet>
+<img src="img-sim.gif">
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val g1 (X1...Xm,proc():B1...proc():Bj):(Y1...Yn,proc():B1...proc():Bj);
+">
+<param name="exp" value="
+   local rec b1,bj;
+   let (y1:Y1...yn:Yn, proc b1():B1...proc bj():Bj) = g1(x1...xm,b1...bj);
+   let (y:(Y1...Yn), proc b1():B1...proc bj():Bj) = (y1...yn,b1...bj);
+   return (y);
+">
+</applet>
+<img src="img-sim.gif">
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val h1 (X1...Xm,proc():C1...proc():Ck):(Y1...Yn,proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   local rec c1,ck;
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = h1(x1...xm,c1...ck);
+   let (y:(Y1...Yn), proc c1():C1...proc ck():Ck) = (y1...yn,c1...ck);
+   return (y);
+">
+</applet>
+   </center>
+   Let <i>E</i><sub>1</sub>...<i>E<sub>m</sub></i>
+   be the outgoing edges of [[<font color=blue>f1</font>]]
+   which form the cycles in [[<font color=blue>f</font>]],
+   and <i>F</i><sub>1</sub>...<i>F<sub>n</sub></i>
+   be the outgoing edges of [[<font color=blue>h1</font>]]
+   which form the cycles in [[<font color=blue>h</font>]].
+   Construct a shuffle <font color=blue>s</font> with:<p>
+   <ul>
+   <li> Edges <i>E</i><sub>1</sub>...<i>E<sub>m</sub></i>.<p>
+   <li> Incoming edges <i>E</i><sub>1</sub>...<i>E<sub>m</sub></i>.<p>
+   <li> Outgoing edges <i>E<img src="img-primesup.gif"></i><sub>1</sub>...<i>E<img src="img-primesup.gif"><sub>n</sub></i>,
+      where <i>E<img src="img-primesup.gif"><sub>i</sub></i>&nbsp;=&nbsp;<i>E<sub>j</sub></i>
+      whenever <i>F<sub>i</sub></i>&nbsp;=&nbsp;(<i>E<sub>j</sub></i>,_).<p>
+   <li> Labelling inherited from [[<font color=blue>f1</font>]].<p>
+   </ul>
+   We can then show that:
+   <center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f1 (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+   val s (proc():A1...proc():Ai) : (proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = f1(x1...xm,a1...ai);
+   let (proc c1():C1...proc ck():Ck) = s(a1...ai);
+   return (y1...yn,c1...ck);
+">
+</applet>
+<img src="img-sim.gif">
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val h1 (X1...Xm,proc():C1...proc():Ck):(Y1...Yn,proc():C1...proc():Ck);
+   val s (proc():A1...proc():Ai) : (proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (proc c1():C1...proc ck():Ck) = s(a1...ai);
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = h1(x1...xm,c1...ck);
+   return (y1...yn,c1...ck);
+">
+</applet>
+   </center>
+and since we have completeness for acyclic graphs, this means:
+   <center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f1 (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+   val s (proc():A1...proc():Ai) : (proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = f1(x1...xm,a1...ai);
+   let (proc c1():C1...proc ck():Ck) = s(a1...ai);
+   return (y1...yn,c1...ck);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val h1 (X1...Xm,proc():C1...proc():Ck):(Y1...Yn,proc():C1...proc():Ck);
+   val s (proc():A1...proc():Ai) : (proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (proc c1():C1...proc ck():Ck) = s(a1...ai);
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = h1(x1...xm,c1...ck);
+   return (y1...yn,c1...ck);
+">
+</applet>
+   </center>
+   Then since trace is uniform wrt shuffles:
+   <center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f1 (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = f1(x1...xm,a1...ai);
+   let (y:(Y1...Yn), proc a1():A1...proc ai():Ai) = (y1...yn,a1...ai);
+   return (y);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val h1 (X1...Xm,proc():C1...proc():Ck):(Y1...Yn,proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   local rec c1,ck;
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = h1(x1...xm,c1...ck);
+   let (y:(Y1...Yn), proc c1():C1...proc ck():Ck) = (y1...yn,c1...ck);
+   return (y);
+">
+</applet>
+   </center>
+   and so 
+   <img src="img-vdash.gif"><font color=blue>f</font>&nbsp;<font color=blue>=</font>&nbsp;<font color=blue>h</font>.
+   We can show
+   <img src="img-vdash.gif"><font color=blue>g</font>&nbsp;<font color=blue>=</font>&nbsp;<font color=blue>h</font>
+   similarly.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html#complete-ptm">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

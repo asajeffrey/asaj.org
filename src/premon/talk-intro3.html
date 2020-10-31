@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Two-coloured flow graphs</h1>
+
+Not all graphs with the same unfolding should be considered equal:
+
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=150 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let r:ref = ref(1+1);
+   return (r,r);
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=150 height=50 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let y:int = 1;
+   let r:ref = ref(y+y);
+   return (r,r);
+">
+</applet>
+</td>
+</tr>
+<tr><td>
+   <b>let</b> <i>r</i>:ref = <font color=magenta>ref</font>(<font color=blue>1+1</font>);
+</td><td>
+   <b>let</b>&nbsp;<i>y</i>:int = <font color=blue>1</font>;
+</td>
+</tr>
+<tr><td>
+   <b>return</b>&nbsp;(<i>r</i>,<i>r</i>);
+</td><td>
+   <b>let</b> <i>r</i>:ref = <font color=magenta>ref</font>(<i>y</i><font color=blue>+</font><i>y</i>);
+</td>
+</tr>
+<tr><td></td><td>
+   <b>return</b>&nbsp;(<i>r</i>,<i>r</i>);
+</td>
+</tr>
+</table>
+</center>
+
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=150 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let x:int = 1+1;
+   return (ref(x),ref(x));
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=150 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   let y:int = 1;
+   let x:int = y+y;
+   return (ref(x),ref(x));
+">
+</applet>
+</td>
+</tr>
+<tr><td>
+   <b>let</b> <i>x</i>:int = <font color=blue>1+1</font>;
+</td><td>
+   <b>let</b>&nbsp;<i>y</i>:int =  <font color=blue>1</font>;
+</td></tr>
+<tr><td>
+   <b>return</b>&nbsp;(<font color=magenta>ref</font>(<i>x</i>),<font color=magenta>ref</font>(<i>x</i>));
+</td><td>
+   <b>let</b> <i>x</i>:int = <i>y</i><font color=blue>+</font><i>y</i>;
+</td></tr>
+<tr><td></td><td>
+   <b>return</b>&nbsp;(<font color=magenta>ref</font>(<i>x</i>),<font color=magenta>ref</font>(<i>x</i>));
+</td></tr>
+</table>
+</center>
+
+  </body>
+</html>

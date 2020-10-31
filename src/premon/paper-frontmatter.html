@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>Premonoidal categories and a graphical view of programs</title>
+</head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Abstract</font></b></center>
+<p>
+This paper describes a categorical view of programs, based on
+<a href="paper-bib.html#pr??">Power and Robinson</a>'s 
+<em>premonoidal categories</em> and 
+<a href="paper-bib.html#jsv??">Joyal, Street and Verity</a>'s 
+<em>monoidal traced categories</em>.
+<p>
+This categorical model can be viewed graphically as a form of mixed
+data-flow and control-flow graphs, such as:
+<center>
+<applet code="AppletPremon.class" width=500 height=210>
+<param name="base" value="
+   val == (int, int) : bool;
+   val * (int, int) : int;
+   val - (int, int) : int;
+   proc if (bool) (proc () : int) (proc () : int) : int;
+">
+<param name="exp" value="
+   local rec factr;
+   proc factr (x : int, a : int) : int { 
+      if (x == 0) 
+         { return a; }
+         { return factr (x-1, x*a); }
+   }
+   proc fact (x : int) : int {
+      return factr (x,1);
+   }
+   return fact (5);
+">
+</applet>
+</center>
+In this paper, we present a programming language whose semantics is
+given using partially traced premonoidal closed categorical structure.
+This semantics can be viewed graphically, which is how most of the 
+presentation will be given.  The semantics has been implemented as a
+Java applet, which will draw a program's flow graph (all the diagrams
+in this paper are drawn using this applet).
+<p>
+Of the existing models of programming, this paper's is closest to
+<a href="paper-bib.html#mil??">Milner's</a> control structures, and especially to
+<a href="paper-bib.html#gar??">Gardner's</a> name-free presentation.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-title.html">Previous</a> |
+<a href="paper-intro.html">Next</a>
+</center>
+</nolatex>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Higher-order graphs</h1>
+
+We can extend flow graphs with
+functions, for example:
+<center>
+<applet code="AppletPremon.class" width=480 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   proc hello (name:string) { print ('Hello, ' ^ name ^ '.'); }
+   hello
+">
+</applet>
+<table>
+<tr><td><b>proc</b> <i>hello</i> (<i>name</i>:string) {</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<font color=red>print</font> ('Hello, ' ^ <i>name</i> ^ '.');</td></tr>
+<tr><td>}</td></tr>
+</table>
+</center>
+<p>
+and add application nodes.  We factor the graphs by equations such as:
+<center>
+<table>
+   <tr>
+      <td>Beta:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=180 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   proc G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   proc f (y1:Y1...yn:Yn) : (Z1...Zo) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   } 
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   proc G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+</table>
+</center>
+  </body>
+</html>

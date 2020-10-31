@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of trace respecting double symmetry</h1>
+<p>
+
+<a href="paper-complete-ptm.html#tracedblsym"><b>Proposition (Trace respects double symmetry)</b></a>
+(for 
+   <font color=blue>f</font> : 
+   <i>V
+      <img src="img-rightarrow.gif"> 
+   W</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U A
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U A</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   return (
+      (
+         local rec a;
+         let (y1:Y1...yn:Yn, proc a():A) = g(x1...xm,a);
+         (y1...yn)
+      ),
+      (
+         let (w1:W1...wl:Wl) = f(v1...vk);
+         (w1...wl)
+      )
+   );
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,v1:V1...vk:Vk) = (x1...xm,v1...vk);
+   local rec a;
+   let (y1:Y1...yn:Yn, proc a():A) = g(x1...xm,a);
+   let (w1:W1...wl:Wl) = f(v1...vk);
+   let (y1:Y1...yn:Yn,proc a():A,w1:W1...wl:Wl) = (y1...yn,a,w1...wl);
+   return (y1...yn,w1...wl);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> (<font color=blue>g</font>)
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>(X <img src="img-otimes.gif"> V) (Y <img src="img-otimes.gif"> W) A</i></sub> 
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>symm</font><sub><i>V U(A)</i></sub>);
+    (<font color=blue>g</font> 
+     <img src="img-otimes.gif"> 
+     <font color=blue>f</font>);
+    (<font color=blue>id</font><sub><i>Y</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>symm</font><sub><i>U(A) W</i></sub>))
+</td></tr></table></center>
+
+<p>
+</nolatex>
+
+<b>Proof.</b>
+<p><center>
+<table>
+<tr><td></td><td>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   return (
+      (
+         local rec a;
+         let (y1:Y1...yn:Yn, proc a():A) = g(x1...xm,a);
+         (y1...yn)
+      ),
+      (
+         let (w1:W1...wl:Wl) = f(v1...vk);
+         (w1...wl)
+      )
+   );
+">
+</applet>
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,v1:V1...vk:Vk) = (x1...xm,v1...vk);
+   let (w1:W1...wl:Wl,y1:Y1...yn:Yn) = (
+      (
+         let (w1:W1...wl:Wl) = f(v1...vk);
+         (w1...wl)
+      ),
+      (
+         local rec a;
+         let (y1:Y1...yn:Yn, proc a():A) = g(x1...xm,a);
+         (y1...yn)
+      )
+   );
+   return (y1...yn,w1...wl);
+">
+</applet>
+</td><td>
+(Acyclic graph iso)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,v1:V1...vk:Vk) = (x1...xm,v1...vk);
+   local rec a;
+   let (w1:W1...wl:Wl,(y1:Y1...yn:Yn, proc a():A)) = (
+      f(v1...vk),
+      g(x1...xm,a)
+   );
+   return (
+      let (w1:W1...wl:Wl,y1:Y1...yn:Yn) = (w1...wl,y1...yn);
+      (y1...yn,w1...wl)
+   );
+">
+</applet>
+</td><td>
+(Strength of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   local rec a;
+   let (x1:X1...xm:Xm,v1:V1...vk:Vk) = (x1...xm,v1...vk);
+   let (w1:W1...wl:Wl,(y1:Y1...yn:Yn, proc a():A)) = (
+      f(v1...vk),
+      g(x1...xm,a)
+   );
+   let (w1:W1...wl:Wl,y1:Y1...yn:Yn,proc a():A) = (w1...wl,y1...yn,a);
+   return (y1...yn,w1...wl);
+">
+</applet>
+</td><td>
+(Naturality of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,v1:V1...vk:Vk) = (x1...xm,v1...vk);
+   local rec a;
+   let (y1:Y1...yn:Yn, proc a():A) = g(x1...xm,a);
+   let (w1:W1...wl:Wl) = f(v1...vk);
+   let (y1:Y1...yn:Yn,proc a():A,w1:W1...wl:Wl) = (y1...yn,a,w1...wl);
+   return (y1...yn,w1...wl);
+">
+</applet>
+</td><td>
+(Acyclic graph iso)
+</td></tr>
+</table></center>
+<img src="img-Box.gif">
+<p>
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html#tracedblsym">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

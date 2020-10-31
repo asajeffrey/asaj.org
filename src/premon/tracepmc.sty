@@ -1,0 +1,38 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tracepmc}[1997/05/13 Alan Jeffrey's personal package for traced PMC diagrams]
+
+\RequirePackage{graphics}
+
+\newcount\graphs@count
+\newwrite\graphs@file
+
+\newcommand{\graph}{%
+   \def\graph@base{\jobname}\@graph
+}
+
+\newcommand{\graphRed}{%
+   \def\graph@base{\jobname-red}\@graph
+}
+
+\newcommand{\@graph}[1]{%
+   \global\advance\graphs@count by 1   
+   \xdef\graph@pre@filename{\graph@base-\the\graphs@count.pre}%
+   \xdef\graph@ps@filename{\graph@base-\the\graphs@count.eps}%
+   \xdef\syntax{\noexpand\InputIfFileExists{\graph@base-\the\graphs@count-syn.tex}{}}%
+   \xdef\semantics{\noexpand\InputIfFileExists{\graph@base-\the\graphs@count-sem.tex}{}}%
+   \immediate\openout\graphs@file=\graph@pre@filename\relax
+   \immediate\write\graphs@file{#1}%
+   \immediate\closeout\graphs@file
+   \IfFileExists{\graph@ps@filename}{%
+      \raisebox{.5ex}{\raisebox{-.5\height}{\includegraphics{\graph@ps@filename}}}%
+   }{%
+      \graphs@missing
+   }%
+}
+
+\newcommand{\graphs@missing}{%
+   \PackageWarning{tracepmc}{%
+      Some graphs are missing%
+   }%
+   \renewcommand{\graphs@missing}{}%
+}

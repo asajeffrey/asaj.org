@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of trace respecting tensor</h1>
+<p>
+
+<a href="paper-complete-ptm.html#tracetensor"><b>Proposition (Trace respects tensor)</b></a>
+(for 
+   <font color=blue>f</font> : 
+   <i>U(B) <img src="img-otimes.gif"> U(C)
+      <img src="img-rightarrow.gif"> 
+   U(A)</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(B) <img src="img-otimes.gif"> U(C)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec a; 
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,a);
+   let proc a():A = f(b,c);
+   return (y1...yn);
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec b; 
+   local rec c;
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,f(b,c));
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> 
+   (<font color=blue>g</font>;
+    <font color=blue>id</font><sub><i>Y</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>)
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>X Y C</i></sub> 
+   (Tr<sub><i>X Y B</i></sub>
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>);
+   <font color=blue>g</font>))
+</td></tr></table></center>
+<p>
+
+</nolatex>
+
+<b>Proof.</b>
+<p><center>
+<table>
+<tr><td></td><td>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec a; 
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,a);
+   let proc a():A = f(b,c);
+   return (y1...yn);
+">
+</applet>
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=170 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec a; 
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,a);
+   let proc a():A = f(
+      b, (
+         local rec c1;
+         let proc c2():C = c1;
+         let proc c1():C = c;
+         c2
+      )
+   );
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Yanking)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec a; 
+   local rec c;
+   let ((y1:Y1...yn:Yn, proc b():B, proc c():C), proc c1():C) = (
+      (
+         let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,a);
+         (y1...yn,b,c)
+      ),
+      c
+   );
+   let (y1:Y1...yn:Yn,proc a():A, proc c():C) = (y1...yn,f(b,c1),c);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Naturality of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=200 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec a; 
+   local rec c;
+   let ((y1:Y1...yn:Yn, proc b():B, proc c():C), proc c1():C) = (
+      (
+         let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,a);
+         (y1...yn,b,c)
+      ),
+      c
+   );
+   let (y1:Y1...yn:Yn, proc c():C, proc a():A) = (y1...yn,c,f(b,c1));
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Acyclic graph iso)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=220 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec c;
+   local rec a; 
+   let ((y1:Y1...yn:Yn, proc b():B, proc c():C), proc c1():C) = (
+      (
+         let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,a);
+         (y1...yn,b,c)
+      ),
+      c
+   );
+   let (y1:Y1...yn:Yn, proc c():C, proc a():A) = (y1...yn,c,f(b,c1));
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Symmetry sliding)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=220 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec c;
+   local rec b; 
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,f(b,c));
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = (y1...yn,b,c);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Parameterized dinaturality)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec b; 
+   local rec c;
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,f(b,c));
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Symmetry sliding)
+</td></tr>
+</table></center>
+<img src="img-Box.gif">
+<p>
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html#tracetensor">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

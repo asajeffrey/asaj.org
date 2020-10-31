@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Semantics</h1>
+
+To give a semantics for <font color=blue>value</font> terms
+over a signature <img src="img-blue-Sigma.gif">, we need
+a category with chosen finite products, and an interpretation
+for <img src="img-blue-Sigma.gif">.
+For example:
+<ul>
+<li> <font color=blue>Set</font> (sets and functions).<p>
+<li> <font color=blue>Cpo</font> (complete partial orders, not necessarily with bottom).<p>
+<li> <font color=blue>Term</font>(<img src="img-blue-Sigma.gif">) 
+   (the appropriate term algebra).<p>
+<li> <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif">)
+   (single-coloured flow graphs up to bisimulation).<p>
+</ul>
+Call such a category a <i>cartesian category 
+over <img src="img-blue-Sigma.gif"></i>.<p>
+
+<b>Proposition</b>
+   <i><font color=blue>Graph</font>(<img src="img-blue-Sigma.gif">)
+   is the initial strict cartesian category 
+   over <img src="img-blue-Sigma.gif">.</i><p>
+
+As a corollary, giving a flow graph semantics for a language
+<i>uniquely</i> defines a semantics in any other strict cartesian category
+over <img src="img-blue-Sigma.gif">.
+
+
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Operational semantics</h1>
+
+Following Gardner's name-free presentation of Milner's action calculi,
+we would expect to be able to give a graphical operational semantics
+to a language, where:<p>
+<ul>
+<li> Objects are vectors of types.<p>
+<li> Morphisms are graphs.<p>
+<li> Two-cells are reductions between graphs.<p>
+</ul>
+For example:
+<center>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = (1+1);
+   return (x*x);
+">
+</applet>
+<img src="img-blue-Rightarrow.gif">
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = 2;
+   return (x*x);
+">
+</applet>
+<img src="img-blue-Rightarrow.gif">
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   return (2*2);
+">
+</applet>
+<img src="img-blue-Rightarrow.gif">
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   return 4;
+">
+</applet>
+</center>
+
+  </body>
+</html>

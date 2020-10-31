@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Comparisons</h1>
+<p>
+
+<h2>Action calculi</h2>
+<p>
+
+The graphical presentation of programming most similar to that given
+here is Milner's <em>action calculi</em>.  This is a framework for
+describing concurrent languages, based on symmetric monoidal 2-categories.
+<p>
+Since they are based on symmetric monoidal 2-categories, they are
+similar to the central categories presented here, but in action
+calculi the nodes (called <em>controls</em>) may contain sub-graphs.
+<p>
+For example, the lambda-calculus is given as having controls:
+<ul>
+
+<li> <font color=blue>lambda</font> for building lambda-abstractions
+   (originally written <img src="img-lceil.gif" align=absmiddle>_<img src="img-rceil.gif" align=absmiddle>)
+   This control has one sub-graph (the body of the function),
+   no incoming arcs, and one outgoing arc (the function).<p>
+
+<li> <font color=magenta>ap</font> for function application.  This
+   control has no sub-graphs, two incoming arcs (the function and its
+   argument), and one outgoing arc (the result).<p>
+
+</ul>
+We can draw these (this graphical presentation is slightly
+different from Milner's, to make comparisons with this paper simpler) as:
+<center>
+<applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+<param name="base" value="
+   val lambda (central (Lambda) : Lambda) : Lambda;
+   central body (Env,Lambda) : Lambda;
+">
+<param name="free" value="
+   a:Env;
+">
+<param name="exp" value="
+   lambda (fn central (x:Lambda) { body (a,x) })
+">
+</applet>
+<applet code="AppletPremon.class" width=60 height=60 align=absmiddle>
+<param name="base" value="
+   central ap (Lambda, Lambda) : Lambda;
+">
+<param name="free" value="
+   x:Lambda;
+   y:Lambda;
+">
+<param name="exp" value="
+   ap (x,y)
+">
+</applet>
+</center>
+The operational semantics is given by the reduction:
+<center>
+<applet code="AppletPremon.class" width=200 height=80 align=absmiddle>
+<param name="base" value="
+   val lambda (central (Lambda) : Lambda) : Lambda;
+   central body (Env,Lambda) : Lambda;
+   central ap (Lambda, Lambda) : Lambda;
+">
+<param name="free" value="
+   a:Env; x:Lambda;
+">
+<param name="exp" value="
+   ap (lambda (fn central (x:Lambda) { body (a,x) }), x)
+">
+</applet>
+<img src="img-magenta-Rightarrow.gif">
+<applet code="AppletPremon.class" width=80 height=60 align=absmiddle>
+<param name="base" value="
+   central body (Env,Lambda) : Lambda;
+">
+<param name="free" value="
+   a:Env; x:Lambda;
+">
+<param name="exp" value="
+   body(a,x)
+">
+</applet>
+</center>
+Reductions can take place anywhere in a graph, but not inside controls,
+for example the reduction of 
+(<img src="img-lambda.gif"><i>x.xx</i>)
+(<img src="img-lambda.gif"><i>x.xx</i>)
+is given by:
+<center>
+<table>
+<tr>
+<td></td>
+<td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="base" value="
+   val lambda (central (Lambda) : Lambda) : Lambda;
+   central ap (Lambda, Lambda) : Lambda;
+">
+<param name="free" value="
+   a:A; b:Lambda;
+">
+<param name="exp" value="
+   let delta:Lambda = lambda (fn central (x:Lambda) { ap(x,x) });
+   ap(delta,delta)
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td><img src="img-magenta-Rightarrow.gif"></td>
+<td>
+<applet code="AppletPremon.class" width=200 height=100 align=absmiddle>
+<param name="base" value="
+   val lambda (central (Lambda) : Lambda) : Lambda;
+   central ap (Lambda, Lambda) : Lambda;
+">
+<param name="free" value="
+   a:A; b:Lambda;
+">
+<param name="exp" value="
+   ap(
+      lambda (fn central (x:Lambda) { ap(x,x) }),
+      lambda (fn central (x:Lambda) { ap(x,x) })
+   )
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td><img src="img-magenta-Rightarrow.gif"></td>
+<td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="base" value="
+   val lambda (central (Lambda) : Lambda) : Lambda;
+   central ap (Lambda, Lambda) : Lambda;
+">
+<param name="free" value="
+   a:A; b:Lambda;
+">
+<param name="exp" value="
+   let delta:Lambda = lambda (fn central (x:Lambda) { ap(x,x) });
+   ap(delta,delta)
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+A simple language of print statements can be modelled with controls
+for string constants and a <font color=magenta>print</font> control,
+containing a subgraph for the continuation:
+<center>
+<applet code="AppletPremon.class" width=150 height=60 align=absmiddle>
+<param name="exp" value="
+   'string'
+">
+</applet>
+<applet code="AppletPremon.class" width=200 height=80 align=absmiddle>
+<param name="base" value="
+   central print (string, central ());
+   central continuation ();
+">
+<param name="free" value="
+   s:string;
+">
+<param name="exp" value="
+   print (s, continuation)
+">
+</applet>
+</center>
+The operational semantics can be given as a 2-category where the 2-cells
+are strings, generated by the reduction:
+<center>
+<applet code="AppletPremon.class" width=200 height=80 align=absmiddle>
+<param name="base" value="
+   central print (string, central ());
+   central continuation ();
+">
+<param name="exp" value="
+   print ('string', continuation)
+">
+</applet>
+<img src="img-magenta-eq.gif"><font color=magenta>'string'</font><img src="img-magenta-Rightarrow.gif">
+<applet code="AppletPremon.class" width=120 height=70 align=absmiddle>
+<param name="base" value="
+   central print (string, central ());
+   central continuation ();
+">
+<param name="exp" value="
+   continuation ()
+">
+</applet>
+</center>
+<p>
+For example:
+<center>
+<table>
+<tr><td></td>
+<td><applet code="AppletPremon.class" width=300 height=100 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+   print (
+      'hello', 
+      fn central () { 
+         print (
+            'world',
+            fn central () {}
+         )
+      }
+   )
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-magenta-eq.gif"><font color=magenta>'hello'</font><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+         print (
+            'world',
+            fn central () {}
+         )
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-magenta-eq.gif"><font color=magenta>'world'</font><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+   ()
+">
+</applet></td>
+</tr>
+</table>
+</center>
+Since reduction is not allowed inside controls, we do <em>not</em> have:
+<center>
+<table>
+<tr><td></td>
+<td><applet code="AppletPremon.class" width=300 height=100 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+   print (
+      'hello', 
+      fn central () { 
+         print (
+            'world',
+            fn central () {}
+         )
+      }
+   )
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-magenta-eq.gif"><font color=magenta>'world'</font><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+   print (
+      'hello', 
+      fn central () { 
+      }
+   )
+">
+</applet></td>
+</tr>
+</table>
+</center>
+<p>
+In action calculi, control over reduction order is achieved by 
+the use of sub-graphs inside controls, where in our presentation
+reduction order is given by control arcs.
+<p>
+Categorically, action calculi are based on symmetric monoidal 2-categories
+rather than premonoidal pre-2-categories, so the categorial presentation
+is simpler.  There is a tradeoff here between the simpler categorical
+presentation, or the simpler graphical view given by control arcs.
+<p>
+To see the difference between these two presentations categorically, note
+that there are two ways to embed a premonoidal category into a
+monoidal category.  The presentation here is based on an embedding
+into state transformers, described in an 
+<a href="paper-state.html">appendix</a>.  But it is also possible to
+use a CPS translation, in which any computation whose evaluation is
+delayed is placed in a continuation.  Graphically, this corresponds
+to boxing the delayed computations, in a manner similar to the graphs
+above.  Whether this informal connection can be formalized is left
+for future work.
+<p>
+
+<h2>Lambda calculus with cyclic definitions</h2>
+<p>
+
+In his thesis, <a href="paper-bib.html#has97">Hasegawa</a>
+presents a similar categorical model for lambda-calculi with
+explicit sharing.  His setting is:<p>
+<ul>
+
+<li> A category with finite products <font color=blue>V</font>.<p>
+
+<li> A traced symmetric monoidal category
+   <font color=magenta>C</font>.<p>
+
+<li> An identity-on-objects inclusion
+   <font color=blue>V</font>&nbsp;<img src="img-hookrightarrow.gif">&nbsp;<font color=magenta>C</font>.<p>
+
+<li> Closed structure given by an adjunction:<p>
+<center>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-magenta-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=magenta>C</font>[<i>X</i> <img src="img-magenta-otimes.gif"> <i>Y</i>, <i>Z</i>]
+</center>
+<p>
+
+</ul>
+This is very similar to the setting described here, with two important
+    differences:<p>
+<ul>
+
+<li> The addition of the premonoidal category <font color=red>P</font>.<p>
+
+<li> In Hasegawa's setting, there is a trace on <font color=magenta>C</font>
+   rather than a partial trace on <font color=blue>V</font>.<p>
+
+</ul>
+The first difference is the most important: Hasegawa's graphs are
+pure data flow graphs, and do not require control edges.  The work
+presented here generalizes his work from the monoidal case to the
+premonoidal case.         
+<p>
+The second difference is an orthogonal issue, caused by different
+motivating examples.  Hasegawa's motivating denotational example is the
+cartesian closed category <b>Dom</b>, where all objects have least
+elements, but maps are not necessarily strict: this provides a
+semantics for <i>call by name</i> or <i>call by need</i> languages.
+Our motivating example is the categories
+<b>Cpo</b>&nbsp;<img src="img-hookrightarrow.gif">&nbsp;<b>Cpo</b><sub><img src="img-bot.gif"></sub>
+where <b>Cpo</b> only has a partial trace: this provides a semantics
+for <i>call by value</i> languages.
+<p>
+ 
+<nolatex>
+<center>
+<a href="paper-opsem.html">Previous</a> |
+<a href="paper-future.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

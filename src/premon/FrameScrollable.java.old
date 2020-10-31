@@ -1,0 +1,126 @@
+import java.awt.*;
+
+/**
+ * A frame with scrollbars at either side.
+ * Were I doing this using AWT 1.1, I could just use the
+ * ScrollPane class, but that's not available on 1.0.
+ * @author Alan Jeffrey
+ * @version v1.0 1998/06/11
+ */
+public class FrameScrollable
+extends Frame
+{
+  private CanvasDrawer contents;
+  private int contentsWidth;
+  private int contentsHeight;
+  private int contentsPreferredWidth;
+  private int contentsPreferredHeight;
+  private Scrollbar horiz;
+  private Scrollbar vert;
+  
+  /** 
+   * Create a new frame with scrollbars.
+   * @param name the name of the frame.
+   */
+  public FrameScrollable (String name) {
+    super (name);
+    horiz = new Scrollbar (Scrollbar.HORIZONTAL);
+    vert = new Scrollbar (Scrollbar.VERTICAL);
+    setLayout (new ScrollableLayout ()); 
+    add ("South", horiz);
+    add ("East", vert);
+  }
+
+  /**
+   * Set the contents of the frame.
+   * @param contents the new contents of the frame.
+   */
+  public void setContents (CanvasDrawer contents)  {
+    if (this.contents != null) { remove (this.contents); }
+    add ("Center", contents);
+    this.contents = contents;
+    this.contentsWidth = contents.size ().width;
+    this.contentsHeight = contents.size ().height;
+    this.contentsPreferredWidth = contents.preferredSize ().width;
+    this.contentsPreferredHeight = contents.preferredSize ().height;
+    setValues ();
+  }
+
+  private void setValues () {
+    this.contentsWidth = contents.size ().width;
+    this.contentsHeight = contents.size ().height;
+    horiz.setValues 
+      (
+       Math.min 
+       (
+	horiz.getValue (), 
+	Math.max (0, contentsPreferredWidth - contentsWidth)
+	), 
+       contentsWidth, 
+       0,
+       contentsPreferredWidth
+       );
+    vert.setValues (
+       Math.min 
+       (
+	vert.getValue (), 
+	Math.max (0, contentsPreferredHeight - contentsHeight)
+	),
+       contentsHeight, 
+       0,
+       contentsPreferredHeight
+       );
+    contents.translate (horiz.getValue (), vert.getValue ());
+  }
+  
+  public boolean handleEvent (Event evt)  {
+    /* Grumble mutter can't switch on an event because
+     * Event.FOO_BAR isn't a valid lable.  Stupid bloody grumble mutter.
+     */
+    if (
+      (evt.id == Event.SCROLL_ABSOLUTE) ||
+      (evt.id == Event.SCROLL_LINE_DOWN) ||
+      (evt.id == Event.SCROLL_LINE_UP) ||
+      (evt.id == Event.SCROLL_PAGE_DOWN) ||
+      (evt.id == Event.SCROLL_PAGE_UP)
+    ) {
+      contents.translate (horiz.getValue (), vert.getValue ());
+      return true;
+    } else if (
+      (evt.id == Event.WINDOW_DESTROY) 
+    ){
+      hide ();
+      return true;
+    } else if (
+      (evt.id == Event.ACTION_EVENT) ||
+      (evt.id == Event.KEY_ACTION) ||
+      (evt.id == Event.KEY_ACTION_RELEASE) ||
+      (evt.id == Event.KEY_PRESS) ||
+      (evt.id == Event.KEY_RELEASE) ||
+      (evt.id == Event.MOUSE_DOWN) ||
+      (evt.id == Event.MOUSE_DRAG) ||
+      (evt.id == Event.MOUSE_ENTER) ||
+      (evt.id == Event.MOUSE_EXIT) ||
+      (evt.id == Event.MOUSE_MOVE) ||
+      (evt.id == Event.MOUSE_UP) ||
+      (evt.id == Event.WINDOW_MOVED)
+    ) {
+      return super.handleEvent (evt);
+    } else {
+      /* This is a very stupid way to catch window events,
+       * but unfortunately window event ids are different
+       * under AWT 1.0 and AWT 1.1 so I can't think of any better
+       * way to catch just the window events.  Sigh.
+       */
+      setValues ();
+      return super.handleEvent (evt);
+    }
+  }
+  
+  public void show ()  {
+    super.show ();
+    setValues ();
+  }
+
+}
+

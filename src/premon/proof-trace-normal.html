@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of normalization of traced terms</h1>
+<p>
+
+<a href="paper-complete-ptm.html#trace-normal">
+<b>Proposition (Normalization).</b></a><i>
+   For any term <font color=blue>f</font> there is a normal form
+   <font color=blue>g</font> such that
+   <img src="img-vdash.gif"><font color=blue>f</font>&nbsp;<font color=magenta>=</font>&nbsp;<font color=blue>g</font>.
+</i><p>
+
+</nolatex>
+
+
+<b>Proof.</b>
+   An induction on <font color=blue>f</font>.  The only difficult
+   case is composition.  By induction we have (drawing the one-cycle
+   case for simplicity: the multiple-cycle case is dealt with the same
+   way):
+   <center>
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+      ">
+      <param name="exp" value="
+         local rec a;
+         let (y:Y, proc a():A) = f(x,a); (
+            local rec b;
+            let (z:Z, proc b():B) = g(y,b);
+         z)
+      ">
+      </applet>
+   </center>
+   We can find permutations <font color=blue>p</font> and 
+   <font color=blue>q</font> such that:
+   <center>
+      <applet code="AppletPremon.class" width=100 height=65 align=absmiddle>
+      <param name="free" value="
+         y:Y;
+      ">
+      <param name="base" value="
+         val p (Y) : (proc():C,Y1);
+         val q (proc():C,Y1) : Y;
+      ">
+      <param name="exp" value="
+         q(p(y))
+      ">
+      </applet>
+      =
+      <applet code="AppletPremon.class" width=100 height=50 align=absmiddle>
+      <param name="free" value="
+         y:Y;
+      ">
+      <param name="exp" value="
+         y
+      ">
+      </applet>
+   </center>
+   and:
+   <center>
+      <applet code="AppletPremon.class" width=100 height=85 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val p (Y) : (proc():C,Y1);
+      ">
+      <param name="exp" value="
+         p (local rec a;
+         let (y:Y, proc a():A) = f(x,a);
+         y)
+      ">
+      </applet>      
+      : <b>X</b> <img src="img-rightarrow.gif"> <b>Y</b>,<b>Z</b>
+       (<b>Y</b> a vector of traceable sorts)
+   </center>
+   Again, we shall only prove the case where <b>Y</b> is a singleton
+   vector, the more general case follows in the same way.
+   <center>
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+      ">
+      <param name="exp" value="
+         local rec a;
+         let (y:Y, proc a():A) = f(x,a); (
+            local rec b;
+            let (z:Z, proc b():B) = g(y,b);
+         z)
+      ">
+      </applet>
+   =
+      <applet code="AppletPremon.class" width=150 height=100 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+      ">
+      <param name="exp" value="
+         local rec a;
+         let (z:Z, proc a():A) = (
+            let (y:Y, proc a():A) = f(x,a); (
+               local rec b;
+               let (z:Z, proc b():B) = g(y,b);
+               (z,a)
+            )
+         );
+         z
+      ">
+      </applet>   
+   =
+      <applet code="AppletPremon.class" width=150 height=100 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+      ">
+      <param name="exp" value="
+         local rec a;
+         local rec b;
+         let (z:Z, proc a():A, proc b():B) = (
+            let (y:Y, proc a():A) = f(x,a); (
+               let (z:Z, proc b():B) = g(y,b);
+               (z,a,b)
+            )
+         );
+         z
+      ">
+      </applet>   
+   =
+      <applet code="AppletPremon.class" width=200 height=125 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+         val p (Y) : (proc():C,Y1);
+         val q (proc():C,Y1) : Y;
+      ">
+      <param name="exp" value="
+         local rec a;
+         local rec b;
+         let (z:Z, proc a():A, proc b():B) = (
+            let (y:Y, proc a():A) = f(x,a); (
+               let (proc c():C,y1:Y1) = p(y); (
+                  let (y:Y) = q(c,y1); (
+                     let (z:Z, proc b():B) = g(y,b);
+                     (z,a,b)
+                  )
+               )
+            )
+         );
+         z
+      ">
+      </applet>   
+   =
+      <applet code="AppletPremon.class" width=250 height=150 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+         val p (Y) : (proc():C,Y1);
+         val q (proc():C,Y1) : Y;
+      ">
+      <param name="exp" value="
+         local rec a;
+         local rec b;
+         let (z:Z, proc a():A, proc b():B) = (
+            let (y:Y, proc a():A) = f(x,a); (               
+               let (proc c():C,y1:Y1) = p(y); (
+                  local rec c1;
+                  let (
+                     proc c():C,
+                     proc c1():C
+                  ) = (
+                     c1,
+                     c
+                  ); (
+                     let (y:Y) = q(c,y1); (
+                        let (z:Z, proc b():B) = g(y,b);
+                        (z,a,b)
+                     )
+                  )
+               )
+            )
+         );
+         z
+      ">
+      </applet>   
+   =
+      <applet code="AppletPremon.class" width=250 height=150 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+         val p (Y) : (proc():C,Y1);
+         val q (proc():C,Y1) : Y;
+      ">
+      <param name="exp" value="
+         local rec a;
+         local rec b;
+         let (z:Z, proc a():A, proc b():B) = (
+            let (y:Y, proc a():A) = f(x,a); (               
+               let (proc c():C,y1:Y1) = p(y); (
+                  local rec c1;
+                  let (
+                     proc c():C,
+                     proc c1():C,
+                     y1:Y1,
+                     proc b():B,
+                     proc a():A
+                  ) = (
+                     c1,
+                     c,
+                     y1,
+                     b,
+                     a
+                  ); (
+                     let (y:Y) = q(c,y1); (
+                        let (z:Z, proc b():B) = g(y,b);
+                        (z,a,b)
+                     )
+                  )
+               )
+            )
+         );
+         z
+      ">
+      </applet>   
+   =
+      <applet code="AppletPremon.class" width=250 height=150 align=absmiddle>
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="base" value="
+         val f (X,proc ():A) : (Y,proc ():A);
+         val g (Y,proc ():B) : (Z,proc ():B);
+         val p (Y) : (proc():C,Y1);
+         val q (proc():C,Y1) : Y;
+      ">
+      <param name="exp" value="
+         local rec a;
+         local rec b;
+         local rec c1;
+         let (z:Z, proc a():A, proc b():B, proc c1():C) = (
+            let (y:Y, proc a():A) = f(x,a); (               
+               let (proc c():C,y1:Y1) = p(y); (
+                  let (
+                     proc c():C,
+                     proc c1():C,
+                     y1:Y1,
+                     proc b():B,
+                     proc a():A
+                  ) = (
+                     c1,
+                     c,
+                     y1,
+                     b,
+                     a
+                  ); (
+                     let (y:Y) = q(c,y1); (
+                        let (z:Z, proc b():B) = g(y,b);
+                        (z,a,b,c1)
+                     )
+                  )
+               )
+            )
+         );
+         z
+      ">
+      </applet>   
+   </center>
+   So we have normalized the composition.  The other cases are simpler.
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html#trace-normal">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

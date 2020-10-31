@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Cyclic graphs</h1>
+
+So far, all graphs have been acyclic, but we can generalize these
+results to show that the appropriate categories of cyclic graphs
+give the intial category with a <i>partial trace</i>, that is a 
+category with a feedback operator:
+<center>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let x:(X1...Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn, proc a():A) = G(x,a);
+   return (y1...yn);
+">
+</applet>
+</center>
+The notion of partial trace is a generalization of Joyal, Street and
+Verity's traced monoidal categories, and adapts Hasegawa's semantics
+for call-by-name languages to call-by-value.
+
+  </body>
+</html>

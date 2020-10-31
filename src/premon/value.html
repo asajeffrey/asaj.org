@@ -1,0 +1,1182 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Value category</font></b></center>
+<p>
+
+<center><i><font size="+1">Syntax</font></i></center>
+<p>
+
+<center>
+<table>
+   <tr><td><b>C</b> </td> <td> ::= </td> <td><font color=blue>val</font></td></tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr><td><i>T</i> </td> <td> ::= </td> <td><i>B</i></td></tr>
+   <tr><td></td> <td>|</td> <td> (<i>T</i>,...,<i>T</i>) </td></tr>
+   <tr><td></td> <td>|</td> <td> <b>C</b> <i>T</i> : <i>T</i></td></tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr><td><i>M</i> </td> <td> ::= </td> <td><i>x</i></td></tr>
+   <tr><td></td> <td>|</td> <td><i>c M</i></td></tr>
+   <tr><td></td> <td>|</td> <td>(<i>M</i>,...,<i>M</i>)</td></tr>
+   <tr><td></td> <td>|</td> <td><b>fn C</b> <i>P</i> {<i>M</i>}</td></tr>
+   <tr><td></td> <td>|</td> <td><i>D M</i></td></tr>
+   <tr><td></td> <td>|</td> <td><i>M M</i></td></tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr><td><i>D</i> </td> <td> ::= </td> <td><b>let</b> <i>P</i> = <i>M</i>;</td></tr>
+   <tr><td></td> <td>|</td> <td> <i>D D</i> </td></tr>
+   <tr><td></td> <td>|</td> <td> </td></tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr><td><i>P</i> </td> <td> ::= </td> <td><i>x</i> : <i>T</i></td></tr>
+   <tr><td></td> <td>|</td> <td> (<i>P</i>,...,<i>P</i>) </td></tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr><td><i>C</i> </td> <td> ::= </td> <td><i>x</i>:<i>T</i>;...; <i>x</i>:<i>T</i>;</td></tr>
+</table>
+</center>
+<p>
+
+<center><i><font size="+1">Type system</font></i></center>
+<p>
+
+<i>C</i> <img src="img-vdash.gif"> <i>M</i> : <i>T</i> in <b>C</b>
+<p>
+
+<center>
+<table>
+<tr valign=top><td>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i> <i>x</i>:<i>T</i>; <i>C'</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>x</i> : <i>T</i> in <font color=blue>val</font></td>
+   </tr>
+</table>
+</td><td>[<i>x</i> not in <i>C'</i>]</td>
+</tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i>) in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>c M</i> : (<i>C</i><sub>1</sub>,...,<i>C<sub>n</sub></i>) in <b>C</b></td>
+   </tr>
+</table>
+</td><td>
+[<i>c</i> : <i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i> <img src="img-rightarrow.gif"> <i>C</i><sub>1</sub>,...,<i>C<sub>n</sub></i> in <b>C</b>]
+</td></tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i><sub>1</sub> : <i>T</i><sub>1</sub> in <b>C</b></td>
+   </tr>
+   <tr>
+      <td></td>
+      <td><img src="img-vdots.gif"></td>
+      <td></td>
+   </tr>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M<sub>n</sub></i> : <i>T<sub>n</sub></i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>) : (<i>T</i><sub>1</sub>,...,<i>T<sub>n</sub></i>) in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P</i> : <i>T</i>) : <i>C'</i></td>
+   </tr>
+   <tr>
+      <td><i>C C'</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T'</i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><b>fn C</b> <i>P</i> {<i>M</i>} : (<b>C</b> <i>T</i> : <i>T'</i>) in <font color=blue>val</font></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <i>C'</i> in <b>C</b></td>
+   </tr>
+   <tr>
+      <td><i>C C'</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D M</i> : <i>T</i> in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<b>C</b> <i>T</i> : <i>T'</i>) in <font color=blue>val</font></td>
+   </tr>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M'</i> : <i>T</i> in <b>C</b>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M M'</i> : <i>T'</i> in <b>C</b>
+   </tr>
+</table>
+</center>
+<p>
+
+<i>C</i> <img src="img-vdash.gif"> <i>D</i> : <i>C</i> in <b>C</b>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P</i> : <i>T</i>) : <i>C'</i></td>
+   </tr>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><b>let</b> <i>P</i> = <i>M</i> : <i>C'</i> in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i><sub>1</sub> : <i>C</i><sub>1</sub> in <b>C</b></td>
+   </tr>
+   <tr>
+      <td><i>C C</i><sub>1</sub></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i><sub>2</sub> : <i>C</i><sub>2</sub> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i><sub>1</sub> <i>D</i><sub>2</sub> : <i>C</i><sub>1</sub> <i>C</i><sub>2</sub> in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td> () : () in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<i>C</i> <img src="img-vdash.gif"> <i>(P : T)</i> : <i>C</i>
+<p>
+
+<center>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>((<i>x</i> : <i>T</i>) : <i>T</i>) : (<i>x</i> : <i>T</i>)</td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P</i><sub>1</sub> : <i>T</i><sub>1</sub>) : <i>C</i><sub>1</sub></td>
+   </tr>   
+   <tr>
+      <td></td>
+      <td><img src="img-vdots.gif"></td>
+      <td></td>
+   </tr>   
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P<sub>n</sub></i> : <i>T<sub>n</sub></i>) : <i>C<sub>n</sub></i></td>
+   </tr>   
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>((<i>P</i><sub>1</sub>,...,<i>P<sub>n</sub></i>) :
+         (<i>T</i><sub>1</sub>,...,<i>T<sub>n</sub></i>)) :
+            (<i>C</i><sub>1</sub>;...;<i>C<sub>n</sub></i>)</td>
+   </tr>
+</table>
+</td><td>
+[<i>C<sub>i</sub></i> have disjoint vars]
+</td></tr>
+</table>
+</center>
+<p>
+
+<center><i><font size="+1">Equations</font></i></center>
+<p>
+
+Equations for terms are alpha-conversion plus:
+<p>
+<center><table>
+   <tr>
+      <td align=right><b>let</b> <i>P</i> = <i>M</i>; <i>P</i> </td>
+      <td>=</td>
+      <td><i>M</i></td>
+   </tr>
+   <tr>
+      <td align=right><b>let</b> <i>P</i> = <i>P</i>; <i>M</i> </td>
+      <td>=</td>
+      <td><i>M</i></td>
+   </tr>
+   <tr>
+      <td align=right>(<i>D D'</i>) <i>M</i></td>
+      <td>=</td>
+      <td><i>D</i> (<i>D' M</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> <b>let</b> <i>P</i> = <i>M</i>; <i>M'</i></td>
+      <td>=</td>
+      <td><b>let</b> <i>P</i> = (<i>D M</i>); <i>M'</i></td>
+      <td>(bv <i>D</i> <img src="img-cap.gif"> fv <i>M'</i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<b>fn C</b> <i>P</i> {<i>M</i>})</td>
+      <td>=</td>
+      <td><b>fn C</b> <i>P</i> {<i>D M</i>}</td>
+      <td>(bv <i>D</i> <img src="img-cap.gif"> bv <i>P</i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<i>M M'</i>)</td>
+      <td>=</td>
+      <td>(<i>D</i> <i>M</i>) <i>M'</i></td>
+      <td>(bv <i>D</i> <img src="img-cap.gif"> fv <i>M'</i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<i>M M'</i>)</td>
+      <td>=</td>
+      <td><i>M</i> (<i>D</i> <i>M'</i>)</td>
+      <td>(bv <i>D</i> <img src="img-cap.gif"> fv <i>M</i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right>(<b>fn C</b> <i>P</i> {<i>M</i>}) <i>M'</i></td>
+      <td>=</td>
+      <td><b>let</b> <i>P</i> = <i>M'</i>; <i>M</i></td>
+   </tr>
+   <tr>
+      <td align=right><b>fn C</b> <i>P</i> {<i>M P</i>}</td>
+      <td>=</td>
+      <td><i>M</i></td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>)</td>
+      <td>=</td>
+      <td>(<i>D</i> <i>M</i><sub>1</sub>,...,<i>D</i> <i>M<sub>n</sub></i>)</td>
+   </tr>
+</table></center>
+<p>
+Equations for declarations are alpha-conversion plus:
+<p>
+<center><table>
+   <tr>
+      <td align=right><b>let</b> <i>P</i> = (<i>D</i> <i>P</i>)</td>
+      <td>=</td>
+      <td><i>D</i></td>
+      <td>(bv <i>P</i> = bv <i>D</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><b>let</b> (<i>P</i><sub>1</sub>,...,<i>P<sub>n</sub></i>)
+         = (<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>);</td>
+      <td>=</td>
+      <td><b>let</b> <i>P</i><sub>1</sub> = <i>M</i><sub>1</sub>;...;
+         <b>let</b> <i>P<sub>n</sub></i> = <i>M<sub>n</sub></i>;</td>
+      <td>(bv <i>P<sub>i</sub></i> <img src="img-cap.gif"> fv <i>M<sub>j</sub></i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right>(<i>D</i>; <i>D'</i>); <i>D''</i></td>
+      <td>=</td>
+      <td><i>D</i> (<i>D'</i> <i>D''</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> ()</td>
+      <td>=</td>
+      <td><i>D</i></td>
+   </tr>
+   <tr>
+      <td align=right>() <i>D</i></td>
+      <td>=</td>
+      <td><i>D</i></td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> <i>D'</i></td>
+      <td>=</td>
+      <td><i>D'</i> <i>D</i></td>
+      <td>
+         (bv <i>D</i> <img src="img-cap.gif"> fv <i>D'</i> =
+         fv <i>D</i> <img src="img-cap.gif"> bv <i>D'</i> =
+         &Oslash;)
+      </td>
+   </tr>
+</table></center>
+<p>
+
+We shall write `<i>C</i> <img src="img-vdash.gif"> <i>M</i> =
+<i>M'</i> : <i>T</i> in <font color=blue>val</font>' and `<i>C</i>
+<img src="img-vdash.gif"> <i>D</i> = <i>D'</i> : <i>T</i> in <font
+color=blue>val</font>' for the typed proof system given by the above
+axioms.
+<p>
+
+<center><i><font size="+1">Syntactic category</font></i></center>
+<p>
+
+Let <font color=blue>val</font> be the category with:
+<ul>
+<li> Objects are vectors of types.<p>
+
+<li> Morphisms from <b>T</b> to <b>U</b> are judgements
+   of the form:<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<b>U</b>)
+   in <font color=blue>val</font>
+</center><p>
+   viewed up to alpha-conversion and provable equality.<p>
+
+<li> Identity is:<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif">
+   (<b>x</b>) : (<b>T</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> The composition of two morphisms:<p>
+<center>
+   (<b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<b>U</b>)
+   in <font color=blue>val</font>) ;
+   (<b>y</b> : <b>U</b>
+   <img src="img-vdash.gif"> 
+   <i>N</i> : (<b>V</b>)
+   in <font color=blue>val</font>)
+</center>
+<p>
+is given by <b>let</b>-binding:
+<p>
+<center>
+   (<b>x</b> : <b>T</b>
+   <img src="img-vdash.gif">
+   <b>let</b> (<b>y</b> : <b>U</b>) = <i>M</i>;
+   <i>N</i> : (<b>V</b>)
+   in <font color=blue>val</font>)
+</center><p>
+
+</ul>
+<p>
+where <b>x</b> is the vector
+<i>x</i><sub>1</sub>...<i>x<sub>n</sub></i>, and <b>T</b> is the
+vector <i>T</i><sub>1</sub>...<i>T<sub>n</sub></i>.
+<p>
+
+The category <font color=blue>val</font> is cartesian closed, with
+(using alpha-conversion to avoid variable name clashes):
+<ul>
+
+<li> Product on objects is concatenation of vectors.<p>
+
+<li> Product on morphisms:<p>
+<center>
+   (<b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<b>T'</b>)
+   in <font color=blue>val</font>)
+   <img src="img-blue-times.gif"> 
+   (<b>y</b> : <b>U</b>
+   <img src="img-vdash.gif"> 
+   <i>N</i> : (<b>U'</b>)
+   in <font color=blue>val</font>)
+</center>
+<p>
+is given by pairing:
+<p>
+<center>
+   <b>xy</b> : <b>TU</b>
+   <img src="img-vdash.gif"> 
+   <b>let</b> (<b>x'</b> : <b>T'</b>) = <i>M</i>;
+   <b>let</b> (<b>y'</b> : <b>U'</b>) = <i>N</i>;
+   (<b>x'y'</b>) : (<b>T'U'</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Diagonal is given by duplicating variables:
+<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   (<b>xx</b>) : (<b>TT</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Symmetry is given by swapping variables:
+<p>
+<center>
+   <b>xy</b> : <b>TU</b>
+   <img src="img-vdash.gif"> 
+   (<b>yx</b>) : (<b>UT</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Terminal is given by:
+<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   () : ()
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Hom object <b>U</b> <img src="img-blue-Rightarrow.gif"> <b>V</b>
+     is given by function type
+     <font color=blue>val</font>&nbsp;(<b>U</b>):(<b>V</b>).<p>
+
+<li> Currying the morphism:<p>
+<center>
+   <b>xy</b> : <b>TU</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<b>V</b>)
+   in <font color=blue>val</font>
+</center>
+<p>
+is given by an anonymous function:
+<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <b>fn</b> <font color=blue>val</font> (<b>y</b> : <b>U</b>)
+   {<i>M</i>} : (<font color=blue>val</font> (<b>U</b>):(<b>V</b>))
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Uncurrying the morphism:<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<font color=blue>val</font> (<b>U</b>):(<b>V</b>))
+   in <font color=blue>val</font>
+</center>
+<p>
+is given by function application:
+<p>
+<center>
+   <b>xy</b> : <b>TU</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> (<b>y</b>) : (<b>V</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+</ul>
+
+<center><i><font size="+1">Graphical presentation</font></i></center>
+<p>
+
+We shall now give a graphical presentation of a cartesian closed category,
+which allows us to draw data-flow diagrams for programs in 
+<font color=blue>val</font>. 
+<p>
+
+The symmetric monoidal structure is drawn:
+<p>
+
+<center>
+<table>
+<tr>
+<td>Identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=50 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   x
+">
+</applet>
+</td>
+</tr>
+<td>Composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y; val g(Y):Z;
+">
+<param name="exp" value="
+   let y:Y = f(x); g(y)
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Tensor:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="base" value="
+   val f(X):X1; val g(Y):Y1;
+">
+<param name="exp" value="
+   (f(x),g(y))
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Symmetry:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x1:X, y1:Y) = (x,y); (y1,x1)
+">
+</applet>
+</tr>
+<tr>
+</table>
+</center>
+<p>
+
+The product structure is drawn:
+<p>
+
+<center>
+<table>
+<td>Diagonal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   let x1:X = x; (x1,x1)
+">
+<p>
+</applet>
+</tr>
+<tr>
+<td>Terminal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=50 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   let x1:X = x; ()
+">
+</applet>
+</tr>
+<tr>
+</table>
+</center>
+<p>
+
+The closed structure is drawn:
+<p>
+
+<center>
+<table>
+<td>Currying:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X,Y):Z;
+">
+<param name="exp" value="
+   fn val (y:Y) { f(x,y) }
+">
+</applet>
+</tr>
+<tr>
+<td>Evaluation:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; val f(X):Y;
+">
+<param name="exp" value="
+   f(x)
+">
+</applet>
+</tr>
+</table>
+</center>
+
+We can now present the axioms of a cartesian closed category in
+graphical form.  First, we present the symmetric monoidal axioms, all
+of which are graph isomorphisms.
+
+<p>
+<center>
+<table>
+
+<tr>
+<td>Left unit:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let x1:X = x; f(x1)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   f(x)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Right unit:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let y:Y = f(x); y
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   f(x)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Associativity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; val g(X):Y; val h(Y):Z;
+">
+<param name="exp" value="
+   let x:X = f(a); (let y:Y = g(x); h(y))
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; val g(X):Y; val h(Y):Z;
+">
+<param name="exp" value="
+   let y:Y = (let x:X = f(a); g(x)); h(y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Functoriality of tensor wrt identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let x:X = x; let y:Y = y; (x,y)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x:X, y:Y) = (x,y); (x,y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Functoriality of tensor wrt composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:U; b:V;
+">
+<param name="base" value="
+   val f(U):W; val g(V):X; val h(W):Y; val i(X):Z;
+">
+<param name="exp" value="
+   let (c:W, d:X) = (f(a), g(b)); (h(c),i(d))
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:U; b:V;
+">
+<param name="base" value="
+   val f(U):W; val g(V):X; val h(W):Y; val i(X):Z;
+">
+<param name="exp" value="
+   (h(f(a)), i(g(b)))
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Symmetry is an iso:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x:X, y:Y) = (x,y); let (y:Y, x:X) = (y,x); (x,y)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   (x,y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Symmetry is natural:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:W; b:X;
+">
+<param name="base" value="
+   val f(W):Y; val g(X):Z;
+">
+<param name="exp" value="
+   let (c:Y, d:Z) = (f(a), g(b)); (d,c)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:W; b:X;
+">
+<param name="base" value="
+   val f(W):Y; val g(X):Z;
+">
+<param name="exp" value="
+   let (a:W, b:X) = (a,b); (g(b), f(a))
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+As well as the symmetric monoidal category axioms, we have diagonal and 
+terminal natural transformations, so the category has finite products.
+Note that these axioms are <i>not</i> graph isomorphisms.
+<p>
+
+<center>
+<table>
+
+<tr>
+<td>Diagonal is natural:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let y:Y = f(x); (y,y)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let x:X = x; (f(x),f(x))
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Terminal is natural:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let y:Y = f(x); ()
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=45 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   let x:X = x; ()
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+Finally, we have the axioms for a cartesian
+closed category.  Again, these are not graph isomorphisms.
+<p>
+<center>
+<table>
+
+<tr>
+<td>Beta-conversion:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="base" value="
+   val f(X,Y):Z;
+">
+<param name="exp" value="
+   val g(y:Y):Z { f(x,y) } g(y)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="base" value="
+   val f(X,Y):Z;
+">
+<param name="exp" value="
+   f(x,y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Eta-conversion:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   fn val (x:X) { f(x) }
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=45 align=absmiddle>
+<param name="free" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   f
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Naturality of currying:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; val g(X,Y):Z;
+">
+<param name="exp" value="
+   let x:X = f(a); fn val (y:Y) { g(x,y) }
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; val g(X,Y):Z;
+">
+<param name="exp" value="
+   fn val (y:Y) { g(f(a),y) }
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+Note that we have only given one naturality axiom: that in the adjunction:
+<p>
+<center>
+   <font color=blue>V</font>[<i>X</i>, <i>Y <img src="img-blue-Rightarrow.gif"> Z</i>]
+   <img src="img-simeq.gif">
+   <font color=blue>V</font>[<i>X <img src="img-blue-times.gif"> Y</i>, <i>Z</i>]
+</center>
+<p>
+currying is natural in <i>X</i>.  The other three naturality axioms
+are derivable, for example the naturality of uncurrying in <i>Z</i>
+is given by the beta-conversion:
+<p>
+
+<center>
+
+<applet code="AppletPremon.class" width=160 height=70 align=absmiddle>
+<param name="free" value="
+   a:W; b:X;
+">
+<param name="base" value="
+   val f(W) : (val(X):Y,()); 
+   val g(Y):Z;
+">
+<param name="exp" value="
+   let (val h(X):Y,()) = f(a); (
+      val i(x:X):Z { g(h(x)) } 
+      i(b)
+   )   
+">
+</applet>
+=   
+<applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+<param name="free" value="
+   a:W; b:X;
+">
+<param name="base" value="
+   val f(W) : (val(X):Y,()); 
+   val g(Y):Z;
+">
+<param name="exp" value="
+   let (val h(X):Y,()) = f(a); g(h(b))
+">
+</applet>
+</center>
+
+
+<nolatex>
+<p>
+<center>
+<a href="intro.html">Previous</a> |
+<a href="central.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

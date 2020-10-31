@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of cancellation of permutations</h1>
+<p>
+
+<a href="paper-complete-smc.html#permute-cancel">
+<b>Proposition (Cancellation of permutations).</b></a><i>
+   For any term <font color=magenta>f</font> 
+   such that [[<font color=magenta>f</font>]] =
+   [[<font color=magenta>p ; g</font>]] we can find 
+   <font color=magenta>f<img src="img-primesup.gif"></font> such that
+   <img src="img-vdash.gif"><font color=magenta>f = p ; f<img src="img-primesup.gif"></font>
+   and [[<font color=magenta>f<img src="img-primesup.gif"></font>]] =
+   [[<font color=magenta>g</font>]].
+</i><p>
+
+</nolatex>
+
+<b>Proof.</b>
+   Define <font color=magenta>p*</font> to be the permutation:<p>
+   <center>
+      <font color=magenta>
+         id* = id<br>
+         (p ; q)* = q* ; p*<br>
+         (p <img src="img-magenta-otimes.gif"> q)* = 
+            p* <img src="img-magenta-otimes.gif"> q*<br>
+         symm* = symm
+      </font>
+   </center><p>
+   Show by induction on <font color=magenta>p</font> that
+   <img src="img-vdash.gif"><font color=magenta>p ; p* = id</font>, and
+   <img src="img-vdash.gif"><font color=magenta>p* ; p = id</font>.
+   If we let <font color=magenta>f<img src="img-primesup.gif"></font> be
+   <font color=magenta>p* ; f</font>, then it is routine to check
+   that it satisfies our requirements.
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-smc.html#permute-cancel">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Equivalence between flow graphs</h1>
+
+A relation <i>R</i> between single-coloured 
+flow graphs <i>G1</i> and <i>G2</i> is a relation between
+nodes and a relation between edges, which respect
+labels, incoming edges and outgoing edges.
+An <i>almost simulation</i> is a relation <i>R</i>
+such that:
+<center>
+   If
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+   <param name="base" value="
+      val N1(X1...Xm) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn,r:R,z1:Z1...zo:Zo) = N1(x1...xm);
+      return (y1...yn,r,z1...zo);
+   ">
+</applet>
+   <i>E1</i>
+   in <i>G1</i>
+   and <i>E1 R E2</i>
+<p>
+   then
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+   <param name="base" value="
+      val N2(X1...Xm) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn,r:R,z1:Z1...zo:Zo) = N2(x1...xm);
+      return (y1...yn,r,z1...zo);
+   ">
+</applet>
+   <i>E2</i>
+   in <i>G2</i>
+   and <i>N1 R N2</i>.
+</center>
+<i>R</i> is an <i>almost bisimulation</i> iff <i>R</i> and 
+<i>R</i><sup>-1</sup> are almost simulations. 
+
+  </body>
+</html>

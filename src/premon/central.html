@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Central category</font></b></center>
+<p>
+
+<center><i><font size="+1">Syntax</font></i></center>
+<p>
+
+<center>
+<table>
+   <tr><td><b>C</b> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td> <font color=magenta>central</font></td></tr>
+</table>
+</center>
+<p>
+
+<center><i><font size="+1">Type system</font></i></center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=blue>val</font>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=magenta>central</font>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <i>C'</i> in <font color=blue>val</font>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <i>C'</i> in <font color=magenta>central</font>
+   </tr>
+</table>
+</center>
+<p>
+
+<center><i><font size="+1">Equations</font></i></center>
+<p>
+
+The equations for <font color=magenta>central</font> are the same as those
+for <font color=blue>val</font>, except that the following are <i>not</i>
+valid:
+
+<p>
+<center><table>
+   <tr>
+      <td align=right><i>D</i> (<b>fn C</b> <i>P</i> {<i>M</i>})</td>
+      <td>=</td>
+      <td><b>fn C</b> <i>P</i> {<i>D M</i>}</td>
+      <td>(bv <i>D</i> <img src="img-cap.gif"> bv <i>P</i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>)</td>
+      <td>=</td>
+      <td>(<i>D</i> <i>M</i><sub>1</sub>,...,<i>D</i> <i>M<sub>n</sub></i>)</td>
+   </tr>
+</table></center>
+<p>
+
+
+<center><i><font size="+1">Syntactic categories</font></i></center>
+<p>
+
+We can construct the category <font color=magenta>central</font> as
+for <font color=blue>val</font>.  Because there are fewer axioms
+for <font color=magenta>central</font> than for <font color=blue>val</font>,
+<font color=magenta>central</font> is not a cartesian closed category.
+It is, however, symmetric monoidal, and has closed structure given
+by an adjunction (natural in <i>X</i> and <i>Z</i>):
+<p>
+<center>
+   <font color=blue>val</font>[<i>X</i>, <i>Y</i> <img src="img-magenta-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=magenta>central</font>[<i>X</i> <img src="img-magenta-otimes.gif"> <i>Y</i>, <i>Z</i>]
+<p>
+</center>
+
+<center><i><font size="+1">Graphical presentation</font></i></center>
+<p>
+
+The graphical presentation of <font color=magenta>central</font> is the
+same as for <font color=blue>val</font>, except that we lose some of
+the axioms on graphs.  The symmetric monoidal axioms are still true, hence
+any graph isomorphic terms are still equal.  We also still have beta- and 
+eta-convertability.
+<p>
+
+There is no natural diagonal:
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   central f(X):Y;
+">
+<param name="exp" value="
+   let y:Y = f(x); (y,y)
+">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   central f(X):Y;
+">
+<param name="exp" value="
+   let x:X = x; (f(x),f(x))
+">
+</applet>
+</center>
+<p>
+
+nor a natural terminal:
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   central f(X):Y;
+">
+<param name="exp" value="
+   let y:Y = f(x); ()
+">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=45 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   let x:X = x; ()
+">
+</applet>
+</center>
+<p>
+
+Currying is not natural wrt <font color=magenta>central</font> morphisms: 
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   central f(W):X; central g(X,Y):Z;
+">
+<param name="exp" value="
+   let x:X = f(a); fn central (y:Y) { g(x,y) }
+">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   central f(W):X; central g(X,Y):Z;
+">
+<param name="exp" value="
+   fn central (y:Y) { g(f(a),y) }
+">
+</applet>
+</center>
+
+<p>
+
+Currying <i>is</i> natural wrt <font color=blue>val</font> morphisms:
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; central g(X,Y):Z;
+">
+<param name="exp" value="
+   let x:X = f(a); fn central (y:Y) { g(x,y) }
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; central g(X,Y):Z;
+">
+<param name="exp" value="
+   fn central (y:Y) { g(f(a),y) }
+">
+</applet>
+</center>
+
+<nolatex>
+<p>
+<center>
+<a href="value.html">Previous</a> |
+<a href="process.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

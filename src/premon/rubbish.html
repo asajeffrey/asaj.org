@@ -1,0 +1,846 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Not wanted on voyage</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+    <h1>Not wanted on voyage</h1>
+
+FROM VALUE PAGE:
+
+<h2>Equations</h2>
+<p>
+
+Equations for terms are alpha-conversion plus:
+<p>
+<center><table>
+   <tr>
+      <td align=right><b>let</b> <i>P</i> = <i>M</i>; <i>P</i> </td>
+      <td>=</td>
+      <td><i>M</i></td>
+   </tr>
+   <tr>
+      <td align=right><b>let</b> <i>P</i> = <i>P</i>; <i>M</i> </td>
+      <td>=</td>
+      <td><i>M</i></td>
+   </tr>
+   <tr>
+      <td align=right>(<i>D D'</i>) <i>M</i></td>
+      <td>=</td>
+      <td><i>D</i> (<i>D' M</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> <b>let</b> <i>P</i> = <i>M</i>; <i>M'</i></td>
+      <td>=</td>
+      <td><b>let</b> <i>P</i> = (<i>D M</i>); <i>M'</i></td>
+      <td>(bv <i>D</i> <img src="img-cap.gif"> fv <i>M'</i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<i>M M'</i>)</td>
+      <td>=</td>
+      <td>(<i>D</i> <i>M</i>) <i>M'</i></td>
+      <td>(bv <i>D</i> <img src="img-cap.gif"> fv <i>M'</i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>)</td>
+      <td>=</td>
+      <td>(<i>D</i> <i>M</i><sub>1</sub>,...,<i>D</i> <i>M<sub>n</sub></i>)</td>
+   </tr>
+</table></center>
+<p>
+Equations for declarations are alpha-conversion plus:
+<p>
+<center><table>
+   <tr>
+      <td align=right><b>let</b> <i>P</i> = (<i>D</i> <i>P</i>)</td>
+      <td>=</td>
+      <td><i>D</i></td>
+      <td>(bv <i>P</i> = bv <i>D</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><b>let</b> (<i>P</i><sub>1</sub>,...,<i>P<sub>n</sub></i>)
+         = (<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>);</td>
+      <td>=</td>
+      <td><b>let</b> <i>P</i><sub>1</sub> = <i>M</i><sub>1</sub>;...;
+         <b>let</b> <i>P<sub>n</sub></i> = <i>M<sub>n</sub></i>;</td>
+      <td>(bv <i>P<sub>i</sub></i> <img src="img-cap.gif"> fv <i>M<sub>j</sub></i> = &Oslash;)</td>
+   </tr>
+   <tr>
+      <td align=right>(<i>D</i>; <i>D'</i>); <i>D''</i></td>
+      <td>=</td>
+      <td><i>D</i> (<i>D'</i> <i>D''</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> ()</td>
+      <td>=</td>
+      <td><i>D</i></td>
+   </tr>
+   <tr>
+      <td align=right>() <i>D</i></td>
+      <td>=</td>
+      <td><i>D</i></td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> <i>D'</i></td>
+      <td>=</td>
+      <td><i>D'</i> <i>D</i></td>
+      <td>
+         (bv <i>D</i> <img src="img-cap.gif"> fv <i>D'</i> =
+         fv <i>D</i> <img src="img-cap.gif"> bv <i>D'</i> =
+         &Oslash;)
+      </td>
+   </tr>
+</table></center>
+<p>
+
+We shall write `<img src="img-Gamma.gif"> <img src="img-vdash.gif"> <i>M</i> =
+<i>M'</i> : <i>T</i> in <font color=blue>val</font>' and `<img src="img-Gamma.gif">
+<img src="img-vdash.gif"> <i>D</i> = <i>D'</i> : <i>T</i> in <font
+color=blue>val</font>' for the typed proof system given by the above
+axioms.
+<p>
+
+<h2>Syntactic category</h2>
+<p>
+
+Let <font color=blue>val</font> be the category with:
+<ul>
+<li> Objects are vectors of types.<p>
+
+<li> Morphisms from <b>T</b> to <b>U</b> are judgements
+   of the form:<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<b>U</b>)
+   in <font color=blue>val</font>
+</center><p>
+   viewed up to alpha-conversion and provable equality.<p>
+
+<li> Identity is:<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif">
+   (<b>x</b>) : (<b>T</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> The composition of two morphisms:<p>
+<center>
+   (<b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<b>U</b>)
+   in <font color=blue>val</font>) ;
+   (<b>y</b> : <b>U</b>
+   <img src="img-vdash.gif"> 
+   <i>N</i> : (<b>V</b>)
+   in <font color=blue>val</font>)
+</center>
+<p>
+is given by <b>let</b>-binding:
+<p>
+<center>
+   (<b>x</b> : <b>T</b>
+   <img src="img-vdash.gif">
+   <b>let</b> (<b>y</b> : <b>U</b>) = <i>M</i>;
+   <i>N</i> : (<b>V</b>)
+   in <font color=blue>val</font>)
+</center><p>
+
+</ul>
+<p>
+where <b>x</b> is the vector
+<i>x</i><sub>1</sub>...<i>x<sub>n</sub></i>, and <b>T</b> is the
+vector <i>T</i><sub>1</sub>...<i>T<sub>n</sub></i>.
+<p>
+
+The category <font color=blue>val</font> has finite products, with
+(using alpha-conversion to avoid variable name clashes):
+<ul>
+
+<li> Product on objects is concatenation of vectors.<p>
+
+<li> Product on morphisms:<p>
+<center>
+   (<b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   <i>M</i> : (<b>T'</b>)
+   in <font color=blue>val</font>)
+   <img src="img-blue-times.gif"> 
+   (<b>y</b> : <b>U</b>
+   <img src="img-vdash.gif"> 
+   <i>N</i> : (<b>U'</b>)
+   in <font color=blue>val</font>)
+</center>
+<p>
+is given by pairing:
+<p>
+<center>
+   <b>xy</b> : <b>TU</b>
+   <img src="img-vdash.gif"> 
+   <b>let</b> (<b>x'</b> : <b>T'</b>) = <i>M</i>;
+   <b>let</b> (<b>y'</b> : <b>U'</b>) = <i>N</i>;
+   (<b>x'y'</b>) : (<b>T'U'</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Diagonal is given by duplicating variables:
+<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   (<b>xx</b>) : (<b>TT</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Symmetry is given by swapping variables:
+<p>
+<center>
+   <b>xy</b> : <b>TU</b>
+   <img src="img-vdash.gif"> 
+   (<b>yx</b>) : (<b>UT</b>)
+   in <font color=blue>val</font>
+</center><p>
+
+<li> Terminal is given by:
+<p>
+<center>
+   <b>x</b> : <b>T</b>
+   <img src="img-vdash.gif"> 
+   () : ()
+   in <font color=blue>val</font>
+</center><p>
+
+</ul>
+
+<h2>Graphical presentation</h2>
+<p>
+
+We shall now give a graphical presentation of a cartesian closed category,
+which allows us to draw data-flow diagrams for programs in 
+<font color=blue>val</font>.  These graphs are acyclic flow graphs,
+with edges labelled by base types and nodes labelled by constructors.
+These are described more formally in 
+<a href="paper-graphs.html">an appendix</a>.
+<p>
+
+The symmetric monoidal structure is drawn:
+<p>
+
+<center>
+<table>
+<tr>
+<td>Identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=50 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   x
+">
+</applet>
+</td>
+</tr>
+<td>Composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y; val g(Y):Z;
+">
+<param name="exp" value="
+   let y:Y = f(x); g(y)
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Tensor:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="base" value="
+   val f(X):X1; val g(Y):Y1;
+">
+<param name="exp" value="
+   (f(x),g(y))
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Symmetry:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x1:X, y1:Y) = (x,y); (y1,x1)
+">
+</applet>
+</tr>
+<tr>
+</table>
+</center>
+<p>
+
+The product structure is drawn:
+<p>
+
+<center>
+<table>
+<td>Diagonal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   let x1:X = x; (x1,x1)
+">
+<p>
+</applet>
+</tr>
+<tr>
+<td>Terminal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=50 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   x; ()
+">
+</applet>
+</tr>
+<tr>
+</table>
+</center>
+<p>
+
+We can now present the axioms of a category with finite products in
+graphical form.  First, we present the symmetric monoidal axioms, all
+of which are graph isomorphisms.
+
+<p>
+<center>
+<table>
+
+<tr>
+<td>Left unit:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let x1:X = x; f(x1)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   f(x)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Right unit:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let y:Y = f(x); y
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   f(x)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Associativity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; val g(X):Y; val h(Y):Z;
+">
+<param name="exp" value="
+   let x:X = f(a); (let y:Y = g(x); h(y))
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   a:W;
+">
+<param name="base" value="
+   val f(W):X; val g(X):Y; val h(Y):Z;
+">
+<param name="exp" value="
+   let y:Y = (let x:X = f(a); g(x)); h(y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Functoriality of tensor wrt identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let x:X = x; let y:Y = y; (x,y)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x:X, y:Y) = (x,y); (x,y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Functoriality of tensor wrt composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:U; b:V;
+">
+<param name="base" value="
+   val f(U):W; val g(V):X; val h(W):Y; val i(X):Z;
+">
+<param name="exp" value="
+   let (c:W, d:X) = (f(a), g(b)); (h(c),i(d))
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:U; b:V;
+">
+<param name="base" value="
+   val f(U):W; val g(V):X; val h(W):Y; val i(X):Z;
+">
+<param name="exp" value="
+   (h(f(a)), i(g(b)))
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Symmetry is an iso:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x:X, y:Y) = (x,y); (let (y:Y, x:X) = (y,x); (x,y))
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   (x,y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Symmetry is natural:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:W; b:X;
+">
+<param name="base" value="
+   val f(W):Y; val g(X):Z;
+">
+<param name="exp" value="
+   let (c:Y, d:Z) = (f(a), g(b)); (d,c)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   a:W; b:X;
+">
+<param name="base" value="
+   val f(W):Y; val g(X):Z;
+">
+<param name="exp" value="
+   let (a:W, b:X) = (a,b); (g(b), f(a))
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+As well as the symmetric monoidal category axioms, we have diagonal and 
+terminal natural transformations, so the category has finite products.
+The coherence conditions are multigraph isomorphisms:
+
+<center>
+<table>
+
+<tr>
+<td>Symmetry respects diagonal 1:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   let (x1:X,x2:X) = (x,x); (
+      let (x1:X,x2:X) = (x1,x2);
+      (x2,x1)
+   )
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   (x,x)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Symmetry respects diagonal 2:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x1:X,y1:Y,x2:X,y2:Y) = (x,y,x,y); (
+      let (x1:X,x2:X,y1:Y,y2:Y) = (x1,x2,y1,y2);
+      (x1,y1,x2,y2)
+   )
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x1:X,y1:Y,x2:X,y2:Y) = (x,y,x,y);
+   return (x1,y1,x2,y2);
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Terminal repsects diagonal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   let (x1:X,x2:X) = (x,x); (
+      let (x1:X,x2:X) = (x1,x2);
+      x1
+   )
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=45 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   x
+">
+</applet>
+</td>
+</tr>
+
+</table>
+</center>
+
+<p>
+The naturality conditions for the product structure are <i>not</i>
+multigraph isomorphisms, but <i>are</i> bisimulations (as
+discussed in <a href="paper-bisim.html">an appendix</a>):
+
+<p>
+
+<center>
+<table>
+
+<tr>
+<td>Diagonal is natural:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let y:Y = f(x); (y,y)
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   let x:X = x; (f(x),f(x))
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Terminal is natural:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X):Y;
+">
+<param name="exp" value="
+   f(x); ()
+">
+</applet>
+</td>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=45 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   x; ()
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+<h2>Equations</h2>
+<p>
+
+<p>
+<center><table>
+   <tr>
+      <td align=right><b>local rec</b> <i>x</i>; <b>let</b> <i>y</i>:<i>T</i> = <i>x</i>; <b>let</b> <i>x</i>:<i>T</i> = <i>M</i></td>
+      <td>=</td>
+      <td><b>let</b> <i>y</i>:<i>T</i> = <i>M</i></td>
+      <td>(<i>x</i> <img src="img-nin.gif"> fv <i>M</i>)</td>
+   </tr>
+   <tr>
+      <td align=right>(<b>local rec</b> <i>x</i>; <i>D</i>) <i>D'</i></td>
+      <td>=</td>
+      <td><b>local rec</b> <i>x</i>; (<i>D</i> <i>D'</i>)</td>
+      <td>(<i>x</i> <img src="img-nin.gif"> fv <i>D'</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<b>local rec</b> <i>x</i>; <i>D'</i>)</td>
+      <td>=</td>
+      <td><b>local rec</b> <i>x</i> (<i>D</i>; <i>D'</i>)</td>
+      <td>(<i>x</i> <img src="img-nin.gif"> fv <i>D</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><b>local rec</b> <i>x</i>; <b>local rec</b> <i>y</i>; <i>D</i></td>
+      <td>=</td>
+      <td><b>local rec</b> <i>y</i>; <b>local rec</b> <i>x</i>; <i>D</i></td>
+   </tr>
+</table></center>
+<p>
+
+
+The recursive structure we have added allows us to find fixed points in
+<font color=blue>val</font>, on objects from <font color=red>proc</font>.
+This is a familiar story to domain theorists, where it is common to
+find fixed points on (non-strict) <b>Cpo</b> morphisms on
+(pointed) <b>Cpo</b><sub><img src="img-bot.gif"></sub> objects.
+<p>
+
+To give a categorical account of recursive declarations, we borrow
+<a href="paper-bib.html#hasegawa??">Hasegawa's</a> presentation of recursive
+declarations, adapting <a href="paper-bib.html#jsv??">Joyal, Street and 
+Verity's</a> traced monoidal structure.  However, there is a crucial
+difference between our presentation and Hasegawa's: we are considering
+call-by-value semantics (such as 
+the <b>Cpo</b><sub><img src="img-bot.gif"></sub> example above) where
+Hasegawa is considering call-by-name.  The call-by-value category
+<b>Cpo</b><sub><img src="img-bot.gif"></sub> has smash product as its 
+monoidal structure, so does not support a trace, whereas the call-by-name 
+equivalent has non-strict product, and so does support a trace.
+<p>
+
+A <i>trace</i> on a symmetric monoidal category is given by a natural
+transformation:
+<p>
+<center>
+   Tr<sub><i>X Y Z</i></sub> : 
+   <b>C</b>[X <img src="img-otimes.gif"> Z, Y <img src="img-otimes.gif"> Z]
+   <img src="img-rightarrow.gif">
+   <b>C</b>[X, Y]
+</center>
+<p>
+satisfying certain axioms.  For example, Hasegawa shows that the category
+of pointed cpos with non-strict product has a trace given by fixed points.
+<p>
+
+As noted above, the category <b>Cpo</b><sub><img src="img-bot.gif"></sub>
+(of pointed cpos with smash product) does <i>not</i> have a trace, since the
+obvious fixed-point construction is the trivial one, since the fixed point
+of any strict map is the constant bottom map, and smash producting bottom
+with any other map yields bottom.  Thus the attempt to duplicate Hasegawa's
+construction in the call-by-value case yields the constant bottm natural
+transformation, which fails to satisfy the trace axioms.
+<p>
+
+We need to generalize the trace construction to include cases such as
+<b>Cpo</b><sub><img src="img-bot.gif"></sub>, and fortunately there is
+an obvious such generalization.
+Given a symmetric monoidal category <b>C</b> with a 
+full subcategory (not necessarily symmetric monoidal) <b>TC</b>
+<p>
+<center>
+   <i>U</i> :
+   <b>TC</b>
+   <img src="img-hookrightarrow.gif">
+   <b>C</b>
+</center>
+<p>
+
+a <i>partial trace</i> is a natural transformation:
+<p>
+<center>
+   Tr<sub><i>X Y A</i></sub> : 
+   <b>C</b>[<i>X</i> <img src="img-otimes.gif"> <i>U A</i>, <i>Y</i> <img src="img-otimes.gif"> <i>U A</i>]
+   <img src="img-rightarrow.gif">
+   <b>C</b>[<i>X</i>, <i>Y</i>]
+</center>
+<p>
+satisfying certain axioms (given in <a href="paper-tracedef.html">an appendix</a>).
+<p>
+
+Adding <b>local rec</b> declarations gives the syntactic category
+<font color=blue>val</font> a partial trace (where 
+<font color=blue>TC</font> is the full subcategory of <b>traceable</b>
+types) where the trace of
+<p>
+<center>
+   <b>x</b><i>z</i> : <b>T</b><i>V</i>
+         <img src="img-vdash.gif"> 
+         <i>M</i> : (<b>U</b><i>V</i>)
+         in <font color=blue>val</font>
+</center>
+<p>
+is given by a <b>local rec</b> declaration:
+<p>
+<center>
+   <b>x</b><i>z</i> : <b>T</b><i>V</i>
+         <img src="img-vdash.gif"> 
+         <b>local rec</b> <i>z</i>;
+         <b>let</b> (<b>y</b><i>z</i> : <b>U</b><i>V</i>) = M;
+         (<b>y</b>) : (<b>U</b>)
+         in <font color=blue>val</font>
+</center>
+<p>
+
+This trace is partial because of the condition that <i>T</i> has to be
+<b>traceable</b>.  
+
+    <hr>
+    <address><a href="mailto:asaj@rothko.crn.cogs.susx.ac.uk">Alan Jeffrey</a></address>
+<!-- Created: Fri Sep 12 16:00:19 BST 1997 -->
+<!-- hhmts start -->
+Last modified: Mon Sep 22 15:22:12 BST 1997
+<!-- hhmts end -->
+  </body>
+</html>

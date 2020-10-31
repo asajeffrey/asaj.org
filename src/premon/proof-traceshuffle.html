@@ -1,0 +1,984 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of trace respecting shuffles</h1>
+<p>
+
+<a href="paper-complete-ptm.html#traceshuffle"><b>Proposition (Trace respects shuffles)</b></a>
+<i>For any shuffle <font color=blue>s</font> between 
+traceable sorts, if:</i>
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():B1...proc():Bj) : (Y1...Yn,proc():B1...proc():Bj);
+   val g(X1...Xm,proc():A1...proc():Ai) : (Y1...Yn,proc():A1...proc():Ai);
+   val s(proc():A1...proc():Ai) : (proc():B1...proc():Bj);
+">
+<param name="exp" value="      
+   let (x1:X1...xm:Xm,proc b1():B1...proc bj():Bj) = (x1...xm,s(a1...ai));
+   let (y1:Y1...yn:Yn,proc b1():B1...proc bj():Bj) = f(x1...xm,b1...bj);
+   return (y1...yn,b1...bj);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():B1...proc():Bj) : (Y1...Yn,proc():B1...proc():Bj);
+   val g(X1...Xm,proc():A1...proc():Ai) : (Y1...Yn,proc():A1...proc():Ai);
+   val s(proc():A1...proc():Ai) : (proc():B1...proc():Bj);
+">
+<param name="exp" value="      
+   let (y1:Y1...yn:Yn,proc a1():A1...proc ai():Ai) = g(x1...xm,a1...ai);
+   let (proc b1():B1...proc bj():Bj) = s(a1...ai);
+   return (y1...yn,b1...bj);
+">
+</applet>
+</center>
+<i>then:</i>
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():B1...proc():Bj):(Y1...Yn,proc():B1...proc():Bj);
+">
+<param name="exp" value="
+   local rec b1,bj;
+   let (y1:Y1...yn:Yn, proc b1():B1...proc bj():Bj) = f(x1...xm,b1...bj);
+   let (y:(Y1...Yn), proc b1():B1...proc bj():Bj) = (y1...yn,b1...bj);
+   return (y);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val g (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = g(x1...xm,a1...ai);
+   let (y:(Y1...Yn), proc a1():A1...proc ai():Ai) = (y1...yn,a1...ai);
+   return (y);
+">
+</applet>
+</center>
+<p>
+
+</nolatex>
+
+<b>Proof.</b>
+An induction on the number of incoming and 
+outgoing edges of <font color=blue>s</font>.
+Throughout the proof, we shall use the previously established 
+completeness and expressivity of acyclic graphs.
+<p>
+<b>First</b>, we consider the case when <font color=blue>s</font> 
+has no outgoing edges, in which case it is the terminal graph and:
+<center>
+<table>
+<tr>
+   <td><img src="img-vdash.gif"></td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm):(Y1...Yn);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = f(x1...xm);
+   return (y1...yn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td><font color=blue>=</font></td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm):(Y1...Yn);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (x1a:X1...xma:Xm,x1b:X1...xmb:Xm) = (x1...xm,x1...xm);
+   let (y1a:Y1...yna:Yn) = f(x1a...xma);
+   return (y1a...yna);
+">
+</applet>
+   </td>
+   <td>(Product)</td>
+</tr>
+<tr>
+   <td><font color=blue>=</font></td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm):(Y1...Yn);
+   val g (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (x1a:X1...xma:Xm,x1b:X1...xmb:Xm) = (x1...xm,x1...xm);
+   local rec a1b,aib;
+   let (
+      (y1a:Y1...yna:Yn),
+      (y1b:Y1...ynb:Yn, proc a1b():A1...proc aib():Ai)
+   ) = (
+      f(x1a...xma),
+      g(x1b...xmb,a1b...aib)
+   );
+   let (
+      y1a:Y1...yna:Yn,
+      y1b:Y1...ynb:Yn, 
+      proc a1b():A1...proc aib():Ai
+   ) = (
+      y1a...yna,
+      y1b...ynb,
+      a1b...aib
+   );
+   return (
+      let (
+         y1a:Y1...yna:Yn,
+         y1b:Y1...ynb:Yn
+      ) = (
+         y1a...yna,
+         y1b...ynb
+      );
+      (y1a...yna)
+   );
+">
+</applet>
+   </td>
+   <td>(Naturality of terminal)</td>
+</tr>
+<tr>
+   <td><font color=blue>=</font></td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm):(Y1...Yn);
+   val g (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1b,aib;
+   let (x1:X1...xm:Xm, proc a1b():A1...proc aib():Ai) = (x1...xm,a1b...aib);
+   let (
+      (y1a:Y1...yna:Yn),
+      (y1b:Y1...ynb:Yn, proc a1b():A1...proc aib():Ai)
+   ) = (
+      f(x1...xm),
+      g(x1...xm,a1b...aib)
+   );
+   let (
+      y1a:Y1...yna:Yn,
+      y1b:Y1...ynb:Yn, 
+      proc a1b():A1...proc aib():Ai
+   ) = (
+      y1a...yna,
+      y1b...ynb,
+      a1b...aib
+   );
+   let (
+      y1a:Y1...yna:Yn,
+      proc a1b():A1...proc aib():Ai
+   ) = (
+      y1a...yna,
+      a1b...aib
+   );
+   return (y1a...yna);
+">
+</applet>
+   </td>
+   <td>(Naturality of Tr)</td>
+</tr>
+<tr>
+   <td><font color=blue>=</font></td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=200 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val g (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1b,aib;
+   let (x1:X1...xm:Xm, proc a1b():A1...proc aib():Ai) = (x1...xm,a1b...aib);
+   let (
+      (y1a:Y1...yna:Yn, proc a1a():A1...proc aia():Ai),
+      (y1b:Y1...ynb:Yn, proc a1b():A1...proc aib():Ai)
+   ) = (
+      g(x1...xm,a1b...aib),
+      g(x1...xm,a1b...aib)
+   );
+   let (
+      y1a:Y1...yna:Yn,
+      proc a1a():A1...proc aia():Ai,
+      y1b:Y1...ynb:Yn, 
+      proc a1b():A1...proc aib():Ai
+   ) = (
+      y1a...yna,
+      a1a...aia,
+      y1b...ynb,
+      a1b...aib
+   );
+   let (
+      y1a:Y1...yna:Yn,
+      proc a1b():A1...proc aib():Ai
+   ) = (
+      y1a...yna,
+      a1b...aib
+   );
+   return (y1a...yna);
+">
+</applet>
+   </td>
+   <td>(Hypothesis)</td>
+</tr>
+<tr>
+   <td><font color=blue>=</font></td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val g (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = g(x1...xm,a1...ai);
+   let (y:(Y1...Yn), proc a1():A1...proc ai():Ai) = (y1...yn,a1...ai);
+   return (y);
+">
+</applet>
+   </td>
+   <td>(Product)</td>
+</tr>
+</table>
+</center>
+
+<b>Next</b>, we consider the case when <font color=blue>s</font> has
+one incoming edge, so is of the form:
+<center>
+<applet code="AppletPremon.class" width=50 height=70 align=absmiddle>
+<param name="free" value="
+   proc a():A;
+">
+<param name="exp" value="
+   return (a...a);
+">
+</applet>
+</center>
+for which it suffices to show that if:
+<center>
+for all <font color=blue>s1</font> and <font color=blue>s2</font>,
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A...proc():A);
+   val s1 (proc():A,proc():A...proc():A) : (proc():A);
+   val s2 (proc():A,proc():A...proc():A) : (proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn,proc a1():A,proc a2():A...proc ai():A) = f(x1...xm,a,a...a);
+   let proc a():A = s1(a1,a2...ai);
+   return (y1...yn);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A...proc():A);
+   val s1 (proc():A,proc():A...proc():A) : (proc():A);
+   val s2 (proc():A,proc():A...proc():A) : (proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn,proc a1():A,proc a2():A...proc ai():A) = f(x1...xm,a,a...a);
+   let proc a():A = s2(a1,a2...ai);
+   return (y1...yn);
+">
+</applet>
+</center>
+then:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A...proc ai():A) = f(x1...xm,a1,a1...a1);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A...proc ai():A) = (y1...yn,a1,a2...ai);
+   return (y1...yn);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=180 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   local rec a1,a2,ai;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A...proc ai():A) = f(x1...xm,a1,a2...ai);
+   let (y:(Y1...Yn), proc a1():A, proc a2():A...proc ai():A) = (y1...yn,a1,a2...ai);
+   return (y);
+">
+</applet>
+</center>
+We proceed by induction on the number of traced edges.
+If there is one traced edge, then the result is immediate.  For
+the inductive step, by the hypothesis we have:
+
+<center>
+for all <font color=blue>s1</font> and <font color=blue>s2</font>,
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=220 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+   val s1 (proc():A,proc():A...proc():A) : (proc():A);
+   val s2 (proc():A,proc():A...proc():A) : (proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn,proc a1():A,proc a2():A,proc a3():A...proc ai():A) = f(x1...xm,a,a,a...a);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   let proc a():A = s1(a1,a3...ai);
+   return (y1...yn);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=220 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+   val s1 (proc():A,proc():A...proc():A) : (proc():A);
+   val s2 (proc():A,proc():A...proc():A) : (proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn,proc a1():A,proc a2():A,proc a3():A...proc ai():A) = f(x1...xm,a,a,a...a);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   let proc a():A = s2(a1,a3...ai);
+   return (y1...yn);
+">
+</applet>
+</center>
+so by induction:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a1,a1...a1);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1,a3,ai;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a1,a3...ai);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+</center>
+and similarly:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a2;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a2,a2,a2...a2);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a2,a3,ai;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a2,a2,a3...ai);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+</center>
+So:
+<center>
+<table>
+   <tr>
+      <td><img src="img-vdash.gif"></td>
+      <td>
+<applet code="AppletPremon.class" width=260 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1; 
+   let (y1:Y1...yn:Yn,proc a1():A, proc a2():A) = (
+      let (x1:X1...xm:Xm,proc a1():A, proc a2():A) = (x1...xm,a1,a1);
+      local rec a3,ai;
+      let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a2,a3...ai);
+      let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+      (y1...yn,a1,a2)
+   );
+   return (y1...yn);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td><font color=blue>=</font></td>
+      <td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1,a3,ai;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a1,a3...ai);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+      </td>
+      <td>(Naturality of Tr)</td>
+   </tr>
+   <tr>
+      <td><font color=blue>=</font></td>
+      <td>
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a1,a1...a1);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+      </td>
+      <td>(Above)</td>
+   </tr>
+   <tr>
+      <td><font color=blue>=</font></td>
+      <td>
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a2;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a2,a2,a2...a2);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+      </td>
+      <td>(Hypothesis)</td>
+   </tr>
+   <tr>
+      <td><font color=blue>=</font></td>
+      <td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a2,a3,ai;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a2,a2,a3...ai);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+      </td>
+      <td>(Above)</td>
+   </tr>
+   <tr>
+      <td><font color=blue>=</font></td>
+      <td>
+<applet code="AppletPremon.class" width=260 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a2; 
+   let (y1:Y1...yn:Yn,proc a1():A, proc a2():A) = (
+      let (x1:X1...xm:Xm,proc a1():A, proc a2():A) = (x1...xm,a2,a2);
+      local rec a3,ai;
+      let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a2,a3...ai);
+      let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+      (y1...yn,a1,a2)
+   );
+   return (y1...yn);
+">
+</applet>
+      </td>
+      <td>(Naturality of Tr)</td>
+   </tr>
+</table>
+</center>
+So:
+<center>
+<table>
+   <tr>
+      <td><img src="img-vdash.gif"></td>
+      <td>
+<applet code="AppletPremon.class" width=240 height=170 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1,a2,a3,ai;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a2,a3...ai);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td><font color=blue>=</font></td>
+      <td>
+<applet code="AppletPremon.class" width=260 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a2; 
+   let (y1:Y1...yn:Yn,proc a1():A, proc a2():A) = (
+      let (x1:X1...xm:Xm,proc a1():A, proc a2():A) = (x1...xm,a2,a2);
+      local rec a3,ai;
+      let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a2,a3...ai);
+      let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+      (y1...yn,a1,a2)
+   );
+   return (y1...yn);
+">
+</applet>
+      </td>
+      <td>(Trace respects product)</td>
+   </tr>
+   <tr>
+      <td><font color=blue>=</font></td>
+      <td>
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():A,proc():A...proc():A):(Y1...Yn,proc():A,proc():A,proc():A...proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a1;
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = f(x1...xm,a1,a1,a1...a1);
+   let (y1:Y1...yn:Yn, proc a1():A, proc a2():A, proc a3():A...proc ai():A) = (y1...yn,a1,a2,a3...ai);
+   return (y1...yn);
+">
+</applet>
+      </td>
+      <td>(Above)</td>
+   </tr>
+</table>
+</center>
+
+<b>Finally</b>, we conside the case when <font color=blue>s</font>
+has more than one incoming edge, and so is of the form:
+<center>
+   <img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   proc a1():A1; proc a2():A2; proc ai():Ai;
+">
+<param name="base" value="
+   val s (proc():A1,proc():A2...proc():Ai) : (proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   let (proc c1():C1...proc ck():Ck) = s (a1,a2...ai);
+   return (c1...ck);
+">
+</applet>
+   <font color=blue>=</font>
+<applet code="AppletPremon.class" width=140 height=100 align=absmiddle>
+<param name="free" value="
+   proc a1():A1; proc a2():A2; proc ai():Ai;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+">
+<param name="exp" value="
+   let (proc a11():A1...proc a1h():A1) = (a1...a1);
+   let (proc b1():B1...proc bj():Bj) = s1(a2...ai);
+   let (proc c1():C1...proc ck():Ck) = p (a11...a1h,b1...bj);
+   return (c1...ck);
+">
+</applet>
+</center>
+So:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc a2():A2; proc ai():Ai;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (X1...Xm,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (proc a11():A1...proc a1h():A1) = (a1...a1);
+   let (proc b1():B1...proc bj():Bj) = s1(a2...ai);
+   let (proc c1():C1...proc ck():Ck) = p (a11...a1h,b1...bj);
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = f (x1...xm,c1...ck);
+   return (y1...yn,c1...ck);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=180 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc a2():A2; proc ai():Ai;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (Y1...Yn,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn,proc a1():A1,proc a2():A2...proc ai():Ai) = g(x1...xm,a1,a2...ai); (
+      let (y1:Y1...yn:Yn) = (y1...yn);
+      let (proc a11():A1...proc a1h():A1) = (a1...a1);
+      let (proc b1():B1...proc bj():Bj) = s1(a2...ai);
+      let (proc c1():C1...proc ck():Ck) = p (a11...a1h,b1...bj);
+      return (y1...yn,c1...ck);
+   )
+">
+</applet>
+</center>
+and since permutations are isos:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=250 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc a2():A2; proc ai():Ai;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (X1...Xm,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (proc a11():A1...proc a1h():A1) = (a1...a1);
+   let (proc b1():B1...proc bj():Bj) = s1(a2...ai);
+   let (proc c1():C1...proc ck():Ck) = p (a11...a1h,b1...bj);
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = f (x1...xm,c1...ck);
+   let (proc a11():A1...proc a1h():A1,proc b1():B1...proc bj():Bj) = p_inv (c1...ck);
+   return (y1...yn,a11...a1h,b1...bj);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=150 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc a2():A2; proc ai():Ai;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (Y1...Yn,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn,proc a1():A1,proc a2():A2...proc ai():Ai) = g(x1...xm,a1,a2...ai); (
+      let (y1:Y1...yn:Yn) = (y1...yn);
+      let (proc a11():A1...proc a1h():A1) = (a1...a1);
+      let (proc b1():B1...proc bj():Bj) = s1(a2...ai);
+      return (y1...yn,a11...a1h,b1...bj);
+   )
+">
+</applet>
+</center>
+So by induction:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=300 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (X1...Xm,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   local rec b1,bj;
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (proc a11():A1...proc a1h():A1) = (a1...a1);
+   let (proc c1():C1...proc ck():Ck) = p (a11...a1h,b1...bj);
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = f (x1...xm,c1...ck);
+   let (proc a11():A1...proc a1h():A1,proc b1():B1...proc bj():Bj) = p_inv (c1...ck);
+   let (y1:Y1...yn:Yn,proc a11():A1...proc a1h():A1,proc b1():B1...proc bj():Bj) = (y1...yn,a11...a1h,b1...bj);
+   return (y1...yn,a11...a1h);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=200 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (Y1...Yn,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   local rec a2,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1, proc a2():A2...proc ai():Ai) = g (x1...xm,a1,a2...ai);
+   let (y1:Y1...yn:Yn,proc a1():A1, proc a2():A2...proc ai():Ai) = (y1...yn,a1,a2...ai);
+   let (y1:Y1...yn:Yn,proc a11():A1...proc a1h():A1, proc a2():A2...proc ai():Ai) = (y1...yn,a1...a1,a2...ai);
+   return (y1...yn,a11...a1h);
+">
+</applet>
+</center>
+and by induction again:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=330 height=190 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (X1...Xm,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   local rec a11,a1h,b1,bj;
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (proc c1():C1...proc ck():Ck) = p (a11...a1h,b1...bj);
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = f (x1...xm,c1...ck);
+   let (proc a11():A1...proc a1h():A1,proc b1():B1...proc bj():Bj) = p_inv (c1...ck);
+   let (y1:Y1...yn:Yn,proc a11():A1...proc a1h():A1,proc b1():B1...proc bj():Bj) = (y1...yn,a11...a1h,b1...bj);
+   return (y1...yn);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=200 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (Y1...Yn,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,a2,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1, proc a2():A2...proc ai():Ai) = g (x1...xm,a1,a2...ai);
+   let (y1:Y1...yn:Yn,proc a1():A1, proc a2():A2...proc ai():Ai) = (y1...yn,a1,a2...ai);
+   return (y1...yn);
+">
+</applet>
+</center>
+and so by dinaturality:
+<center>
+<img src="img-vdash.gif">
+<applet code="AppletPremon.class" width=160 height=130 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (X1...Xm,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   local rec c1,ck;
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = f (x1...xm,c1...ck);
+   let (y1:Y1...yn:Yn, proc c1():C1...proc ck():Ck) = (y1...yn,c1...ck);
+   return (y1...yn);
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=200 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1;
+">
+<param name="base" value="
+   val s1 (proc():A2...proc():Ai) : (proc():B1...proc():Bj);
+   val p (proc():A1...proc():A1,proc():B1...proc():Bj) : (proc():C1...proc():Ck);
+   val p_inv (proc():C1...proc():Ck) : (proc():A1...proc():A1,proc():B1...proc():Bj);
+   val f (X1...Xm,proc():C1...proc():Ck) : (Y1...Yn,proc():C1...proc():Ck);
+   val g (X1...Xm,proc():A1,proc():A2...proc():Ai) : (Y1...Yn,proc():A1,proc():A2...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,a2,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1, proc a2():A2...proc ai():Ai) = g (x1...xm,a1,a2...ai);
+   let (y1:Y1...yn:Yn,proc a1():A1, proc a2():A2...proc ai():Ai) = (y1...yn,a1,a2...ai);
+   return (y1...yn);
+">
+</applet>
+</center>
+
+<img src="img-Box.gif">
+<p>
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html#traceshuffle">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

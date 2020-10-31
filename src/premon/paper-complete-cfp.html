@@ -1,0 +1,1100 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Completeness proof: categories with finite products</h1>
+<p>
+
+The flow graphs we consider in this paper are finite directed
+edge-labelled, node-labelled graphs where the incoming and outgoing
+edges to each node are ordered, and each edge has exactly one start
+node, but multiple finish nodes.  We impose a type discipline to
+ensure that the edge and node labels match.  These graphs are the 
+same as <a href="paper-bib.html#has97">Hasegawa's</a> 
+<em>sharing graphs</em>.
+<p>
+
+A <em>single-coloured flow graph</em> <i>G</i> over a signature 
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>
+is:
+<ul>
+
+<li> A finite set of edges (ranged over by <i>E</i>, <i>F</i>).<p>
+
+<li> A finite set of nodes (ranged over by <i>N</i>).<p>
+
+<li> For each edge, a label sort, written <i>E</i>&nbsp;:&nbsp;<i>X</i>.<p>
+
+<li> For each node, a label constructor, written <i>N</i>&nbsp;:&nbsp;<font color=blue>c</font>.<p>
+
+<li> A list of incoming edges and a list of outgoing edges,
+   written
+   <i>G</i>&nbsp;:&nbsp;<b>E&nbsp;<img src="img-rightarrow.gif">&nbsp;F</b>.<p>
+
+<li> For each node, a list of incoming edges and a list of outgoing 
+   edges, written
+   <i>N</i>&nbsp;:&nbsp;<b>E&nbsp;<img src="img-rightarrow.gif">&nbsp;F</b>.<p>
+
+<li> If 
+   <i>N</i>&nbsp;:&nbsp;<b>E&nbsp;<img src="img-rightarrow.gif">&nbsp;F</b>,
+   <i>N</i>&nbsp;:&nbsp;<font color=blue>c</font> and
+   <font color=blue>c</font>&nbsp;:&nbsp;<b>X</b>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>Y</b>,
+   then
+   <b>E</b>&nbsp;:&nbsp;<b>X</b> and <b>F</b>&nbsp;:&nbsp;<b>Y</b>.<p>
+
+<li> Each edge occurs exactly once either as an incoming edge of the
+   graph, or an outgoing edge of a node.<p>
+
+</ul>
+Such graphs can be drawn with incoming edges on the left and outgoing
+edges on the right:
+<center>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+Note that we insist that each edge has a unique source, but not a
+unique target.  This allows edges to fork or terminate (but not the
+mirror-image graphs):
+<center>
+   <applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+   <param name="free" value="
+      x:X;
+   ">
+   <param name="exp" value="
+      (x,x)
+   ">
+   </applet>
+   <applet code="AppletPremon.class" width=100 height=50 align=absmiddle>
+   <param name="free" value="
+      x:X;
+   ">
+   <param name="exp" value="
+      let x:X = x; ()
+   ">
+   </applet>
+</center>
+<a name="graphops">We can define the following operations on graphs
+(and below we shall show that they satisfy the equations necessary to
+be a category with finite products):</a>
+<p>
+
+<center>
+<table>
+<tr>
+<td>Identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   return (x1...xm);
+">
+</applet>
+</td>
+</tr>
+<td>Composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G(X1...Xm):(Y1...Yn); 
+   val H(Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G(x1...xm);
+   let (z1:Z1...zo:Zo) = H(y1...yn);
+   return (z1...zo);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Tensor:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G(W1...Wl):(Y1...Yn); 
+   val H(X1...Xm):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G(w1...wl);
+   let (z1:Z1...zo:Zo) = H(x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Symmetry:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = (y1...yn);
+   return (y1...yn,x1...xm);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Diagonal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   return (x1...xm,x1...xm);
+">
+<p>
+</applet>
+</td>
+</tr>
+<tr>
+<td>Terminal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   (x1...xm); 
+   return ();
+">
+</applet>
+</td>
+</tr>
+<tr>
+</table>
+</center>
+<p>
+A morphism <i>F</i> between flow graphs <i>G</i> and <i>G<img src="img-primesup.gif"></i> is:<p>
+<ul>
+
+<li> A map from the edges of <i>G</i> to the edges of <i>G<img src="img-primesup.gif"></i>.<p>
+
+<li> A map from the nodes of <i>G</i> to the nodes of <i>G<img src="img-primesup.gif"></i>.<p>
+
+<li> The maps respect labels, incoming edges and outgoing edges.<p>
+
+</ul>
+Most of the axioms for a category with finite products are sound for
+flow graphs up to graph isomorphism, but the naturality conditions 
+are <i>not</i> graph isomorphisms:
+<center>
+<table>
+
+<tr>
+<td>Naturality of diagonal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      let (y1:Y1...yn:Yn) = (y1...yn);
+      (y1...yn,y1...yn)
+   ">
+</applet>
+</td>
+<td><img src="img-nsimeq.gif"></td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (x1:X1...xm:Xm) = (x1...xm);
+      let (y1a:Y1...yna:Yn, y1b:Y1...ynb:Yn) = (G(x1...xm), G(x1...xm));
+      (y1a...yna,y1b...ynb)
+   ">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Terminal is natural:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn);
+      ()
+   ">
+</applet>
+</td>
+<td><img src="img-nsimeq.gif"></td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      (x1...xm);
+      ()
+   ">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+To find a graph model of finite products, we cannot consider graphs up
+to graph isomorphism.  This is a familiar problem from concurrency
+theory, where graph isomorphism of labelled transition systems is too 
+fine an equivalence, and so <i>bisimulation</i>, developed by 
+<a href="bib.html#mil89">Milner</a>  is used.  We can adapt bisimulation
+to flow graphs, and below we show that the finite product axiomatization
+is sound and complete for flow graphs up to bisimulation.
+
+<p>
+
+A relation <i>R</i> between flow graphs <i>G</i> and <i>G<img src="img-primesup.gif"></i> is:<p>
+<ul>
+
+<li> A relation between the edges of <i>G</i> to the edges of <i>G<img src="img-primesup.gif"></i>.<p>
+
+<li> A relation between the nodes of <i>G</i> to the nodes of <i>G<img src="img-primesup.gif"></i>.<p>
+
+<li> The relations respect labels, incoming edges and outgoing edges:<p>
+
+   <ul>
+
+   <li> if <i>E R E<img src="img-primesup.gif"></i> and <i>E</i> : <i>X</i> then <i>E<img src="img-primesup.gif"></i> : <i>X</i>,<p>
+
+   <li> if <i>N R N<img src="img-primesup.gif"></i> and <i>N</i> : <font color=blue>c</font> then <i>N<img src="img-primesup.gif"></i> : <font color=blue>c</font>,<p>
+
+   <li> if <i>G</i>&nbsp;:&nbsp;<b>E&nbsp;<img src="img-rightarrow.gif">&nbsp;F</b>
+        and <i>G<img src="img-primesup.gif"></i>&nbsp;:&nbsp;<b>E<img src="img-primesup.gif">&nbsp;<img src="img-rightarrow.gif">&nbsp;F<img src="img-primesup.gif"></b>
+        then <b>E</b>&nbsp;<i>R</i>&nbsp;<b>E<img src="img-primesup.gif"></b>
+        and <b>F</b>&nbsp;<i>R</i>&nbsp;<b>F<img src="img-primesup.gif"></b>, and<p>
+
+   <li> if <i>N</i>&nbsp;:&nbsp;<b>E&nbsp;<img src="img-rightarrow.gif">&nbsp;F</b> in <i>G</i>,
+        <i>N<img src="img-primesup.gif"></i>&nbsp;:&nbsp;<b>E<img src="img-primesup.gif">&nbsp;<img src="img-rightarrow.gif">&nbsp;F<img src="img-primesup.gif"></b> in <i>G<img src="img-primesup.gif"></i>
+        and <i>N&nbsp;R&nbsp;N<img src="img-primesup.gif"></i>
+        then <b>E</b>&nbsp;<i>R</i>&nbsp;<b>E<img src="img-primesup.gif"></b>
+        and <b>F</b>&nbsp;<i>R</i>&nbsp;<b>F<img src="img-primesup.gif"></b>.<p>
+
+   </ul>
+
+   together with the symmetric conditions.<p>
+
+</ul>
+Note that (up to isomorphism) this definition is the same as requiring
+<i>R</i> to form a jointly monic span
+<i>G&nbsp;<img src="img-leftarrow.gif">&nbsp;R&nbsp;<img src="img-rightarrow.gif">&nbsp;G<img src="img-primesup.gif"></i>
+in the category of flow graphs.
+<p>
+A relation <i>R</i> between flow graphs <i>G</i> and <i>G<img src="img-primesup.gif"></i> is a 
+<i>simulation</i> iff:<p>
+<ul>
+
+<li> Whenever 
+   <i>E</i> is the <i>n</i>th outgoing edge of <i>N</i> in <i>G</i>
+   and <i>E R E<img src="img-primesup.gif"></i> then
+   <i>E<img src="img-primesup.gif"></i> is the <i>n</i>th outgoing edge of <i>N<img src="img-primesup.gif"></i> in <i>G<img src="img-primesup.gif"></i>
+   and <i>N R N<img src="img-primesup.gif"></i>.<p>
+
+<li> <i>R</i> is a function on incoming edges of <i>G</i>
+   (that is for any incoming edge <i>E</i> of <i>G</i> there is
+   precisely one edge <i>E<img src="img-primesup.gif"></i> of <i>G<img src="img-primesup.gif"></i> such that
+   <i>E&nbsp;R&nbsp;E<img src="img-primesup.gif"></i>).<p>
+
+</ul>
+A relation <i>R</i> between flow graphs <i>G</i> and <i>G<img src="img-primesup.gif"></i> is a 
+<i>bisimulation</i> iff <i>R</i> and <i>R</i><sup>-1</sup> are simulations.
+<p>
+<i>G</i> and <i>G<img src="img-primesup.gif"></i> are <i>bisimilar</i> (written 
+<i>G</i> <img src="img-sim.gif"> <i>G<img src="img-primesup.gif"></i>)
+iff there is a bisimulation between them.
+<p>
+Note that any graph isomorphism is a simulation, and so isomorphic
+graphs are bisimilar.  The converse is not true, since:
+<center>
+<table>
+
+<tr>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      let (y1:Y1...yn:Yn) = (y1...yn);
+      (y1...yn,y1...yn)
+   ">
+</applet>
+</td>
+<td><img src="img-sim.gif"></td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (x1:X1...xm:Xm) = (x1...xm);
+      let (y1a:Y1...yna:Yn, y1b:Y1...ynb:Yn) = (G(x1...xm), G(x1...xm));
+      (y1a...yna,y1b...ynb)
+   ">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn);
+      ()
+   ">
+</applet>
+</td>
+<td><img src="img-sim.gif"></td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      (x1...xm);
+      ()
+   ">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+
+We are going to construct a category of graphs viewed up to bisimulation:
+in order for this definition to be valid, we require all of the categorical
+operations on graphs to respect bisimulation.  Note that this is the
+reason for the (otherwise somewhat unnatural) second clause in the
+definition of simulation:
+<ul>
+
+<li> <i>R</i> is a function on input edges
+   (that is for any input edge <i>E</i> of <i>G</i> there is
+   precisely one edge <i>E<img src="img-primesup.gif"></i> of <i>G<img src="img-primesup.gif"></i> such that
+   <i>E&nbsp;R&nbsp;E<img src="img-primesup.gif"></i>).<p>
+
+</ul>
+Without this clause, any relation between nodeless graphs would be a bisimulation, and
+in particular we could construct a bisimulation:
+<center>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (x1,x2);
+   ">
+</applet>
+<i>R</i>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (x2,x1);
+   ">
+</applet>
+</center>
+but:
+<center>
+<applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+   <param name="base" value="
+      val c(X):Y;
+      val d(X):Y;
+   ">
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (c(x1),d(x2));
+   ">
+</applet>
+<img src="img-nsim.gif">
+<applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+   <param name="base" value="
+      val c(X):Y;
+      val d(X):Y;
+   ">
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (c(x2),d(x1));
+   ">
+</applet>
+</center>
+Since we have included the second clause in the definition of simulation,
+we have that nodeless graphs are bisimilar only when they are isomorphic,
+and so this counterexample fails.
+<p>
+
+<a name="permute-normal"></a>
+<b>Proposition (Bisimulation is a congruence).</b><i>
+Bisimulation is a congruence wrt 
+<a href="#graphops">the graph operations</a>.
+</i>
+<p>
+
+<latexinput src="proof-bisim-cong.html">
+<a href="proof-bisim-cong.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+
+
+A category with finite products is <i>over</i> a signature
+<img src="img-Sigma.gif"> iff:<p>
+<ul>
+<li> For each sort <i>X</i> there is an object [[<i>X</i>]].<p>
+<li> For each constructor 
+   <i>c</i>&nbsp;:&nbsp;<i>X</i><sub>1</sub>...<i>X<sub>m</sub></i>&nbsp;<img src="img-rightarrow.gif">&nbsp;<i>Y</i><sub>1</sub>...<i>Y<sub>n</sub></i>
+<br>
+   there is a morphism
+   [[<i>c</i>]]&nbsp;:&nbsp;[[<i>X</i><sub>1</sub>]]&nbsp;<img src="img-times.gif">&nbsp;<img src="img-cdots.gif">&nbsp;<img src="img-times.gif">&nbsp;[[<i>X<sub>m</sub></i>]]&nbsp;<img src="img-rightarrow.gif">&nbsp;[[<i>Y</i><sub>1</sub>]]&nbsp;<img src="img-times.gif">&nbsp;<img src="img-cdots.gif">&nbsp;<img src="img-times.gif">&nbsp;[[<i>Y<sub>n</sub></i>]].<p>
+
+</ul>
+
+Acyclic flow graphs over a given signature <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> form a category  
+<font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> where:
+<p>
+<ul>
+
+<li> Objects are vectors of sorts <b>X</b>.<p>
+
+<li> Morphisms from <b>X</b> to <b>Y</b> are
+   acyclic graphs 
+   <i>G</i>&nbsp;:&nbsp;<b>E</b>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>F</b>
+   such that <b>E</b>&nbsp;:&nbsp;<b>X</b> and 
+   <b>F</b>&nbsp;:&nbsp;<b>Y</b>, viewed up to bisimulation.
+
+</ul>
+<p>
+
+<b>Proposition (Flow graphs form a category with finite products).</b>
+<i><font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) is a strict cartesian category over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.</i>
+<p>
+
+<b>Proof.</b>
+We have already defined the required operations, but we need to
+show they satisfy the axioms for a cartesian category.
+For this, we construct a bisimulation for each of the axioms.
+<img src="img-Box.gif"><p>
+
+Since flow graphs over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> 
+form a cartesian category over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>, there is a unique
+morphism [[_]] from the free cartesian category over
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> into <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>).  We can
+define this syntactically as the term algebra (with the type system
+and axiomatization given for cartesian categories)
+<font color=blue>Term</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>):
+<center><table>
+   <tr>
+      <td><font color=blue>f</font>,<font color=blue>g</font></td>
+      <td>::=</td>
+      <td><font color=blue>id</font><sub><b>X</b></sub></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   return (x1...xm);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>f ; g</font></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f(X1...Xm):(Y1...Yn); 
+   val g(Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = f(x1...xm);
+   let (z1:Z1...zo:Zo) = g(y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>f <img src="img-blue-times.gif"> g</font></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f(W1...Wl):(Y1...Yn); 
+   val g(X1...Xm):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = f(w1...wl);
+   let (z1:Z1...zo:Zo) = g(x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>symm</font><sub><b>X</b> <b>Y</b></sub></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = (y1...yn);
+   return (y1...yn,x1...xm);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>copy</font><sub><b>X</b></sub></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   return (x1...xm,x1...xm);
+">
+<p>
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>discard</font><sub><b>X</b></sub></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   (x1...xm); 
+   return ();
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=blue>c</font></td>
+      <td>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val c(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = c(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+      </td>
+   </tr>
+</table></center>
+<p>
+If terms can be proved equal using the axioms for a cartesian category
+we shall write 
+<img src="img-vdash.gif">&nbsp;<font color=blue>f&nbsp;=&nbsp;g</font>.
+<p>
+We would like to show soundness and completeness for this axiomatization,
+that is 
+<img src="img-vdash.gif">&nbsp;<font color=blue>f&nbsp;=&nbsp;g</font>
+iff
+ [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>g</font>]].
+As is usual for such results, soundness is immediate, but completeness
+requires a normal form result.  Most of the rest of this section is
+taken up by showing the required normalization results.
+<p>
+
+<b>Proposition (Soundness).</b>
+<i>If <img src="img-vdash.gif">&nbsp;<font color=blue>f&nbsp;=&nbsp;g</font>
+then [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>g</font>]].</i>
+<p>
+
+<b>Proof.</b>
+Follows immediately from the fact that <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+is a cartesian category.
+<img src="img-Box.gif"><p>
+
+<b>Proposition (Expressivity).</b>
+<i>For any graph G, there is a term <font color=blue>f</font>
+such that [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;G.</i>
+<p>
+
+<b>Proof.</b>
+Proved by induction on the number of outgoing edges of <i>G</i>.
+<img src="img-Box.gif"><p>
+
+A <i>shuffle</i> (ranged over by <font color=blue>s</font>) is any
+term not including constructors <font color=blue>c</font>.  A
+<i>permutation</i> (ranged over by <font color=blue>p</font>) is any
+shuffle not including <font color=blue>copy</font> or <font
+color=blue>discard</font>.  <p>
+
+<a name="complete-shuffle"></a>
+<b>Proposition (Completeness for shuffles).</b><i>
+   If [[<font color=blue>s1</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>s2</font>]]
+   then <img src="img-vdash.gif"><font color=blue>s1&nbsp;=&nbsp;s2</font>.
+</i><p>
+
+<latexinput src="proof-complete-shuffle.html">
+<a href="proof-complete-shuffle.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+A term is in <i>normal form</i> 
+(ranged over by <font color=blue>n</font>) iff it is of the form:
+<center><table>
+   <tr>
+      <td><font color=blue>n</font></td>
+      <td>::=</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val s(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = s(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val n(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = n(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val n(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = n (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+      </td>
+   </tr>
+</table></center>
+
+
+<b>Proposition (Normalization).</b>
+<i>For any <font color=blue>f</font> we can find 
+normal <font color=blue>g</font>
+such that 
+<img src="img-vdash.gif">&nbsp;<font color=blue>f&nbsp;=&nbsp;g</font>.</i>
+<p>
+
+<b>Proof.</b> 
+First show by induction on syntax that for any normal <font
+color=blue>f1</font> and <font color=blue>f2</font>, we can find
+normal <font color=blue>g</font> such that
+<img src="img-vdash.gif"><font color=blue>f1&nbsp;<img src="img-blue-times.gif">&nbsp;f2&nbsp;=&nbsp;g</font>.
+<p>
+
+Then show by induction on syntax that for any normal <font
+color=blue>f</font> and shuffle <font color=blue>s</font>, we can find
+normal <font color=blue>g</font> such that
+<img src="img-vdash.gif"><font color=blue>f;s&nbsp;=&nbsp;g</font>.
+<p>
+
+Then show by induction on syntax that for any normal <font
+color=blue>f1</font> and <font color=blue>f2</font>, we can find
+normal <font color=blue>g</font> such that
+<img src="img-vdash.gif"><font color=blue>f1;f2&nbsp;=&nbsp;g</font>.
+<p>
+
+Finally show by induction on syntax that for any <font
+color=blue>f</font>, we can find normal <font color=blue>g</font> such
+that <img src="img-vdash.gif"><font color=blue>f&nbsp;=&nbsp;g</font>.
+<img src="img-Box.gif"><p>
+
+Define <font color=blue>p_inv</font> to be the permutation:<p>
+<center>
+      <font color=blue>
+         id_inv = id<br>
+         (p ; q)_inv = q_inv ; p_inv<br>
+         (p <img src="img-blue-times.gif"> q)_inv = 
+            p_inv <img src="img-blue-times.gif"> q_inv<br>
+         symm_inv = symm
+      </font>
+</center><p>
+
+<b>Proposition (Permutations are isos).</b>
+<i>For any <font color=blue>p</font>,
+<img src="img-vdash.gif">&nbsp;<font color=blue>p;p_inv&nbsp;=&nbsp;id</font>
+and 
+<img src="img-vdash.gif">&nbsp;<font color=blue>p_inv;p&nbsp;=&nbsp;id</font>.</i>
+<p>
+
+<b>Proof.</b> An induction on <font color=blue>p</font>.
+<img src="img-Box.gif"><p>
+
+<b>Proposition (Cancellation of permutations).</b>
+<i>For any:</i>
+<center>
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val g(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = g(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+</center>
+<i>we can find <font color=blue>h</font> such that:</i>
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=70 align=absmiddle>
+   <param name="base" value="
+      val h(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = h(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val h(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = h(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val g(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = g(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+</center>
+<p>
+
+<b>Proof.</b> Let <font color=blue>h</font> be: <font
+color=blue>f;p_inv</font>.  Then use soundness and <font
+color=blue>p</font> being an iso to show the required properties.
+<img src="img-Box.gif"><p>
+
+<a name="node-cancel"></a>
+<b>Proposition (Cancellation of nodes).</b>
+<i>For any:</i>
+<center>
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+<i>we can find <font color=blue>h</font> such that:</i>
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=blue>=</font>
+   <applet code="AppletPremon.class" width=150 height=190 align=absmiddle>
+   <param name="base" value="
+      val h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+   <param name="base" value="
+      val g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+</center>
+<p>
+
+<latexinput src="proof-node-cancel.html">
+<a href="proof-node-cancel.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+<b>Proposition (Completeness).</b><i>
+   If [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>g</font>]]
+   then <img src="img-vdash.gif"><font color=blue>f&nbsp;=&nbsp;g</font>.
+</i><p>
+
+<b>Proof.</b>
+   Find the normal form equal to <font color=blue>g</font>, and then 
+   cancel permutations and nodes iteratively,
+   finishing with a use of completeness for shuffles,
+   to prove <img src="img-vdash.gif"><font color=blue>f&nbsp;=&nbsp;g</font>.
+<img src="img-Box.gif"><p>
+
+
+<b>Proposition (Initiality).</b><i>
+   <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) is the initial
+   cartesian category over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.
+</i><p>
+
+<b>Proof.</b> 
+   By construction, <font color=blue>Term</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) is the initial cartesian
+   category over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.
+   Since <font color=blue>Term</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) is expressive, we
+   have a map term : <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) <img
+   src="img-rightarrow.gif"> <font color=blue>Term</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) with the property that
+   [[term(<i>G</i>)]]&nbsp;<img src="img-sim.gif">&nbsp;<i>G</i>.  By
+   soundness and completeness, this map is an isomorphism
+   in the category of categories with finite products 
+   over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>, and so
+   <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) is the initial cartesian category
+   over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.  
+<img src="img-Box.gif"><p>
+
+
+<nolatex>
+<center>
+<a href="paper-future.html">Previous</a> |
+<a href="paper-complete-smc.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

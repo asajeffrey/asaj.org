@@ -1,0 +1,215 @@
+\RequirePackage{color,mathptm,graphics,latexsym}
+\RequirePackage[section]{typehtml}
+\RequirePackage[T1]{fontenc}
+
+\newif\if@slides
+\@slidesfalse
+\DeclareOption{slides}{\@slidestrue}
+\ProcessOptions
+
+\if@twocolumn
+
+\addtolength{\textwidth}{3cm}
+\addtolength{\textheight}{5cm}
+\addtolength{\evensidemargin}{-1.5cm}
+\addtolength{\oddsidemargin}{-1.5cm}
+\addtolength{\topmargin}{-3cm}
+
+\else\if@slides
+\else
+
+\addtolength{\textwidth}{1cm}
+\addtolength{\textheight}{2cm}
+\addtolength{\evensidemargin}{-.5cm}
+\addtolength{\oddsidemargin}{-.5cm}
+\addtolength{\topmargin}{-1cm}
+
+\fi\fi
+
+\parindent=0ex
+\parskip=1.5ex
+
+\newcommand{\fig@eps@rot}[1]{\rotatebox{270}{\fig@eps{#1}}}
+\newcommand{\fig@eps}[1]{\raisebox{-.5\height}{\scalebox{.5}{\includegraphics{#1}}}}
+
+\newcommand{\coprodeps}{\fig@eps@rot{fig-coprod.eps}}
+\newcommand{\mediateeps}{\fig@eps@rot{fig-mediate.eps}}
+\newcommand{\inleps}{\fig@eps@rot{fig-inl.eps}}
+\newcommand{\inreps}{\fig@eps@rot{fig-inr.eps}}
+\newcommand{\ifeps}{\fig@eps@rot{fig-if.eps}}
+\newcommand{\sampleeps}{\fig@eps{fig-sample.eps}}
+\newcommand{\forkeps}{\fig@eps{fig-fork.eps}}
+\newcommand{\commOneeps}{\fig@eps{fig-commOne.eps}}
+\newcommand{\commTwoeps}{\fig@eps{fig-commTwo.eps}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\nsim}{\not\sim}
+\newcommand{\nsimeq}{\not\simeq}
+\newcommand{\obslash}{\scalebox{-1}[1]{$\oslash$}}
+\newcommand{\hookdownarrow}{\@hackrot{$\hookrightarrow$}}
+\newcommand{\rrightarrow}{\mathrel{{\rightarrow}\!\!\!\!\!\!{\rightarrow}}}
+\newcommand{\fulldownarrow}{\@hackrot{$\fullrightarrow$}}
+\newcommand{\fullrightarrow}{\mathop{\hookrightarrow}\limits^{\textsf{full}}}
+\newcommand{\downeq}{\@hackrot{$=$}}
+\newcommand{\@hackrot}[1]{%
+   \raisebox{1.75ex}{\rotatebox{270}{#1}}%
+}
+\newcommand{\eq}{=}
+\newcommand{\primesup}{'}
+\newcommand{\img}[1]{
+   \makebox[0pt][r]{\textcolor{white}{x}}%
+   $#1$%
+}
+\newcommand{\start}{\begin}
+\def\HTML@dosrc#1{%
+%   \textcolor{blue}%
+}
+
+\SGMLdef<frameset>{}
+\SGMLdef<frame>{}
+\SGMLdef</frameset>{}
+\SGMLdef<center>{\begin{center}}
+\SGMLdef</center>{\end{center}}
+\SGMLdef<nolatex>{\SGMLgrabber{nolatex}\@gobble}
+\SGMLdef<title>{\SGMLgrabber{title}\sgml@title}
+\def\sgml@title#1{\title{#1}\global\let\sgml@title\@gobble}
+\SGMLdef<address>{\SGMLgrabber{address}\sgml@address}
+\def\sgml@address#1{\author{#1}\maketitle}
+\SGMLdef<latexdate>{\SGMLgrabber{latexdate}\date}
+\SGMLdef<latexappendix>{\appendix}
+\SGMLdef<latexabstract>{\begin{abstract}}
+\SGMLdef</latexabstract>{\end{abstract}}
+\SGMLdef<latexhline>{%
+   \\\hline
+   \global\let\HTML@table@cr\relax
+   \SGMLgrabber{latexhline}\@gobble%
+}
+\SGMLdef<img>{\expandafter\hack@img\the\toks@}
+\def\hack@img#1#2#3{\hack@img@ #3 #3 \hack@img@#3-#3-black-\hack@img}
+\def\hack@img@ img-#1-#2.gif #3\hack@img@#4-#5-#6-#7-#8-#9\hack@img{%
+   \textcolor{#8}{$\csname #2\endcsname$}%
+}
+\SGMLdef<table>{%
+   \global\let\HTML@table@cr\relax
+   \begin{tabular}{@{}l@{ }l@{ }l@{ }l@{ }l@{ }l@{ }l@{ }l@{ }}%
+}
+\SGMLdef</table>{\end{tabular}\global\let\HTML@table@cr\relax}
+\SGMLdef<tr>{}
+\SGMLdef</tr>{\global\let\HTML@table@cr\\}
+\SGMLdef<td>{%
+   \SGMLgrabber{td}\HTML@td
+}
+\def\HTML@td#1{%
+   \global\let\HTML@td@entry\HTML@td@entry@L
+   \let\do\HTML@td@do
+   \the\toks@
+   \HTML@table@cr\global\let\HTML@table@cr\relax
+   \HTML@td@entry{#1}&%
+}
+\def\HTML@td@entry@L#1{#1}
+\def\HTML@td@entry@C#1{\hfill\hfill#1\hfill\hbox{}}
+\def\HTML@td@entry@R#1{\hfill#1}
+\def\HTML@td@center{center}
+\def\HTML@td@right{right}
+\def\HTML@td@do#1#2{%
+   \def\HTML@td@curr{#2}%
+   \ifx\HTML@td@curr\HTML@td@center
+      \global\let\HTML@td@entry\HTML@td@entry@C
+   \else\ifx\HTML@td@curr\HTML@td@right
+      \global\let\HTML@td@entry\HTML@td@entry@R
+   \fi\fi
+}
+\SGMLdef<typeout>{\typeout{Got here}}
+\SGMLdef<sub>{\SGMLgrabber{sub}\HTML@sub}
+\SGMLdef<sup>{\SGMLgrabber{sup}\HTML@sup}
+\def\HTML@sub#1{$_{\mbox{\scriptsize#1}}$}
+\def\HTML@sup#1{$^{\mbox{\scriptsize#1}}$}
+\SGMLdef<hr>{}
+\SGMLdef<font>{\SGMLgrabber{font}\HTML@font}
+\def\HTML@font#1{%
+   \let\HTML@font@doit\relax
+   \let\do\HTML@font@do
+   \the\toks@
+   \HTML@font@doit{#1}%
+}
+\def\HTML@font@color{color}
+\def\HTML@font@do#1#2{%
+   \def\HTML@font@curr{#1}%
+   \ifx\HTML@font@curr\HTML@font@color
+      \def\HTML@font@doit{\textcolor{#2}}%
+   \fi
+}
+\SGMLdef<applet>{%
+   \global\advance\graphs@count by 1
+   \xdef\graph@name{\jobname-graph-\the\graphs@count}%
+   \ignorespaces
+}
+\SGMLdef</applet>{%
+   \IfFileExists{\graph@name.eps}{%
+      \raisebox{.5ex}{\raisebox{-.5\height}{%
+         \includegraphics{\graph@name.eps}%
+      }}%
+   }{%
+      \PackageWarning{premon}{Graph \the\graphs@count\space is missing}%
+      \textcolor{red}{APPLET}%
+   }%
+}
+\newcount\graphs@count
+\newwrite\graphs@file
+\SGMLdef<param>{%
+   \let\do\param@do
+   \the\toks@
+   \ignorespaces
+}
+\def\param@name{name}
+\def\param@value{value}
+\def\param@base{base}
+\def\param@exp{exp}
+\def\param@free{free}
+\def\param@red{red}
+\def\param@do#1#2{%
+   \def\param@curr{#1}%
+   \ifx\param@curr\param@name
+      \def\param@curr{#2}%
+      \ifx\param@curr\param@base
+         \def\param@doit{\param@do@file{base-\graph@name.pre}}%
+      \else\ifx\param@curr\param@exp
+         \def\param@doit{\param@do@file{\graph@name.pre}}%
+      \else\ifx\param@curr\param@free
+         \def\param@doit{\param@do@file{free-\graph@name.pre}}%
+      \else\ifx\param@curr\param@red
+         \def\param@doit{\xdef\graph@name{red-\graph@name}\@gobble}%
+      \else
+         \def\param@doit{\param@do@unknown{#2}}%
+      \fi\fi\fi\fi
+   \else\ifx\param@curr\param@value
+      \param@doit{#2}%
+   \else
+      \typeout{Unknown parameter: #1}%
+   \fi\fi
+}
+\def\param@do@file#1#2{%
+   \immediate\openout\graphs@file #1
+   \def\graphs@tmp{#2}%
+   \immediate\write\graphs@file{\expandafter\strip@prefix\meaning\graphs@tmp}%
+   \PackageInfo{premon}{Graph written on #1}%
+   \immediate\closeout\graphs@file
+}
+\def\param@do@unknown#1#2{%
+   \PackageWarning{premon}{Unknown parameter name #1: #2}
+}
+\def\param@doit{\param@do@unknown{UNSPECIFIED}}
+\SGMLdef<latexinput>{%
+   \expandafter\hack@input\the\toks@
+   \SGMLgrabber{latexinput}\@gobble%
+}
+\def\hack@input#1#2#3{\input{#3}}
+\SGMLdef<latexslide>{%
+   \slide
+   \expandafter\hack@input\the\toks@
+   \endslide
+   \SGMLgrabber{latexslide}\@gobble%
+}
+
+\SGMLentity{Oslash}{\O}
+\SGMLentity{nbsp}{\nobreakspace}

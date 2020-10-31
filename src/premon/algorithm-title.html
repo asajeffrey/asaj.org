@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>A categorical algorithm for calculating flow graphs</title>
+</head>
+
+<body bgcolor=#ffffff>
+
+<div align=center>
+
+<nolatex>
+   <h1>A categorical algorithm for calculating flow graphs</h1>
+</nolatex>
+
+<latexdate>
+<b>DRAFT of 1997/08/21</b><br>
+<applet code="AppletPremon.class" width=400 height=80>
+<param name="base" value="
+   val parse (string) : PremonJJTExp;
+   val desugar (PremonJJTExp) : PremonExp;
+   val semantics (PremonExp) : Mor;
+   val graph (Mor) : (Graph,Constraints);
+   val solve (Constraints) : Solution;
+   proc draw (Graph,Solution);
+">
+<param name="free" value="
+   term : string;
+">
+<param name="exp" value="
+   let (g:Graph, c:Constraints) = graph (semantics (desugar (parse (term))));
+   draw (g, solve (c))
+">
+</applet>
+</latexdate>
+<p>
+
+
+<address>Alan Jeffrey<br>
+   School of Cognitive and Computing Sciences<br>
+   University of Sussex<br>
+   Brighton BN1 9QH<br>
+   UK<br>
+   alanje@cogs.susx.ac.uk
+</address>
+<p>
+
+<latexabstract>
+</div>
+
+This paper describes an algorithm for drawing mixed data flow and
+control flow graphs from program source.  It is based on 
+categorical semantics of programs, in particular Power and Robinson's
+premonoidal categories, and Hasegawa's presentation of Joyal, Street
+and Verity's traced monoidal categories.
+<p>
+<i>This paper currently does not exist!</i>
+</latexabstract>
+<p>
+
+<nolatex>
+<center>
+Previous |
+Next
+</center>
+</nolatex>
+
+</body>
+</html>

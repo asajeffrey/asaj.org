@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof that Q is State(D)</h1>
+<p>
+
+<a href="paper-state.html#q-is-state-d">
+<b>Proposition (Q is State(D)).</b></a><i>
+<font color=red>Q</font> is isomorphic to
+<font color=red>State</font>(<font color=magenta>D</font>).
+</i><p>
+
+</nolatex>
+
+<b>Proof.</b>
+Since the pushout defining <font color=red>Q</font>
+was taken in the category of strict symmetric premonoidal categories,
+the following diagram commutes:<p>
+<center><table>
+<tr>
+   <td>[[_]]<sub>D</sub> : </td>
+   <td align=right><font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>))</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=magenta>D</font></td>
+<tr>
+</tr>
+<tr>
+   <td></td>
+   <td align=center><img src="img-hookdownarrow.gif"></td>
+   <td></td>
+   <td><img src="img-hookdownarrow.gif"></td>
+</tr>
+<tr>
+   <td>[[_]]<sub>Q</sub> : </td>
+   <td align=right><font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>)))</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=red>Q</font></td>
+</tr>
+</table></center>
+<p>
+We will now define an identity-on-objects isomorphism between
+<font color=red>Q</font> and <font color=red>State</font>(<font color=magenta>D</font>):
+<ul>
+
+<li> For any <font color=red>f</font> : <i>X</i>
+<img src="img-rightarrow.gif"> <i>Y</i>
+in <font color=red>Q</font>
+we can find
+(since [[_]]<sub>Q</sub> is epi) a graph
+<i>G</i> : <b>X</b> <img src="img-rightarrow.gif"> <b>Y</b>
+in 
+<font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>)))
+such that:<p>
+<center>
+   [[<i>G</i> : <b>X</b> <img src="img-rightarrow.gif"> <b>Y</b>]]<sub>Q</sub>
+   = 
+   <font color=red>f</font> : <i>X</i>
+   <img src="img-rightarrow.gif"> <i>Y</i>
+</center>
+<p>
+By definition, <i>G</i> : <b>X</b><font color=red>S</font> 
+<img src="img-rightarrow.gif"> <b>Y</b><font color=red>S</font> 
+in <font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>))
+and so define:<p>
+<center>
+   st(<font color=red>f</font>) 
+   = 
+   [[<i>G</i> : <b>X</b><font color=red>S</font> 
+      <img src="img-rightarrow.gif"> <b>Y</b><font color=red>S</font>]]<sub>D</sub>
+   :
+   <i>X</i> <img src="img-magenta-otimes.gif"> <font color=red>S</font>
+   <img src="img-rightarrow.gif">
+   <i>Y</i> <img src="img-magenta-otimes.gif"> <font color=red>S</font>
+   in 
+   <font color=magenta>D</font>
+</center>
+<p>
+which gives us:
+<center>
+   st(<font color=red>f</font>) 
+   :
+   <i>X</i> 
+   <img src="img-rightarrow.gif">
+   <i>Y</i> 
+   in 
+   <font color=red>State</font>(<font color=magenta>D</font>)
+</center>
+<p>
+
+<li> For any <font color=magenta>f</font> : 
+<i>X</i>
+<img src="img-rightarrow.gif">
+<i>Y</i>
+in <font color=red>State</font>(<font color=magenta>D</font>), we have
+<font color=magenta>f</font> : 
+<i>X</i>&nbsp;<img src="img-magenta-otimes.gif">&nbsp;<font color=red>S</font>
+<img src="img-rightarrow.gif">
+<i>Y</i>&nbsp;<img src="img-magenta-otimes.gif">&nbsp;<font color=red>S</font>
+in <font color=magenta>D</font>.
+We can find
+(since [[_]]<sub>D</sub> is epi) a graph
+<i>G</i> : <b>X</b><font color=red>S</font> 
+<img src="img-rightarrow.gif"> <b>Y</b><font color=red>S</font>
+in <font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>))
+such that:<p>
+<center>
+   [[<i>G</i> : <b>X</b><font color=red>S</font> 
+      <img src="img-rightarrow.gif"> 
+      <b>Y</b><font color=red>S</font>]]<sub>D</sub>
+   = 
+   <font color=magenta>f</font> : 
+   <i>X</i> <img src="img-magenta-otimes.gif"> <font color=red>S</font>
+   <img src="img-rightarrow.gif">
+   <i>Y</i> <img src="img-magenta-otimes.gif"> <font color=red>S</font>
+   in <font color=magenta>D</font>
+</center>
+<p>
+By definition, <i>G</i> : <b>X</b>
+<img src="img-rightarrow.gif"> <b>Y</b>
+in <font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>)))
+and so define:<p>
+<center>
+   ts(<font color=magenta>f</font>)
+   =
+   [[<i>G</i> : <b>X</b>
+      <img src="img-rightarrow.gif"> 
+      <b>Y</b>]]<sub>Q</sub>
+   :
+   <i>X</i>
+   <img src="img-rightarrow.gif">
+   <i>Y</i>
+   in <font color=red>Q</font>
+</center>
+</ul>
+<p>
+It is routine to show that st and ts are symmetric premonoidal functors, and
+that they form an isomorphism.
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-state.html#q-is-state-d">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

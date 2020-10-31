@@ -1,0 +1,150 @@
+<html>
+<head>
+<title>Premonoidal categories and graphical views of programs</title>
+</head>
+
+<body bgcolor=#ffffff>
+
+<h1>Premon API User's Guide</h1>
+
+<p>The Premon applet is a mid-sized (and I'm afraid rather
+underdocumented) piece of software: there's approx 11k lines of Java,
+of which approx. 8k lines are code.</p>
+
+<p>The index of <a href=sources.html>source code files</a>
+and the <a href=tree-pd.html>class heirachy</a> are available, but
+since there's 175 class files, this may be a bit daunting!</p>
+
+<p>The program is broken down into phases, each of which has
+associated classes:</p>
+
+<ul>
+
+<li> The user interface, consisting of the applet and the source code editor.
+<li> The parser, written in JavaCC.
+<li> The untyped abstract syntax tree, with syntax sugar.
+<li> The typed abstract syntax tree, with syntax sugar removed.
+<li> The categorical semantics.
+<li> The graph representation as a set of constraints, plus a method to 
+  draw the graph once the constraints have been solved.
+</ul>
+
+<p>This was the first Java program I ever wrote (beyond "Hello World")
+and if I were to do it again, I would do it differently (eg I'd now
+use AWT1.1) but such is life.</p>
+
+<h2>User interface</h2>
+
+<p>The main user interface classes are:</p>
+
+<p><a href=AppletPremon.html>AppletPremon</a>, which takes an
+expression, the free variables, and the primitives as arguments,
+constructs a <a href=PremonEnvironment.html>PremonEnvironment</a>
+object containing the parsed ASTs, the semantics, and the graph for
+the expression, then draws the result to a <a
+href=CanvasDrawer.html>CanvasDrawer</a> object.  A mouse click on the
+graph causes a <a href=PremonPanel>PremonPanel</a> source code editor
+to pop up in a separate frame.</p>
+
+<p><a href=AppletPremonEditor.html>AppletPremonEditor</a>, which is an
+applet containing a <a href=PremonPanel>PremonPanel</a> source code
+editor.</p>
+
+<h2>Parser</h2>
+
+<p>The parser is written in v0.8 of the
+<a href=http://www.suntest.com/JavaCC/index.html>JavaCC</a>
+Java Compiler Compiler, using the JJTree tools.</a>
+
+<p><a href=PremonJJTParser.jjt>PremonJJTParser</a> is an LL(1)
+grammar for the Premon language, including syntax sugar.</p>
+
+<h2>Untyped, sugared AST</h2>
+
+<p>The <a href=PremonJJTParser.jjt>PremonJJTParser</a> parser
+generates abstract syntax trees.  Each AST class is a subclass of 
+<a href=PremonJJTNode.html>PremonJJTNode</a>.  Each subclass includes a
+<code>desugar</code> method which returns a typechecked AST with all
+syntax sugar removed.</p>
+
+<p><a href=PremonJJTCat.html>PremonJJTCat</a> is a class for categories.</p>
+<p><a href=PremonJJTCon.html>PremonJJTCon</a> is a class for contexts.</p>
+<p><a href=PremonJJTDec.html>PremonJJTDec</a> is a class for declarations.</p>
+<p><a href=PremonJJTExp.html>PremonJJTExp</a> is a class for expressions.</p>
+<p><a href=PremonJJTId.html>PremonJJTId</a> is a class for identifiers.</p>
+<p><a href=PremonJJTPat.html>PremonJJTPat</a> is a class for patterns.</p>
+<p><a href=PremonJJTType.html>PremonJJTType</a> is a class for types.</p>
+
+<h2>Typed, desugared AST</h2>
+
+<p>The <code>desugar</code> method returns a type-annotated abstract
+syntax tree, where all the syntax sugar has been removed.  Each AST
+class has a method <code>semantics</code> which returns the semantics
+as an object (in the case of types or contexts) or a morphism (in the
+case of expressions or declarations).</p>
+
+<p><a href=PremonCat.html>PremonCat</a> is a class for categories.</p>
+<p><a href=PremonCon.html>PremonCon</a> is a class for contexts.</p>
+<p><a href=PremonDec.html>PremonDec</a> is a class for declarations.</p>
+<p><a href=PremonExp.html>PremonExp</a> is a class for expressions.</p>
+<p><a href=PremonPat.html>PremonPat</a> is a class for patterns.</p>
+<p><a href=PremonType.html>PremonType</a> is a class for types.</p>
+<p><a href=PremonVar.html>PremonVar</a> is a class for variables.</p>
+
+<h2>Categorical semantics</h2>
+
+<p>The categorical semantics is given as a partially traced, closed
+premonoidal category with a given monoidal centre and cartesian focus.
+Each class has methods representing the categorical structure, such as
+<code>tensor</code>, <code>comp</code>, <code>curry</code> etc.  The
+<code>Mor</code> class has methods <code>graph0</code> and
+<code>graph1</code> to produce graphs.</p>
+
+<p><a href=Mor.html>Mor</a> is the class of morphisms.</p>
+<p><a href=Mor.html>Obj</a> is the class of objects.</p>
+
+<h2>Graph representation</h2>
+
+<p>The graph representation consists of a set of constraints, plus a
+method <code>draw</code> which draws the graph once the constraints
+have been solved.  There is also a dynamic programming algorithm to
+solve the constraints (which isn't optimal, but it's good enough).</p>
+
+<p><a href=Graph0.html>Graph0</a> is the class of graphs with no
+control lines.  It consists of a <a href=Constraints.html>Constraints</a>
+object and a <code>draw(Drawer)</code> method which draws the
+graph once the constraints have been solved.</p>
+
+<p><a href=Graph1.html>Graph1</a> is the class of graphs with one
+control lines, similar to the <a href=Graph0.html>Graph0</a> class.</p>
+
+<p><a href=Constraints.html>Constraints</a> is a class containing a
+constraint set.  This is a collection of variables
+<i>v</i><sub>1</sub>...<i>v<sub>n</sub></i> together with a collection
+of constraints of the form
+<i>v<sub>i</sub></i>&nbsp;+&nbsp;<i>d</i>&nbsp;&lt;=&nbsp;<i>v<sub>j</sub></i>.
+A constraint set can be solved, producing a 
+<a href=Solution.html>Solution</a> object.</p>
+
+<p><a href=Solution.html>Solution</a> is a class containing a solution
+to a constraints set.  It provides a lookup function <code>int
+value(int)</code> where <code>value(i)</code> is the value of variable
+<i>v<sub>i</sub></i>.  The solution is implemented using a 2-pass
+dynamic programming algorithm, which first minimizes the values (with
+minimum 0), finds the resulting bounding box, then maximizes them
+(with maximum given by the bounding box), and finally returns the
+average of the minimum and maximum values.  This is by no means an
+optimal solution, but it's good enough.</p>
+
+<p><a href=Drawer.html>Drawer</a> is the class of `places which can be
+drawn to'.  It is constructed from a low-level 
+<a href=Grapher.html>Grapher</a> graphics class, and a 
+<a href=Solution.html>Solution</a> to the constraints.</p>
+
+<p><a href=Drawer.html>Grapher</a> is a low-level graphics class,
+implemented either using an AWT graphics context, or a PostScript back
+end (this was all written in the days before the AWT 1.1 PrintJob
+class existed).</p>
+
+</body>
+</html>

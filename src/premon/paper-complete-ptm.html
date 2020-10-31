@@ -1,0 +1,1010 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Completeness proof: partial traced cartesian categories</h1>
+<p>
+
+Given a strict symmetric monoidal category <b>C</b>: with a
+full subcategory (not necessarily symmetric monoidal) <b>TC</b>:
+<p>
+<center>
+   <i>U</i> :
+   <b>TC</b>
+   <img src="img-hookrightarrow.gif">
+   <b>C</b> 
+</center>
+<p>
+
+a <i>partial trace</i> is a natural transformation:
+<p>
+<center>
+   Tr<sub><i>X Y A</i></sub> : 
+   <b>C</b>[<i>X</i> <img src="img-otimes.gif"> <i>U(A)</i>, <i>Y</i> <img src="img-otimes.gif"> <i>U(A)</i>]
+   <img src="img-rightarrow.gif">
+   <b>C</b>[<i>X</i>, <i>Y</i>]
+</center>
+<p>
+satisfying certain axioms (given below, since they are much simpler
+to present graphically than equationally).
+<p>
+
+As an example, let <b>TCpo</b> be the full subcategory of <b>Cpo</b>
+where all of the objects have a least element.  Then
+<b>TCpo</b>&nbsp;<img src="img-hookrightarrow.gif">&nbsp;<b>Cpo</b>
+has a partial trace given by fixed points.
+<p>
+
+As another example, given a signature
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>
+where a subset of the sorts are 
+define a cyclic single-coloured flow graph
+to be <i>traceable</i> iff any cyclic path goes through at
+least one edge labelled with a <b>traceable</b> sort.
+Taking <b>C</b> to be the category of traceable graphs up to bisimulation,
+and <b>TC</b> to be the full subcategory where the objects 
+are traceable sorts, we have a partial trace given by forming
+a feedback loop:
+<p>
+
+<center>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let x:(X1...Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn, proc a():A) = f(x,a);
+   return (y1...yn);
+">
+</applet>
+</center>
+<p>
+
+Note that in order to allow `black holes':
+
+<center>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="exp" value="
+   local rec a;
+   let proc b() = a;
+   let proc a() = a;
+   return b;
+">
+</applet>
+</center>
+we have to relax the condition that all edges have a unique source,
+and allow traceable edges to have at most one source.  Then the
+above black hole is a graph with one outgoing edge with no source.
+<p>
+
+We shall provide a different axiomatization of traces than that provided
+by Joyal, Street and Verity, but we shall show below that in the case
+when <b>C</b> and 
+<b>TC</b> are the same category, we recover their definition.
+Note that these
+axioms are all graph isomorphisms, and indeed are a complete axiomatization
+for graph isomorphism.
+<p>
+
+Naturality in <i>X</i> 
+(for 
+   <font color=blue>f</font> : 
+   <i>X<img src="img-primesup.gif"> 
+      <img src="img-rightarrow.gif"> 
+   X</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(A)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm):(Y1...Yn);
+   val g (Y1...Yn,proc():A):(Z1...Zo,proc():A);
+">
+<param name="exp" value="
+   let x:(X1...Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = f(x);
+   let y:(Y1...Yn) = (y1...yn);
+   local rec a;
+   let (z1:Z1...zo:Zo,proc a():A) = g(y,a);
+   return (z1...zo);
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm):(Y1...Yn);
+   val g (Y1...Yn,proc():A):(Z1...Zo,proc():A);
+">
+<param name="exp" value="
+   let x:(X1...Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn) = f(x);
+   let y:(Y1...Yn) = (y1...yn);
+   let (z1:Z1...zo:Zo,proc a():A) = g(y,a);
+   return (z1...zo);
+">
+</applet></td></tr><tr><td align=center>
+   <font color=blue>f</font>; 
+   Tr<sub><i>X Y A</i></sub> (<font color=blue>g</font>)
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>X<img src="img-primesup.gif"> Y A</i></sub> 
+   (<font color=blue>f</font> <img src="img-otimes.gif"> 
+    <font color=blue>id</font><sub><i>U(A)</i></sub>;
+    <font color=blue>g</font>)
+</td></tr></table></center>
+
+<p>
+
+Naturality in <i>Y</i> 
+(for 
+   <font color=blue>f</font> : 
+   <i>Y
+      <img src="img-rightarrow.gif"> 
+   Y<img src="img-primesup.gif"></i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(A)</i>
+in <b>C</b>):
+
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A):(Y1...Yn,proc():A);
+   val g (Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let x:(X1...Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn,proc a():A) = f(x,a); (
+      let (z1:Z1...zo:Zo) = g(y1...yn);
+      return (z1...zo);
+   )
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A):(Y1...Yn,proc():A);
+   val g (Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let x:(X1...Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn,proc a():A) = f(x,a);
+   let (z1:Z1...zo:Zo,proc a():A) = (g(y1...yn),a);
+   return (z1...zo);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> (<font color=blue>g</font>);
+   <font color=blue>f</font>
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>X Y<img src="img-primesup.gif"> A</i></sub> 
+   (<font color=blue>g</font>;
+    <font color=blue>f</font>  <img src="img-otimes.gif"> 
+    <font color=blue>id</font><sub><i>U(A)</i></sub>)
+</td></tr></table></center>
+
+<p>
+
+Yanking:
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=75 align=absmiddle>
+<param name="free" value="
+   proc a():A;
+">
+<param name="exp" value="
+   local rec a1; 
+   let proc a2():A = a1;
+   let proc a1():A = a;
+   a2
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=45 align=absmiddle>
+<param name="free" value="
+   proc a():A;
+">
+<param name="exp" value="
+   a
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>U(A) U(A) A</i></sub> 
+   (<font color=blue>symm</font><sub><i>U(A) U(A)</i></sub>)
+</td><td>
+   = 
+</td><td align=center>
+   <font color=blue>id</font><sub><i>U(A)</i></sub>
+</td></tr></table></center>
+
+<p>
+
+Symmetry sliding
+(for 
+   <font color=blue>f</font> : 
+   <i>X <img src="img-otimes.gif"> U(A) <img src="img-otimes.gif"> U(B)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(B) <img src="img-otimes.gif"> U(A)</i>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():B) : (Y1...Yn,proc():B,proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec b; 
+   local rec a; 
+   let (y1:Y1...yn:Yn, proc b():B, proc a():A) = f (x1...xm,a,b);
+   let (y1:Y1...yn:Yn, proc b():B, proc a():A) = (y1...yn,b,a);
+   return (y1...yn);
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A,proc():B) : (Y1...Yn,proc():B,proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a; 
+   local rec b; 
+   let (y1:Y1...yn:Yn, proc b():B, proc a():A) = f (x1...xm,a,b);
+   let (y1:Y1...yn:Yn, proc b():B, proc a():A) = (y1...yn,b,a);
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+<table><tr><td>
+   Tr<sub><i>X Y A</i></sub> 
+   (Tr<sub><i>(X <img src="img-otimes.gif"> U(A)) (Y <img src="img-otimes.gif"> U(A)) B</i></sub>
+</td></tr><tr><td>
+   (<font color=blue>f</font>;
+    (<font color=blue>id</font><sub><i>Y</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>symm</font><sub><i>U(B) U(A)</i></sub>))
+</td></tr></table>
+</td><td>
+   = 
+</td><td align=center>
+<table><tr><td>
+   Tr<sub><i>X Y B</i></sub> 
+   (Tr<sub><i>(X <img src="img-otimes.gif"> U(B)) (Y <img src="img-otimes.gif"> U(B)) A</i></sub> 
+</td></tr><tr><td>
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>symm</font><sub><i>U(B) U(A)</i></sub>);
+   <font color=blue>f</font>)
+</td></tr></table>
+</td></tr></table></center>
+
+<p>
+
+Strength
+(for 
+   <font color=blue>f</font> : 
+   <i>V
+      <img src="img-rightarrow.gif"> 
+   W</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(A)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (W1...Wl):(Y1...Yn); val g(X1...Xm,proc():A):(Z1...Zo,proc():A);
+">
+<param name="exp" value="
+   let w:(W1...Wl) = (w1...wl);
+   let x:(X1...Xm) = (x1...xm); (
+   let (y1:Y1...yn:Yn) = f(w);
+   local rec a;
+   let (z1:Z1...zo:Zo,proc a():A) = g(x,a);
+   return (y1...yn,z1...zo);
+   )
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (W1...Wl):(Y1...Yn); val g(X1...Xm,proc():A):(Z1...Zo,proc():A);
+">
+<param name="exp" value="
+   let w:(W1...Wl) = (w1...wl);
+   let x:(X1...Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn) = f(w);
+   let (z1:Z1...zo:Zo,proc a():A) = g(x,a);
+   return (y1...yn,z1...zo);
+">
+</applet></td></tr><tr><td align=center>
+   <font color=blue>f</font>
+   <img src="img-otimes.gif"> 
+   Tr<sub><i>X Y A</i></sub> (<font color=blue>g</font>)
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>(V <img src="img-otimes.gif"> X) (W <img src="img-otimes.gif"> Y) A</i></sub> 
+   (<font color=blue>f</font> 
+     <img src="img-otimes.gif"> 
+     <font color=blue>g</font>)
+</td></tr></table></center>
+
+<p>
+
+For those readers familiar with Joyal, Street and Verity's
+axiomatization of a trace, the above axioms are obviously 
+derivable from theirs.  Moreover, the following lemmas show that
+we can derive their axiomatization, so in the case where 
+<b>TC</b> and <b>C</b> coincide, our
+axiomatization is the same as theirs.
+<p>
+
+
+<a name="paramdinat"></a>
+<b>Proposition (Parameterized dinaturality)</b>
+(for 
+   <font color=blue>f</font> : 
+   <i>Z <img src="img-otimes.gif"> U(B)
+      <img src="img-rightarrow.gif"> 
+   U(A)</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(B)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=220 height=130 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec a;
+   let ((y1:Y1...yn:Yn, proc b():B),z1:Z1...zo:Zo) = (
+      (let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a); (y1...yn,b)),
+      z1...zo
+   );
+   let proc a():A = f(z1...zo,b);
+   return (y1...yn);
+">
+</applet></td><td>
+   =
+</td><td>
+<applet code="AppletPremon.class" width=220 height=130 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec b;
+   let (x1:X1...xm:Xm,proc a():A) = (x1...xm,f(z1...zo,b));
+   let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a);
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+<table><tr><td>
+   Tr<sub><i>(X <img src="img-otimes.gif"> Z) Y A</i></sub> 
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>symm</font><sub><i>Z U(A)</i></sub>);
+</td></tr><tr><td>
+    (<font color=blue>g</font>
+     <img src="img-otimes.gif"> 
+     <font color=blue>id</font><sub><i>Z</i></sub>);
+    (<font color=blue>id</font><sub><i>Y</i></sub>
+     <img src="img-otimes.gif"> 
+     (<font color=blue>symm</font><sub><i>U(B) Z)</i></sub>;
+      <font color=blue>f</font>)))
+</td></tr></table>
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>(X <img src="img-otimes.gif"> Z) Y B</i></sub> 
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>f</font>);
+    <font color=blue>g</font>)
+</td></tr></table></center>
+<p>
+
+<latexinput src="proof-paramdinat.html">
+   <a href="proof-paramdinat.html"><b>Proof.</b></a>
+   <img src="img-Box.gif">
+   <p>
+</latexinput>
+
+<b>Corollary (Dinaturality)</b>
+(for 
+   <font color=blue>f</font> : 
+   <i>U(B)
+      <img src="img-rightarrow.gif"> 
+   U(A)</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(B)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=160 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a);
+   let proc a():A = f(b);
+   return (y1...yn);
+">
+</applet></td><td>=</td><td>
+<applet code="AppletPremon.class" width=160 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec b;
+   let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,f(b));
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> 
+   (<font color=blue>g</font>;
+    (<font color=blue>id</font><sub><i>Y</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>))
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>X Y B</i></sub> 
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>);
+    <font color=blue>g</font>)
+</td></tr></table></center>
+<p>
+<b>Proof.</b>
+Let <i>Z</i> be <i>I</i> in the above.
+<img src="img-Box.gif">
+<p>
+
+<a name="traceunit"></a>
+<b>Proposition (Trace respects unit)</b>
+(for 
+   <font color=blue>f</font> : 
+   <i>I
+      <img src="img-rightarrow.gif"> 
+   U(A)</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   local rec a; 
+   let (y1:Y1...yn:Yn) = g(x1...xm,a);
+   let proc a():A = f();
+   return (y1...yn);
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = g(x1...xm,f());
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> 
+   (<font color=blue>g</font>;
+    <font color=blue>id</font><sub><i>Y</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>)
+</td><td>
+   = 
+</td><td align=center>
+   (<font color=blue>id</font><sub><i>X</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>);
+   <font color=blue>g</font>
+</td></tr></table></center>
+
+<p>
+
+<latexinput src="proof-traceunit.html">
+<a href="proof-traceunit.html"><b>Proof.</b></a>
+<img src="img-Box.gif">
+<p>
+</latexinput>
+
+<a name="tracetensor"></a>
+<b>Proposition (Trace respects tensor)</b>
+(for 
+   <font color=blue>f</font> : 
+   <i>U(B) <img src="img-otimes.gif"> U(C)
+      <img src="img-rightarrow.gif"> 
+   U(A)</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(B) <img src="img-otimes.gif"> U(C)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec a; 
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,a);
+   let proc a():A = f(b,c);
+   return (y1...yn);
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (proc():B,proc():C):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B,proc():C);
+">
+<param name="exp" value="
+   local rec b; 
+   local rec c;
+   let (y1:Y1...yn:Yn, proc b():B, proc c():C) = g(x1...xm,f(b,c));
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> 
+   (<font color=blue>g</font>;
+    <font color=blue>id</font><sub><i>Y</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>)
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>X Y C</i></sub> 
+   (Tr<sub><i>X Y B</i></sub>
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>);
+   <font color=blue>g</font>))
+</td></tr></table></center>
+<p>
+
+<latexinput src="proof-tracetensor.html">
+<a href="proof-tracetensor.html"><b>Proof.</b></a>
+<img src="img-Box.gif">
+<p>
+</latexinput>
+
+<a name="tracedblsym"></a>
+<b>Proposition (Trace respects double symmetry)</b>
+(for 
+   <font color=blue>f</font> : 
+   <i>V
+      <img src="img-rightarrow.gif"> 
+   W</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(A)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   return (
+      (
+         local rec a;
+         let (y1:Y1...yn:Yn, proc a():A) = g(x1...xm,a);
+         (y1...yn)
+      ),
+      (
+         let (w1:W1...wl:Wl) = f(v1...vk);
+         (w1...wl)
+      )
+   );
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=180 height=120 align=absmiddle>
+<param name="free" value="
+   v1:V1; vk:Vk; x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (V1...Vk):(W1...Wl); 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,v1:V1...vk:Vk) = (x1...xm,v1...vk);
+   local rec a;
+   let (y1:Y1...yn:Yn, proc a():A) = g(x1...xm,a);
+   let (w1:W1...wl:Wl) = f(v1...vk);
+   let (y1:Y1...yn:Yn,proc a():A,w1:W1...wl:Wl) = (y1...yn,a,w1...wl);
+   return (y1...yn,w1...wl);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> (<font color=blue>g</font>)
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>(X <img src="img-otimes.gif"> V) (Y <img src="img-otimes.gif"> W) A</i></sub> 
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>symm</font><sub><i>V U(A)</i></sub>);
+    (<font color=blue>g</font> 
+     <img src="img-otimes.gif"> 
+     <font color=blue>f</font>);
+    (<font color=blue>id</font><sub><i>Y</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>symm</font><sub><i>U(A) W</i></sub>))
+</td></tr></table></center>
+
+<latexinput src="proof-tracedblsym.html">
+<p>
+<a href="proof-tracedblsym.html"><b>Proof.</b></a>
+<img src="img-Box.gif">
+<p>
+</latexinput>
+
+We show below that the axioms for a partially traced monoidal category
+are complete for graphs up to graph isomorphism.  But as we discussed
+before, graph isomorphism is not a sound model for categories with
+finite products, and we chose bisimulation as the appropriate
+equivalence on graphs.  In order to provide a complete axiomatization
+for cyclic graphs up to bisimulation, we need an additional property.
+In a partially traced monoidal category where the monoid is product,
+the trace is <i>uniform wrt shuffles</i> iff, for any shuffle 
+<font color=blue>s</font>:
+<center>
+If:
+<applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():B1...proc():Bj) : (Y1...Yn,proc():B1...proc():Bj);
+   val g(X1...Xm,proc():A1...proc():Ai) : (Y1...Yn,proc():A1...proc():Ai);
+   val s(proc():A1...proc():Ai) : (proc():B1...proc():Bj);
+">
+<param name="exp" value="      
+   let (x1:X1...xm:Xm,proc b1():B1...proc bj():Bj) = (x1...xm,s(a1...ai));
+   let (y1:Y1...yn:Yn,proc b1():B1...proc bj():Bj) = f(x1...xm,b1...bj);
+   return (y1...yn,b1...bj);
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():B1...proc():Bj) : (Y1...Yn,proc():B1...proc():Bj);
+   val g(X1...Xm,proc():A1...proc():Ai) : (Y1...Yn,proc():A1...proc():Ai);
+   val s(proc():A1...proc():Ai) : (proc():B1...proc():Bj);
+">
+<param name="exp" value="      
+   let (y1:Y1...yn:Yn,proc a1():A1...proc ai():Ai) = g(x1...xm,a1...ai);
+   let (proc b1():B1...proc bj():Bj) = s(a1...ai);
+   return (y1...yn,b1...bj);
+">
+</applet>
+</center>
+<center>
+then:
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():B1...proc():Bj):(Y1...Yn,proc():B1...proc():Bj);
+">
+<param name="exp" value="
+   local rec b1,bj;
+   let (y1:Y1...yn:Yn, proc b1():B1...proc bj():Bj) = f(x1...xm,b1...bj);
+   let (y:(Y1...Yn), proc b1():B1...proc bj():Bj) = (y1...yn,b1...bj);
+   return (y);
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val g (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = g(x1...xm,a1...ai);
+   let (y:(Y1...Yn), proc a1():A1...proc ai():Ai) = (y1...yn,a1...ai);
+   return (y);
+">
+</applet>
+</center>
+A <i>partially traced cartesian category</i> is a partially traced
+monoidal category where the monoid is product and the trace is uniform
+wrt shuffles.  We shall show below that
+the axioms for a partially traced cartesian category are sound and
+complete for traceable cyclic graphs up to bisimulation.
+<p>
+
+We can now replay the same proof of soundness and completeness
+as in the <a href="paper-complete-cfp.html">finite products</a> case.
+In some cases, the proof of the theorems is so similar to that in
+the finite products case that we elide it.
+<p>
+
+Let <font color=blue>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) 
+be the category of traceable cyclic single-coloured flow graphs
+over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>
+viewed up to bisimulation.
+<p>
+
+<b>Proposition (Bisimulation is a congruence).</b><i>
+Bisimulation is a congruence wrt 
+the graph operations.
+</i>
+<p>
+
+<b>Proposition (Flow graphs form a partially traced cartesian category).</b>
+<i>
+   <font color=blue>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) 
+   is a partially traced cartesian category.
+</i>
+<p>
+
+Define 
+<font color=blue>CTerm</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+as the free partially traced cartesian category with finite products over 
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.
+<p>
+<center><table>
+   <tr>
+      <td><font color=blue>f</font>,<font color=blue>g</font></td>
+      <td>::=</td>
+      <td>...as for <font color=blue>Term</font>...</td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td>Tr<sub><i>X</i></sub>(<font color=blue>f</font>)</td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A):(Y1...Yn,proc():A);
+">
+<param name="exp" value="
+   let x:(X1...Xm) = (x1...xm);
+   local rec a;
+   let (y1:Y1...yn:Yn, proc a():A) = f(x,a);
+   return (y1...yn);
+">
+</applet>
+      </td>
+   </tr>
+</table>
+</center>
+
+If terms can be proved equal using the axioms for a partially traced
+cartesian category, we shall write
+<img src="img-vdash.gif">&nbsp;<font color=blue>f</font>&nbsp;<font color=blue>=</font>&nbsp;<font color=blue>g</font>.
+<p>
+
+<b>Proposition (Soundness).</b>
+<i>If <img src="img-vdash.gif">&nbsp;<font color=blue>f</font>&nbsp;<font color=blue>=</font>&nbsp;<font color=blue>g</font>
+then [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>g</font>]].</i>
+<p>
+
+<b>Proposition (Expressivity).</b>
+<i>For any traceable graph G, there is a term <font color=blue>f</font>
+such that [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;G.</i>
+<p>
+
+A term is in <i>normal form</i> 
+(ranged over by <font color=blue>n</font>) iff it is of the form:
+<center>
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = f(x1...xm,a1...ai);
+   let (y:(Y1...Yn), proc a1():A1...proc ai():Ai) = (y1...yn,a1...ai);
+   return (y);
+">
+</applet>
+</center>
+where <font color=blue>f</font> is acyclic, and the only traceable
+edges in <font color=blue>f</font> are the incoming and outgoing
+edges.
+<p>
+
+<a name="trace-normal"></a>
+<b>Proposition (Normalization).</b><i>
+   For any term <font color=blue>f</font> there is a normal form
+   <font color=blue>g</font> such that
+   <img src="img-vdash.gif"><font color=blue>f</font>&nbsp;<font color=blue>=</font>&nbsp;<font color=blue>g</font>.
+</i><p>
+
+<latexinput src="proof-trace-normal.html">
+   <a href="proof-trace-normal.html"><b>Proof.</b></a>
+   <img src="img-Box.gif">
+   <p>
+</latexinput>
+
+We can then prove completeness, essentially by 
+converting any bisimulation between cyclic graphs into a shuffle,
+then using uniformity.
+<p>
+
+<a name="complete-ptm"></a>
+<b>Proposition (Completeness).</b><i>
+   If [[<font color=blue>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=blue>g</font>]]
+   then
+   <img src="img-vdash.gif"><font color=blue>f</font>&nbsp;<font color=blue>=</font>&nbsp;<font color=blue>g</font>.   
+</i><p>
+
+<latexinput src="proof-complete-ptm.html">
+   <a href="proof-complete-ptm.html"><b>Proof.</b></a>
+   <img src="img-Box.gif">
+   <p>
+</latexinput>
+
+<b>Proposition (Initiality).</b><i>
+   <font color=blue>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) is the initial 
+   partially traced cartesian category over
+   <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.
+</i><p>
+
+We can extend this result to include embedding single-coloured cyclic
+graphs into two- or three-coloured graphs.  Let 
+<font color=magenta>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>) and <font color=red>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) 
+be the categories of cyclic two- and three-coloured graphs such that:<p>
+<ul>
+<li> Any cyclic path goes through at least one edge labelled with a
+   <b>traceable</b> sort.<p>
+<li> Any nodes on a cycle are labelled in
+   <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.<p>
+</ul>
+
+<b>Proposition (Initiality).</b><i>
+   <font color=magenta>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>) is the initial symmetric monoidal category
+   over <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> with 
+   <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) as a sub smc with the same objects.
+   <font color=red>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) is the initial symmetric premonoidal
+   category over <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub> with 
+   <font color=magenta>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>) as centre.
+</i><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-pmc.html">Previous</a> |
+<a href="paper-state.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

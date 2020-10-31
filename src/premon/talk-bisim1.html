@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Equivalence between flow graphs</h1>
+
+Equality between flow graphs is not just graph isomorphism,
+since graphs containing only <font color=blue>value</font> 
+nodes can be copied and discarded:
+<center>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      let (y1:Y1...yn:Yn) = (y1...yn);
+      (y1...yn,y1...yn)
+   ">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (x1:X1...xm:Xm) = (x1...xm);
+      let (y1a:Y1...yna:Yn, y1b:Y1...ynb:Yn) = (G(x1...xm), G(x1...xm));
+      (y1a...yna,y1b...ynb)
+   ">
+</applet>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn);
+      ()
+   ">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      (x1...xm);
+      ()
+   ">
+</applet>
+</center>
+but the same is not true for graphs containing some <font
+color=magenta>central</font> nodes:
+<center>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      central G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      let (y1:Y1...yn:Yn) = (y1...yn);
+      (y1...yn,y1...yn)
+   ">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      central G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (x1:X1...xm:Xm) = (x1...xm);
+      let (y1a:Y1...yna:Yn, y1b:Y1...ynb:Yn) = (G(x1...xm), G(x1...xm));
+      (y1a...yna,y1b...ynb)
+   ">
+</applet>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      central G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn);
+      ()
+   ">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      central G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      (x1...xm);
+      ()
+   ">
+</applet>
+</center>
+Is there an equivalence on graphs with these properties?
+
+  </body>
+</html>

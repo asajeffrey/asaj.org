@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>A flow graph applet</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Categories of graphs</h1>
+<p>
+
+We divide the nodes of the graph into three kinds:
+<ul>
+
+<li> <i>Value</i> nodes (drawn in blue).  These represent programs
+where order of evaluation is unimportant (so they have no control arcs)
+and which can be duplicated or discarded without changing the semantics of
+the program.  For example, all of the arithmetic operators are values,
+so we can duplicate them:
+<center>
+<applet code="AppletPremon.class" width=100 height=150 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   (1 + 2) * (1 + 2)
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = (1 + 2);
+   x*x
+">
+</applet>
+</center>
+
+<li> <i>Process</i> nodes (drawn in red).  These represent programs
+where order of evaluation is important, so they have one incoming 
+and one outgoing control arc.  They cannot be duplicated or discarded
+without changing the semantics of the program.  For example, 
+the print and read nodes are process nodes in the graph:
+<center>
+<applet code="AppletPremon.class" width=480 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   print ('What is your name?');
+   let name:string = read();
+   print ('Hello, ' ^ name ^ '.')
+">
+</applet>
+</center>
+
+
+<li> <i>Central</i> nodes (drawn in magenta).  These represent programs 
+where order of evaluation is unimportant, but which cannot be 
+duplicated or discarded without changing the semantics of the program.
+For example if we consider the SML functions for manipulating pointers
+to integers (called ref cells in SML):
+<center>
+<table>
+<tr>
+<td>
+<applet code="AppletPremon.class" width=100 height=50>
+<param name="base" value="
+   central ref (int) : ref;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   ref(x)
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=50>
+<param name="base" value="
+   proc !(ref):int;
+">
+<param name="free" value="
+   r:ref;
+">
+<param name="exp" value="
+   !(r)
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=50>
+<param name="base" value="
+   proc := (ref,int);
+">
+<param name="free" value="
+   r:ref; x:int;
+">
+<param name="exp" value="
+   r:=x
+">
+</applet>
+</td></tr>
+<tr><td>
+create a new ref cell
+</td><td>
+dereference a ref cell
+</td><td>
+assign to a ref cell
+</td></tr>
+</table>
+</center>
+<p>
+A program to create a new cell, assign to it, then dereference it is:
+<center>
+<applet code="AppletPremon.class" width=300 height=120 align=middle>
+<param name="base" value="
+   central ref (int) : ref;
+   proc !(ref):int;
+   proc := (ref,int);
+   val + (int, int) : int;
+">
+<param name="exp" value="   
+   let r:ref = ref(0);
+   r := 1;
+   !(r)
+">
+</applet>
+</center>
+A program to create two new cells, assign to one and dereference the other is:
+<center>
+<applet code="AppletPremon.class" width=300 height=120 align=middle>
+<param name="base" value="
+   central ref (int) : ref;
+   proc !(ref):int;
+   proc := (ref,int);
+   val + (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = 0;
+   let (r1:ref,r2:ref) = (ref(x),ref(x));
+   r1 := 1;
+   !(r2)
+">
+</applet>
+</center>
+The only difference between these programs is that the reference has been
+copied, but they are clearly different programs.  So `ref' cannot be a
+value node.  But the order in which ref cells are created is unimportant,
+so `ref' does not need any control arcs, so shouldn't be a process node.
+It is `in-between' being a value node and a process node, and such cases
+are called <i>central</i>
+
+</ul>
+Having characterized nodes as value, central, or process nodes, we can
+do the same thing for graphs:
+<ul>
+<li> A <i>value</i> graph contains only value nodes.  It has no
+   incoming or outgoing control arcs.  For example:
+<center>
+<applet code="AppletPremon.class" width=300 height=120 align=middle>
+<param name="base" value="
+   central ref (int) : ref;
+   proc !(ref):int;
+   proc := (ref,int);
+   val + (int, int) : int;
+">
+<param name="exp" value="
+   1+2
+">
+</applet>
+</center>
+
+<li> A <i>central</i> graph contains only value nodes and central
+   nodes.  It has no incoming or outgoing control arcs.  For example:
+<center>
+<applet code="AppletPremon.class" width=300 height=120 align=middle>
+<param name="base" value="
+   central ref (int) : ref;
+   proc !(ref):int;
+   proc := (ref,int);
+   val + (int, int) : int;
+">
+<param name="exp" value="
+   ref(1+2)
+">
+</applet>
+</center>
+
+<li> A <i>process</i> graph contains nodes of any colour.  It has
+   one incoming and one outgoing control arc.  For example:
+<center>
+<applet code="AppletPremon.class" width=300 height=120 align=middle>
+<param name="base" value="
+   central ref (int) : ref;
+   proc !(ref):int;
+   proc := (ref,int);
+   val + (int, int) : int;
+">
+<param name="exp" value="
+   let r:ref = ref(1+2);
+   let x:int = !(r);
+   r := x
+">
+</applet>
+</center>
+
+</ul>
+The radio buttons `Value', `Central' and `Process' show the category of
+the program's flow graph.
+<p>
+Anyone interested in the categorical basis of the applet should read
+the companion paper
+<a href="paper.html" target="_top">Premonoidal categories and a graphical view of programs</a>
+but be warned, a knowledge of category theory is expected!
+<p>
+
+<nolatex>
+<center>
+<a href="demo-fun.html">Previous</a> |
+<a href="demo-usage.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

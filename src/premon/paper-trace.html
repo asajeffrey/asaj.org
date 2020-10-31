@@ -1,0 +1,389 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Partial trace</h1>
+<p>
+
+<h2>Syntax</h2>
+<p>
+Given three signatures 
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,
+<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> and 
+<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub> 
+with the same sorts, where a subset of the sorts are 
+tagged as <b>traceable</b>, define 
+RecExp(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) 
+as extending Exp(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) with:
+<p>
+<center>
+<table>
+   <tr><td><i>D</i> </td> <td> ::= </td> <td>...as before...</td> </tr>
+   <tr><td></td> <td>|</td> <td> <b>local rec</b> <i>x</i>; <i>D</i></td>
+   <td>(Local recursive declaration)</td></tr>
+</table>
+</center>
+<p>
+Add new judgements
+<img src="img-Gamma.gif"> <img src="img-vdash.gif">
+<i>T</i> <b>traceable</b>, which for this section just
+inherits the tags from the signatures.  Then the type rule for
+local recursive declarations is:<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>T</i> <b>traceable</b></td>
+   </tr>
+   <tr>
+      <td><img src="img-Gamma.gif">, <i>x</i> : <i>T</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : (<img src="img-Gamma.gif"><sub>1</sub>, <i>x</i> : <i>T</i>, <img src="img-Gamma.gif"><sub>2</sub>) in <font color=blue>val</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<b>local rec</b> <i>x</i>; <i>D</i>) : (<img src="img-Gamma.gif"><sub>1</sub>, <img src="img-Gamma.gif"><sub>2</sub>) in <font color=blue>val</font></td>
+   </tr>
+</table>
+</center>
+<p>
+Note that recursive declarations are only allowed in 
+<font color=blue>val</font>: this restriction is based on
+the motivating denotational model, where non-trivial fixed points only
+exist in <b>Cpo</b>, not in <b>Cpo</b><sub><img src="img-bot.gif"></sub>.
+The restriction to <b>traceable</b> types is also based on this
+example: <b>Cpo</b> does not have fixed points for all objects, only
+those with least elements.  So in this motivating example,
+<font color=blue>V</font> is <b>Cpo</b>, 
+<font color=red>P</font> is <b>Cpo</b><sub><img src="img-bot.gif"></sub>,
+and the traceable objects are those with least elements.<p>
+
+<h2>Graphical semantics</h2>
+<p>
+Previously, all of the graphs we have described have been acyclic.
+In order to give the semantics for recursive declarations, we
+allow cyclic graphs:
+<center>
+<table>
+<tr>
+   <td>[[<b>local rec</b> <i>x</i>; <i>D</i> in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=120 align=absmiddle>
+<param name="base" value="
+   val D (X1...Xm,proc():Z) : (Y1...Yn,proc():Z);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x:(X1...Xm)) = (x1...xm);
+   local rec z;
+   let (y1:Y1...yn:Yn,proc z():Z) = D(x,z);
+   return (y1...yn);
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+For example, the fixed point of <font color=blue>f</font> is
+(when <font color=blue>f</font> has a <b>traceable</b> result):
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1;   xm:Xm;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   local rec z1;
+   let proc z():Z = f(x1...xm,z1);
+   let proc z1():Z = z;
+   z
+">
+</applet>
+</center>
+<p>
+
+This is an indexed fixed point becase:
+<p><center>
+<table>
+<tr><td></td><td>
+<applet code="AppletPremon.class" width=180 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1;   xm:Xm;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   local rec z1;
+   let proc z():Z = f(x1...xm,z1);
+   let proc z1():Z = z;
+   z
+">
+</applet>
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=125 align=absmiddle>
+<param name="free" value="
+   x1:X1;   xm:Xm;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   local rec z1;
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (proc z():Z, proc z1():Z) = (f(x1...xm,z1), f(x1...xm,z1));
+   z
+">
+</applet>
+</td><td>
+(Naturality of <font color=blue>copy</font>)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=125 align=absmiddle>
+<param name="free" value="
+   x1:X1;   xm:Xm;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec z1;
+   let (proc z():Z, proc z1():Z) = (z1, f(x1...xm,z1));
+   f(x1...xm,z)
+">
+</applet>
+</td><td>
+(Naturality of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=180 height=125 align=absmiddle>
+<param name="free" value="
+   x1:X1;   xm:Xm;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   local rec z1;
+   let proc z():Z = f(x1...xm,z1);
+   let proc z1():Z = z;
+   f(x1...xm,z)
+">
+</applet>
+</td><td>
+(Indexed dinaturality of Tr)
+</td></tr>
+</table></center>
+<p>
+
+However, not all cyclic graphs can be expressed as a program.  In
+particular:<p>
+<ul>
+
+<li> We have restricted <b>local rec</b> declarations to
+   <b>traceable</b> types, so any cyclic path must go through at
+   least one <b>traceable</b> edge.<p>
+
+<li> We have restricted <b>local rec</b> declarations to
+   <font color=blue>val</font> declarations, so any nodes
+   in a cycle are <font color=blue>val</font> nodes.<p>
+
+</ul>
+
+<i>Traces</i> were initially proposed as a categorical model of cycles in
+knots, and this graphical presentation is just a simplified version of
+the knot diagrams presented by <a href="paper-bib.html#jsv96">Joyal, Street
+and Verity</a>.  Where they were concerned with knots, we are just
+concerned with graphs, so we have replaced their braided monoidal 
+setting with a simpler symmetric monoidal one.
+<p>
+However, our graphs do not have a trace, because of the restriction that
+only <b>traceable</b> sorts can be declared recursively.  Instead,
+we use a weaker notion of <i>partial</i> traceability, where we
+impose the restriction that feedback edges are traceable.  In the
+case where all types are traceable, the two notions coincide.
+<p>
+In an <a href="paper-complete-ptm.html">an appendix</a> we define
+partially traced cartesian categories, and show that when
+the categories of cyclic graphs:<p>
+<center>
+   <font color=blue>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+   <img src="img-hookrightarrow.gif">
+   <font color=red>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+</center>
+<p>
+form the initial triple of categories:<p>
+<center>
+   <font color=blue>V</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>C</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>
+</center>
+<p>
+with:<p>
+<ul>
+
+<li> <font color=blue>V</font> a partially traced cartesian category
+   over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.<p>
+
+<li> <font color=magenta>C</font> a strict symmetric monoidal category
+   over <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>.<p>
+
+<li> <font color=red>P</font> a strict symmetric premonoidal category
+   over <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>.<p>
+
+<li> The inclusions are identity on objects symmetric premonoidal functors.<p>
+
+</ul>
+The axiomatization used for partially traced cartesian categories
+is more powerful that that of Joyal, Street and Verity's axiomatization
+for traced monoidal categories.  Their axiomatization is sound and
+complete for graphs up to graph isomorphism, but in order to get 
+completeness for graphs up to bisimulation, an additional
+property is needed (thanks to Peter Selinger for demonstrating
+a mistake in an earlier formulation, and for pointing out the
+connection with Plotkin uniformity).
+<p>
+A <i>shuffle</i> <font color=blue>s</font> is a morphism built only
+from composition, tensor, identity, symmetry, diagonal and terminal.
+A trace is <i>uniform wrt shuffles</i> whenever:
+<center>
+If:
+<applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():B1...proc():Bj) : (Y1...Yn,proc():B1...proc():Bj);
+   val g(X1...Xm,proc():A1...proc():Ai) : (Y1...Yn,proc():A1...proc():Ai);
+   val s(proc():A1...proc():Ai) : (proc():B1...proc():Bj);
+">
+<param name="exp" value="      
+   let (x1:X1...xm:Xm,proc b1():B1...proc bj():Bj) = (x1...xm,s(a1...ai));
+   let (y1:Y1...yn:Yn,proc b1():B1...proc bj():Bj) = f(x1...xm,b1...bj);
+   return (y1...yn,b1...bj);
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   proc a1():A1; proc ai():Ai;
+">
+<param name="base" value="
+   val f(X1...Xm,proc():B1...proc():Bj) : (Y1...Yn,proc():B1...proc():Bj);
+   val g(X1...Xm,proc():A1...proc():Ai) : (Y1...Yn,proc():A1...proc():Ai);
+   val s(proc():A1...proc():Ai) : (proc():B1...proc():Bj);
+">
+<param name="exp" value="      
+   let (y1:Y1...yn:Yn,proc a1():A1...proc ai():Ai) = g(x1...xm,a1...ai);
+   let (proc b1():B1...proc bj():Bj) = s(a1...ai);
+   return (y1...yn,b1...bj);
+">
+</applet>
+</center>
+<center>
+then:
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f (X1...Xm,proc():B1...proc():Bj):(Y1...Yn,proc():B1...proc():Bj);
+">
+<param name="exp" value="
+   local rec b1,bj;
+   let (y1:Y1...yn:Yn, proc b1():B1...proc bj():Bj) = f(x1...xm,b1...bj);
+   let (y:(Y1...Yn), proc b1():B1...proc bj():Bj) = (y1...yn,b1...bj);
+   return (y);
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=150 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val g (X1...Xm,proc():A1...proc():Ai):(Y1...Yn,proc():A1...proc():Ai);
+">
+<param name="exp" value="
+   local rec a1,ai;
+   let (y1:Y1...yn:Yn, proc a1():A1...proc ai():Ai) = g(x1...xm,a1...ai);
+   let (y:(Y1...Yn), proc a1():A1...proc ai():Ai) = (y1...yn,a1...ai);
+   return (y);
+">
+</applet>
+</center>
+It is routine to show that Plotkin uniformity is equivalent to a trace
+which is <i>uniform wrt strict morphisms</i>, where a strict morphism is
+one such that:
+<center>
+<applet code="AppletPremon.class" width=200 height=130 align=absmiddle>
+<param name="base" value="
+   val h (proc():A1...proc():Ai):(proc():B1...proc():Bj);
+">
+<param name="exp" value="
+   local rec a21, a2i;
+   let (proc a21 () : A1 ... proc a2i () : Ai) = (a21...a2i);
+   let (
+      proc a11 () : A1 ... proc a1i () : Ai,
+      proc a21 () : A1 ... proc a2i () : Ai
+   ) = (a21...a2i,a21...a2i);
+   (let (proc b1():B1...proc bj():Bj) = h(a11...a1i);
+   return (b1...bj);)
+">
+</applet>
+<font color=blue>=</font>
+<applet code="AppletPremon.class" width=150 height=130 align=absmiddle>
+<param name="exp" value="
+   local rec b21, b2j;
+   let (proc b21 () : B1 ... proc b2j () : Bj) = (b21...b2j);
+   let (
+      proc b11 () : B1 ... proc b1j () : Bj,
+      proc b21 () : B1 ... proc b2j () : Bj
+   ) = (b21...b2j,b21...b2j);
+   return (b11 ... b1j);
+">
+</applet>
+</center>
+<p>
+It is easy to show that any shuffle is strict, and so uniformity wrt shuffles
+is weaker than uniformity wrt strict morphisms.
+<p>
+Uniformity is, unfortunately, not algebraic, and it remains to be
+seen whether there is an algebraic axiomatization for flow graphs.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-process.html">Previous</a> |
+<a href="paper-fun.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>
+
+

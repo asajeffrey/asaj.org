@@ -1,0 +1,1036 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Operational semantics</h1>
+<p>
+
+<h2>Examples</h2>
+<p>
+
+In this paper, we have given an equational characterization of
+programs.  Categorically, we have:
+<ul>
+<li> Vectors of types are objects.<p>
+<li> Graphs are morphisms.<p>
+</ul>
+To give a treatment
+of the dynamics of progams, we would like to give an operational 
+semantics, for example:
+
+<center>
+<table>
+<tr><td></td>
+<td><applet code="AppletPremon.class" width=200 height=110 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="exp" value="
+   let r:ref = ref(0); r := (1 + (!(r))); return r;
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=200 height=130 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="exp" value="
+   let r:ref = ref(0); r := (1 + 0); return r;
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-blue-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=200 height=110 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="exp" value="
+   let r:ref = ref(0); r := 1; return r;
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="exp" value="
+   let r:ref = ref(1); return r;
+">
+</applet></td>
+</tr>
+</table>
+</center>
+
+In this example, the reductions <img src="img-red-Rightarrow.gif">
+are given as a type-preserving relation between terms.
+Following <a href="paper-bib.html#mil96">Milner's</a> operational
+semantics for action calculi, we would expect to have the categorical
+picture:
+<ul>
+<li> Vectors of types are objects.<p>
+<li> Graphs are morphisms.<p>
+<li> Reductions between graphs are 2-cells.<p>
+</ul>
+In the above case, the 2-cells are just a preorder, but in general we
+may be interested in labelled transition systems, which can be viewed
+as 2-categories where the 2-cells are labelled with an appropriate
+monoid, for example strings of actions.  For example, we can give
+an lts semantics for
+programs containing <font color=red>print</font> statements
+as a string-labelled 2-category:
+
+<center>
+<table>
+<tr><td></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   print ('hello'); print ('world')
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-eq.gif"><font color=red>'hello'</font><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   print ('world')
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-eq.gif"><font color=red>'world'</font><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=40 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   ()
+">
+</applet></td>
+</tr>
+</table>
+</center>
+
+<p>
+These 2-cells are generated from atomic reductions, in these examples:
+<center>
+<table>
+<tr>
+<td><applet code="AppletPremon.class" width=120 height=70 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x); 
+   let y:int = !(r);
+   return (r,y);
+">
+</applet></td>
+<td><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=80 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x); 
+   return (r,x);
+">
+</applet></td>
+</tr>
+<tr>
+<td><applet code="AppletPremon.class" width=120 height=80 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+   x : int ;
+   y : int ;
+   z : int ;
+">
+<param name="exp" value="
+   x+y
+">
+</applet></td>
+<td><img src="img-blue-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=50 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+   x : int ;
+   y : int ;
+   z : int ;
+">
+<param name="exp" value="
+   z
+">
+</applet></td>
+<td>(where <font color=blue>x</font> + <font color=blue>y</font> = <font color=blue>z</font>)</td>
+</tr>
+<tr>
+<td><applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+   y:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x); 
+   r := y;
+   return r;
+">
+</applet></td>
+<td><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=70 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+   y:int;
+">
+<param name="exp" value="
+   x;
+   let r:ref = ref(y); 
+   return r;
+">
+</applet></td>
+</tr>
+</table>
+</center>
+and:
+<center>
+<table>
+<tr>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+   s:string;
+">
+<param name="exp" value="
+   print (s)
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><font color=red>s</font><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=40 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   proc print (string);
+   s:string;
+">
+<param name="exp" value="
+   ()
+">
+</applet></td>
+</tr>
+</table>
+</center>
+
+
+<h2>Pre-2-categories</h2>
+<p>
+
+Unfortunately, we cannot just replay Milner's presentation in the
+premonoidal setting, since one of the axioms of a 2-category 
+is functoriality of composition, which implies:
+<center>
+<table>
+<tr>
+<td>If</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f1(x)
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><img src="img-red-alpha.gif"><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f2(x)
+">
+</applet></td>
+</tr>
+<tr>
+<td>and</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(y)
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><img src="img-red-beta.gif"><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(y)
+">
+</applet></td>
+</tr>
+<td>then</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(f1(x))
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><img src="img-red-alpha.gif"><font color=red>;</font><img src="img-red-beta.gif"><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(f2(x))
+">
+</applet></td>
+</tr>
+</table>
+</center>
+For example this would give us:
+<center>
+<table>
+<tr><td></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   print ('hello'); print ('world')
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-eq.gif"><font color=red>'world'</font><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   print ('hello')
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-eq.gif"><font color=red>'hello'</font><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=40 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   ()
+">
+</applet></td>
+</tr>
+</table>
+</center>
+This is a similar problem to that
+solved by premonoidal categories, and the solution is to lift the
+premonoidal structure into the 2-cells.  In the same way as 
+we divided the 1-cells into <em>central</em> and <em>process</em>
+1-cells, we divide the 2-cells into <em>central</em> and <em>process</em>
+2-cells.  Central reductions can take place anywhere in a computation,
+but process reductions have to happen in left-to-right order:
+<center>
+<table>
+<tr>
+<td>If</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f1(x)
+">
+</applet></td>
+<td><img src="img-magenta-eq.gif"><img src="img-magenta-alpha.gif"><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f2(x)
+">
+</applet></td>
+</tr>
+<tr>
+<td>and</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(y)
+">
+</applet></td>
+<td><img src="img-magenta-eq.gif"><img src="img-magenta-beta.gif"><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(y)
+">
+</applet></td>
+</tr>
+<td>then</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(f1(x))
+">
+</applet></td>
+<td><img src="img-magenta-eq.gif"><img src="img-magenta-alpha.gif"><font color=magenta>;</font><img src="img-magenta-beta.gif"><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(f2(x))
+">
+</applet></td>
+</tr>
+</table>
+</center>
+and:
+<center>
+<table>
+<tr>
+<td>If</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f1(x)
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><img src="img-red-alpha.gif"><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f2(x)
+">
+</applet></td>
+</tr>
+<tr>
+<td>and</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(y)
+">
+</applet></td>
+<td><img src="img-magenta-eq.gif"><img src="img-magenta-beta.gif"><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(y)
+">
+</applet></td>
+</tr>
+<td>then</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(f1(x))
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><img src="img-red-alpha.gif"><font color=red>;</font><img src="img-magenta-beta.gif"><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   proc f1 (X) : Y;
+   proc g1 (Y) : Z;
+   proc f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(f2(x))
+">
+</applet></td>
+</tr>
+</table>
+</center>
+and:
+<center>
+<table>
+<tr>
+<td>If</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   central f1 (X) : Y;
+   proc g1 (Y) : Z;
+   central f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f1(x)
+">
+</applet></td>
+<td><img src="img-magenta-eq.gif"><img src="img-magenta-alpha.gif"><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   central f1 (X) : Y;
+   proc g1 (Y) : Z;
+   central f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   f2(x)
+">
+</applet></td>
+</tr>
+<tr>
+<td>and</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   central f1 (X) : Y;
+   proc g1 (Y) : Z;
+   central f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(y)
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><img src="img-red-beta.gif"><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   central f1 (X) : Y;
+   proc g1 (Y) : Z;
+   central f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(y)
+">
+</applet></td>
+</tr>
+<td>then</td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   central f1 (X) : Y;
+   proc g1 (Y) : Z;
+   central f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g1(f1(x))
+">
+</applet></td>
+<td><img src="img-red-eq.gif"><img src="img-magenta-alpha.gif"><font color=red>;</font><img src="img-red-beta.gif"><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=60 align=absmiddle>
+<param name="base" value="
+   central f1 (X) : Y;
+   proc g1 (Y) : Z;
+   central f2 (X) : Y;
+   proc g2 (Y) : Z;
+">
+<param name="free" value="
+   x:X;
+   y:Y;
+">
+<param name="exp" value="
+   g2(f2(x))
+">
+</applet></td>
+</tr>
+</table>
+</center>
+This is just the usual definition of big-step reduction to normal
+form, replayed in categorical language.
+<p>
+Formally, define 
+<font color=magenta>C</font> <img src="img-hookrightarrow.gif"> <font color=red>P</font>
+to be a <em>pre-2-category</em> whenever:<p>
+<ul>
+
+<li> <font color=magenta>C</font> is a 
+   sub 2-category of <font color=red>P</font>
+   with the same objects.
+   <p>
+
+<li> In addition to the usual hom-category
+   <font color=red>P</font>[<i>X</i><img src="img-magenta-Rightarrow.gif"><i>Y</i>]
+   (the <em>central</em> hom-category)
+   a category
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Y</i>]
+   (the <em>process</em> hom-category).<p>
+
+<li> <font color=red>P</font>[<i>X</i><img src="img-magenta-Rightarrow.gif"><i>Y</i>]
+   is a subcategory of
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Y</i>]
+   with the same objects (that is the same 1-cells).<p>
+
+<li> Two functors:<p>
+<center>
+   <font color=red>;</font><sub>L</sub> : 
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Y</i>]
+   <img src="img-times.gif">
+   <font color=red>P</font>[<i>Y</i><img src="img-magenta-Rightarrow.gif"><i>Z</i>]
+   <img src="img-rightarrow.gif">
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Z</i>]
+<br>
+   <font color=red>;</font><sub>R</sub> : 
+   <font color=magenta>C</font>[<i>X</i><img src="img-magenta-Rightarrow.gif"><i>Y</i>]
+   <img src="img-times.gif">
+   <font color=red>P</font>[<i>Y</i><img src="img-red-Rightarrow.gif"><i>Z</i>]
+   <img src="img-rightarrow.gif">
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Z</i>]
+</center>
+<p>
+   such that:<p>
+<center>
+<table>
+<tr>
+<td>
+   <font color=red>P</font>[<i>X</i><img src="img-magenta-Rightarrow.gif"><i>Y</i>]
+   <img src="img-times.gif">
+   <font color=red>P</font>[<i>Y</i><img src="img-magenta-Rightarrow.gif"><i>Z</i>]      
+</td>
+<td>
+   <img src="img-rightarrow.gif">
+</td>
+<td>
+   <font color=red>P</font>[<i>X</i><img src="img-magenta-Rightarrow.gif"><i>Z</i>]
+</td>
+</tr>
+<tr>
+<td>
+<img src="img-hookdownarrow.gif">
+</td>
+<td>
+</td>
+<td>
+<img src="img-hookdownarrow.gif">
+</td>
+</tr>
+<tr>
+<td>
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Y</i>]
+   <img src="img-times.gif">
+   <font color=red>P</font>[<i>Y</i><img src="img-magenta-Rightarrow.gif"><i>Z</i>]      
+</td>
+<td>
+   <img src="img-rightarrow.gif">
+</td>
+<td>
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Z</i>]
+</td>
+</tr>
+</table>   
+</center>
+<p>and:<p>
+<center>
+<table>
+<tr>
+<td>
+   <font color=magenta>C</font>[<i>X</i><img src="img-magenta-Rightarrow.gif"><i>Y</i>]
+   <img src="img-times.gif">
+   <font color=red>P</font>[<i>Y</i><img src="img-magenta-Rightarrow.gif"><i>Z</i>]      
+</td>
+<td>
+   <img src="img-hookrightarrow.gif">
+</td>
+<td>
+   <font color=magenta>C</font>[<i>X</i><img src="img-magenta-Rightarrow.gif"><i>Y</i>]
+   <img src="img-times.gif">
+   <font color=red>P</font>[<i>Y</i><img src="img-red-Rightarrow.gif"><i>Z</i>]      
+</td>
+</tr>
+<tr>
+<td>
+<img src="img-hookdownarrow.gif">
+</td>
+<td>
+</td>
+<td>
+<img src="img-downarrow.gif">
+</td>
+</tr>
+<tr>
+<td>
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Y</i>]
+   <img src="img-times.gif">
+   <font color=red>P</font>[<i>Y</i><img src="img-magenta-Rightarrow.gif"><i>Z</i>]      
+</td>
+<td>
+   <img src="img-rightarrow.gif">
+</td>
+<td>
+   <font color=red>P</font>[<i>X</i><img src="img-red-Rightarrow.gif"><i>Z</i>]
+</td>
+</tr>
+</table>   
+</center>
+<p>
+   commute.<p>
+
+</ul>
+A <em>pre-2-functor</em> is a commuting square of functors respecting the
+pre-2-categorical structure.
+<p>
+Note that any 2-category
+is automatically a pre-2-category, since we can take <font
+color=magenta>C</font> and <font color=red>P</font> to be the same
+2-category, and identify all of the hom-categories and composition
+functors.
+<p>
+We can then replay the definition of a premonoidal category at the
+2-level to get a categorical presentation of a language with its
+operational semantics.
+<p>
+A <i>premonoidal pre-2-category</i> is a pre-2-category 
+<font color=magenta>C</font> <img src="img-hookrightarrow.gif">
+<font color=red>P</font> with:
+<ul>
+
+<li> <font color=magenta>C</font>
+   is a symmetric monoidal 2-category.<p>
+
+<li> Two pre-2-functors:
+<p><center>
+   <img src="img-red-oslash.gif"> : 
+   <font color=magenta>C</font> <img src="img-times.gif"> 
+   <font color=red>P</font> <img src="img-rightarrow.gif">
+   <font color=red>P</font>
+<br>
+   <img src="img-red-obslash.gif"> : 
+   <font color=red>P</font> <img src="img-times.gif"> 
+   <font color=magenta>C</font> <img src="img-rightarrow.gif">
+   <font color=red>P</font>
+</center><p>
+   such that:<p>
+   <ul>
+   <li> the three pre-2-functors 
+      <img src="img-magenta-otimes.gif">,
+      <img src="img-red-oslash.gif"> and
+      <img src="img-red-obslash.gif"> coincide on objects,
+   <li> the three `obvious' pre-2-functors from
+      <font color=magenta>C</font> <img src="img-times.gif"> 
+      <font color=magenta>C</font> to <font color=red>P</font>
+      coincide, and
+   <li> the symmetry in <font color=magenta>C</font> 
+      is a natural isomorphism
+         <i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>
+         <img src="img-simeq.gif">
+         <i>Y</i> <img src="img-red-obslash.gif"> <i>X</i>
+      in <font color=red>P</font>.
+   </ul>
+</ul>
+<p>
+Following <a href="paper-bib.html#pow96">Power's</a> presentation of
+premonoidal categories as <b>Subset</b>-enriched categories, we can
+present pre-2-categories using enriched categories.  Define a category
+to be <i>centralized</i> if some of its objects are tagged as central,
+some of its morphisms are tagged as central, and satisfying the
+property that if <i>f</i>&nbsp;:&nbsp;<i>X</i>&nbsp;<img
+src="img-rightarrow.gif">&nbsp;<i>X<img src="img-primesup.gif"></i> and <i>X</i> is central, then
+<i>f</i> and <i>X<img src="img-primesup.gif"></i> are central.  Let <b>Central</b> be the
+category of centralized categories with functors respecting the
+central structure.  <b>Central</b> has an asymmetric monoidal
+structure where <i>C</i>&nbsp;*&nbsp;<i>D</i> is the subcategory of
+<i>C</i>&nbsp;<img src="img-times.gif">&nbsp;<i>D</i> where for any
+pair of morphisms
+(<i>f</i>,<i>g</i>)&nbsp;:&nbsp;(<i>X</i>,<i>Y</i>)&nbsp;<img
+src="img-rightarrow.gif">&nbsp;(<i>X<img src="img-primesup.gif"></i>,<i>Y<img src="img-primesup.gif"></i>) either <i>X<img src="img-primesup.gif"></i>
+is central or <i>g</i> is central.  Then the above definition of a
+pre-2-category is equivalent to a <b>Central</b>-category with
+composition given as a functor <font
+color=red>P</font>[<i>X</i>,<i>Y</i>]&nbsp;*&nbsp;<font
+color=red>P</font>[<i>Y</i>,<i>Z</i>]&nbsp;<img
+src="img-rightarrow.gif">&nbsp;<font
+color=red>P</font>[<i>X</i>,<i>Z</i>].  We can then replay Power's
+definition of a premonoidal category replacing
+<b>Subset</b>-<b>Cat</b> with <b>Central</b>-<b>Cat</b> to find a
+definition of a premonoidal pre-2-category equivalent to the above.
+
+<p>
+For the closed structure, the isomorphisms:
+<p>
+<center>
+   <font color=blue>V</font>[<i>X</i> <img src="img-blue-Rightarrow.gif"> (<i>Y</i> <img src="img-blue-Rightarrow.gif"> <i>Z</i>)]
+   <img src="img-simeq.gif">
+   <font color=blue>V</font>[(<i>X</i> <img src="img-blue-times.gif"> <i>Y</i>) <img src="img-blue-Rightarrow.gif"> <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i> <img src="img-blue-Rightarrow.gif"> (<i>Y</i> <img src="img-magenta-Rightarrow.gif"> <i>Z</i>)]
+   <img src="img-simeq.gif">
+   <font color=magenta>C</font>[(<i>X</i> <img src="img-magenta-otimes.gif"> <i>Y</i>) <img src="img-magenta-Rightarrow.gif"> <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i> <img src="img-blue-Rightarrow.gif"> (<i>Y</i> <img src="img-red-Rightarrow.gif"> <i>Z</i>)]
+   <img src="img-simeq.gif">
+   <font color=red>P</font>[(<i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>) <img src="img-magenta-Rightarrow.gif"> <i>Z</i>]
+</center>
+<p>
+allow value and central reductions to take place under function
+bodies, but not process reductions.  For example we allow:
+<center>
+<applet code="AppletPremon.class" width=120 height=110 align=absmiddle>
+<param name="base" value="
+   val +(int,int) : int;
+">
+<param name="exp" value="
+   fn val (x:int) { x + (1+2) }
+">
+</applet>
+<img src="img-blue-Rightarrow.gif">
+<applet code="AppletPremon.class" width=90 height=80 align=absmiddle>
+<param name="base" value="
+   val +(int,int) : int;
+">
+<param name="exp" value="
+   fn val (x:int) { x + 3 }
+">
+</applet>
+</center>
+but not:
+<center>
+<applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   fn proc () { print ('hello') }
+">
+</applet>
+<img src="img-blue-eq.gif"><font color=blue>'hello'</font><img src="img-blue-Rightarrow.gif">
+<applet code="AppletPremon.class" width=40 height=70 align=absmiddle>
+<param name="exp" value="
+   fn proc () { }
+">
+</applet>
+</center>
+As two extremes, we have:
+<ul>
+
+<li> categories where the only central 2-cells are the trivial
+   identity reductions, corresponding to languages where no reduction is
+   allowed under lambda, and<p>
+
+<li> categories where the central and process 2-cells are the same,
+   corresponding to langauges where reduction is allowed in any sub-term.<p>
+
+</ul>
+Thus the division of 2-cells into central and non-central categories
+gives a natural description of both the call-by-value lambda calculus
+with reduction allowed anywhere, and the canonical left-to-right
+reduction strategy.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-trace.html">Previous</a> |
+<a href="paper-compare.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

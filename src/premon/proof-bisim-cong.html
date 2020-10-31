@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof that bisimulation is a congruence</h1>
+<p>
+
+<a href="paper-complete-cfp.html#permute-normal"><b>Proposition 
+(Bisimulation is a congruence).</b></a><i>
+Bisimulation is a congruence wrt 
+<a href="paper-complete-cfp.html#graphops">the graph operations</a>.
+</i>
+<p>
+
+</nolatex>
+
+<b>Proof.</b>
+It is routine to show that bisimulation is an equivalence.
+<p>
+To show that it is a congruence, we have to show it is respected
+by composition and tensor.  Of these, tensor is simpler, so we shall
+show the case for composition.
+<p>
+If we have bisimulations <i>R</i> and <i>S</i> with:
+<center>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val G1(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G1(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+<i>R</i>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val G2(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G2(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val H1(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      y1:Y1; yn:Yn;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = H1(y1...yn);
+      (z1...zo)
+   ">
+   </applet>
+<i>S</i>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val H2(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      y1:Y1; yn:Yn;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = H2(y1...yn);
+      (z1...zo)
+   ">
+   </applet>
+</center>
+we would like to find a bisimulation <i>R</i>;<i>S</i> with:
+<center>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G1(X1...Xm):(Y1...Yn); 
+   val H1(Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G1(x1...xm);
+   let (z1:Z1...zo:Zo) = H1(y1...yn);
+   return (z1...zo);
+">
+</applet>
+<i>R</i>;<i>S</i>
+<applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G2(X1...Xm):(Y1...Yn); 
+   val H2(Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G2(x1...xm);
+   let (z1:Z1...zo:Zo) = H2(y1...yn);
+   return (z1...zo);
+">
+</applet>
+</center>
+Wlog, we shall assume the graphs have disjoint node and edge sets.
+Define union on graphs with overlapping edge sets as 
+<i>G</i>&nbsp;<img src="img-cup.gif">&nbsp;<i>G<img src="img-primesup.gif"></i> with:<p>
+<ul>
+<li> Nodes and edges taken as the union of <i>G</i> and <i>G<img src="img-primesup.gif"></i>s.<p>
+<li> Incoming edges from <i>G</i>.<p>
+<li> Outgoing edges from <i>G<img src="img-primesup.gif"></i>.<p>
+</ul>
+Given graph <i>G</i> including vector of edges <b>E</b>, let
+<i>G</i>[<b>F</b>/<b>E</b>] be the graph given by renaming edges
+<b>E</b> to <b>F</b>.
+<p>
+We have graphs:<p>
+<center>
+   <font color=blue>G1</font> : 
+      <b>E1</b> <img src="img-rightarrow.gif"> <b>E1<img src="img-primesup.gif"></b>
+<br>
+   <font color=blue>G2</font> : 
+      <b>E2</b> <img src="img-rightarrow.gif"> <b>E2<img src="img-primesup.gif"></b>
+<br>
+   <font color=blue>H1</font> : 
+      <b>F1</b> <img src="img-rightarrow.gif"> <b>F1<img src="img-primesup.gif"></b>
+<br>
+   <font color=blue>H2</font> : 
+      <b>F2</b> <img src="img-rightarrow.gif"> <b>F2<img src="img-primesup.gif"></b>
+<p>
+</center>
+and:
+<center>
+   <font color=blue>G1;H1</font> =
+      <font color=blue>G1</font> <img src="img-cup.gif">
+      <font color=blue>H1</font>[<b>E1<img src="img-primesup.gif"></b>/<b>F1</b>]
+<br>
+   <font color=blue>G2;H2</font> =
+      <font color=blue>G2</font> <img src="img-cup.gif">
+      <font color=blue>H2</font>[<b>E2<img src="img-primesup.gif"></b>/<b>F2</b>]
+<p>
+</center>
+Then define relation:<p>
+<center>
+   <i>R</i>;<i>S</i>
+      <i>R</i> <img src="img-cup.gif">
+      <i>S</i>[<b>E1<img src="img-primesup.gif"></b>/<b>F1</b>]
+</center>
+<p>
+It is routine to show that this relation respects incoming and
+outgoing edges, labelling, and is an isomorphism between incoming
+edges.  To show that <i>R</i>;<i>S</i> is a bisimulation, consider any
+node in <font color=blue>G1;H1</font>:
+<center>
+   <applet code="AppletPremon.class" width=90 height=130 align=absmiddle>
+   <param name="base" value="
+      val N1(X1...Xm) : (Y1...Yn,E,Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn,e:E,z1:Z1...zo:Zo) = N1(x1...xm);
+      (y1...yn,e,z1...zo)
+   ">
+   </applet><i>E1</i>
+</center>
+where <i>E1 R</i>;<i>S E2</i>.  Then either:<p>
+<ul>
+
+<li> <i>E1</i> <img src="img-in.gif"> <font color=blue>G1</font>,
+   so <font color=blue>N1</font>&nbsp;<img src="img-in.gif">&nbsp;<font color=blue>G1</font> and
+   <i>E1 R E2</i>.  Since <i>R</i> is a bisimulation, we can
+   find a 
+   <font color=blue>N2</font>&nbsp;<img src="img-in.gif">&nbsp;<font color=blue>G2</font>
+   with <font color=blue>N1</font>&nbsp;<i>R</i>&nbsp;<font color=blue>N2</font>.<p>
+
+<li> <i>E1</i> <img src="img-in.gif"> <font color=blue>H1</font>,
+   so <i>E1</i> is not an incoming edge of <font color=blue>H1</font>,
+   so <i>E2</i> is not an incoming edge of <font color=blue>H2</font>,
+   so <font color=blue>N1</font>&nbsp;<img src="img-in.gif">&nbsp;<font color=blue>H1</font> 
+   and <i>E1 S E2</i>.
+   Since <i>S</i> is a bisimulation, we can
+   find a 
+   <font color=blue>N2</font>&nbsp;<img src="img-in.gif">&nbsp;<font color=blue>H2</font>
+   with <font color=blue>N1</font>&nbsp;<i>S</i>&nbsp;<font color=blue>N2</font>.<p>
+   
+</ul>
+In either case, we have found a
+node in <font color=blue>G2;H2</font>:
+<center>
+   <applet code="AppletPremon.class" width=90 height=130 align=absmiddle>
+   <param name="base" value="
+      val N2(X1...Xm) : (Y1...Yn,E,Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn,e:E,z1:Z1...zo:Zo) = N2(x1...xm);
+      (y1...yn,e,z1...zo)
+   ">
+   </applet><i>E2</i>
+</center>
+where <i>N1 R</i>;<i>S N2</i>.  Thus composition respects bisimulation.
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-cfp.html#permute-normal">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

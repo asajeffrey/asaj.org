@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Semantics</h1>
+
+The category <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif">)
+has vectors of sorts as objects, and single-coloured flow graphs as morphisms,
+considered up to bisimulation.<p>
+
+<center>
+<table>
+<tr>
+<td align=right>Identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   return (x1...xm);
+">
+</applet>
+</td>
+<td align=right>Composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G(X1...Xm):(Y1...Yn); 
+   val H(Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G(x1...xm);
+   let (z1:Z1...zo:Zo) = H(y1...yn);
+   return (z1...zo);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td align=right>Tensor:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G(W1...Wl):(Y1...Yn); 
+   val H(X1...Xm):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G(w1...wl);
+   let (z1:Z1...zo:Zo) = H(x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+</td>
+<td align=right>Symmetry:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = (y1...yn);
+   return (y1...yn,x1...xm);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td align=right>Diagonal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   return (x1...xm,x1...xm);
+">
+</applet>
+</td>
+<td align=right>Terminal:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   (x1...xm); 
+   return ();
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+  </body>
+</html>

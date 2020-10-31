@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>A flow graph applet</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Introduction</h1>
+<p>
+
+<h2>Data flow graphs</h2>
+<p>
+
+As a simple example, take the arithmetic expression `(1+2)*3'.  This can
+be drawn as a data flow graph:
+<center>
+<applet code="AppletPremon.class" width=100 height=120>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   (1+2)*3
+">
+</applet>
+</center>
+These graphs are drawn with data flowing from left to right, and in
+this case there is one output arc, representing the result of the
+expression.
+<p>
+This diagram is a Premon applet.  If you click on it, an editor
+will appear:
+<p>
+<center>
+<table bgcolor=#777777><tr><td>
+<applet code="AppletPremonEditor.class" width=500 height=300>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   (1+2)*3
+">
+</applet>
+</td></tr></table>
+</center>
+<p>
+You can type in another arithmetic expression and click `Draw Graph', and 
+a window will pop up showing the corresponding flow graph.  `Reset' will
+restore the editor to its original state, and `Close' will close any open
+windows.
+<p>
+If you select the `Original' radio button, you can edit the
+expression, for example typing `1+2+3'.  If you select `Parsed', you
+can view the expression after it has been parsed, for example
+`(1&nbsp;+&nbsp;2)&nbsp;+&nbsp;3'.  If you select `Desugared', you can
+view the expression after all the syntax sugar has been removed, for
+example infix expressions are just syntax sugar for function
+application so you would see `*&nbsp;(+&nbsp;(1,&nbsp;2),&nbsp;3)'.
+<p>
+The other radio buttons are explained below.
+<p>
+
+<h2>Control flow graphs</h2>
+<p>
+
+As well as data flow graphs, the applet can draw control flow graphs.
+Whereas blue arcs represent data dependencies, red arcs indicate
+control dependencies.  For example the traditional `hello world'
+program:
+<blockquote>
+   print ('hello'); print ('world')
+</blockquote>
+is drawn:
+<center>
+<applet code="AppletPremon.class" width=300 height=90>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   print ('hello'); print ('world')
+">
+</applet>
+</center>
+The red arcs show that `hello' has to be printed before `world' can
+be.
+<p>
+Blue nodes have no control dependencies, where red nodes have one
+incoming control arc and one outgoing control arc as well as any
+data arcs.  For example given some primitives for string manipulation:
+<center>
+<table>
+<tr>
+<td>
+<applet code="AppletPremon.class" width=100 height=50>
+<param name="base" value="
+   proc print (string);
+">
+<param name="free" value="
+   s : string;
+">
+<param name="exp" value="
+   print (s)
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=50>
+<param name="base" value="
+   proc read() : string;
+">
+<param name="exp" value="
+   read ()
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=50>
+<param name="base" value="
+   val ^ (string,string) : string;
+">
+<param name="free" value="
+   s : string;
+   t : string;
+">
+<param name="exp" value="
+   s ^ t
+">
+</applet>
+</td></tr>
+<tr><td>
+print a string
+</td><td>
+read a string
+</td><td>
+append two strings
+</td></tr>
+</table>
+</center>
+<p>
+we can write the traditional `hello user' program:
+<center>
+<applet code="AppletPremon.class" width=480 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   print ('What is your name?');
+   let name:string = read();
+   print ('Hello, ' ^ name ^ '.')
+">
+</applet>
+</center>
+
+<h2>Contexts</h2>
+<p>
+
+So far, all the expressions have been <i>closed</i>, that is
+they contain no free variables.  The Premon applet can draw graphs for
+terms with free variables - they are drawn with incoming data arcs at
+the left of the graph.  For example the expression 
+`(<i>x</i>+<i>y</i>)*<i>x</i>' has two incoming arcs: one for the variable
+<i>x</i> and one for the variable <i>y</i>:
+<center>
+<applet code="AppletPremon.class" width=100 height=60>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="free" value="
+   x : int; 
+   y : int;
+">
+<param name="exp" value="
+   (x+y)*x
+">
+</applet>
+</center>
+But if you type the program:
+<blockquote>
+ (x+y)*x
+</blockquote>
+into the editor, you will get an error message:
+<blockquote>
+   Unknown variable x
+</blockquote>
+This is because Premon needs to know
+the type of any free variables before it can draw the graph.  This
+type information is called the <i>context</i>, and can be edited by
+selecting the `Context' radio button.  In this case you want to tell
+the applet that <i>x</i> and <i>y</i> are both integer variables,
+so you enter:
+<blockquote>
+   x:int; y:int;
+</blockquote>
+and all will be well.
+<p>
+
+<h2>Constructors</h2>
+<p>
+
+Expressions can contain arbitrary operations, not just integers and integer
+arithmetic.  For example we can build a two-element list of strings:
+<center>
+<applet code="AppletPremon.class" width=200 height=120>
+<param name="base" value="
+   val cons(string,list):list;
+   nil:list;
+">
+<param name="exp" value="
+   'hello' cons ('world' cons nil)
+">
+</applet>
+</center>
+But again, if you type the program:
+<blockquote>
+ 'hello' cons ('world' cons nil)
+</blockquote>
+into the editor, you will get an error message::
+<blockquote>
+ Unknown variable cons
+</blockquote>
+Premon needs to know the type of the primitive
+operations.  These are called the <i>constructors</i> of the graph,
+and are edited in a similar way to the context.  For example, the
+constructors for the above graph are:
+<blockquote>
+   val cons(string,list):list; <br>
+   nil:list;
+</blockquote>
+This tells the applet that `nil' is a constant of type `list' and
+that `cons' is a function taking two parameters of type `string' and `list'
+and returning a `list'.  If you select the `Constructors' radio button, and
+enter this context into the editor, all should be well.
+<p>
+Constructors come in three categories (see the <a
+href="demo-category.html">appendix</a> for more details): <p>
+<ul>
+
+<li> <i>value</i> constructors drawn in blue and indicated with the
+   keyword `val'.<p>
+
+<li> <i>central</i> constructors, drawn in magenta, and indicated
+   with the keyword `central'.<p>
+
+<li> <i>process</i> constructors, drawn in red, and indicated with
+   the keyword `proc'.<p>
+
+</ul>
+Process constructors have an incoming and outgoing control arc as well
+as data arcs, whereas value and central constructors have only data
+arcs.  To see the different categories, try editing the constructors of the
+following graph, to make `cons' a central or a process
+constructor.
+<center>
+<applet code="AppletPremon.class" width=200 height=120>
+<param name="base" value="
+   val cons(string,list):list;
+   nil:list;
+">
+<param name="exp" value="
+   'hello' cons ('world' cons nil)
+">
+</applet>
+</center>
+
+<h2>Other radio buttons</h2>
+<p>
+
+The other radio buttons marked `Value', `Central' and `Process'
+determine the <i>category</i> of the graph.  The applet is based on a
+mathematical view of programs called <i>category theory</i>, in
+particular Power and Robinson's <i>premonoidal categories</i> and
+Hasegawa's presentation of Joyal, Street and Verity's <i>traced
+monoidal categories</i>.  In most cases you can just ignore these
+radio buttons, but if you want to know more, then read the 
+appendix on <a href="demo-category.html">categories of graphs</a>.
+
+
+<p>
+
+<nolatex>
+<center>
+<a href="demo-title.html">Previous</a> |
+<a href="demo-example.html">Next</a> 
+</center>
+</nolatex>
+
+  </body>
+</html>

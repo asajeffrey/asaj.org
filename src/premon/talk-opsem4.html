@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Operational semantics</h1>
+
+In each case, the operational semantics can be given by taking
+the free premonoidal pre-2-category given by some generators
+together with some primitive reductions, for example:
+<center>
+<table>
+<tr>
+<td><applet code="AppletPremon.class" width=120 height=70 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x); 
+   let y:int = !(r);
+   return (r,y);
+">
+</applet></td>
+<td><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=80 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x); 
+   return (r,x);
+">
+</applet></td>
+</tr>
+<tr>
+<td><applet code="AppletPremon.class" width=120 height=80 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+   x : int ;
+   y : int ;
+   z : int ;
+">
+<param name="exp" value="
+   x+y
+">
+</applet></td>
+<td><img src="img-blue-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=50 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+   x : int ;
+   y : int ;
+   z : int ;
+">
+<param name="exp" value="
+   z
+">
+</applet></td>
+<td>(where <font color=blue>x</font> + <font color=blue>y</font> = <font color=blue>z</font>)</td>
+</tr>
+<tr>
+<td><applet code="AppletPremon.class" width=120 height=100 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+   y:int;
+">
+<param name="exp" value="
+   let r:ref = ref(x); 
+   r := y;
+   return r;
+">
+</applet></td>
+<td><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=120 height=70 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="free" value="
+   x:int;
+   y:int;
+">
+<param name="exp" value="
+   x;
+   let r:ref = ref(y); 
+   return r;
+">
+</applet></td>
+</tr>
+</table>
+</center>
+
+  </body>
+</html>

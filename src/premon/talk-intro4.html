@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>A problem with order of evaluation</h1>
+
+Data flow graphs do not capture causal information:
+
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=180 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+   central := (ref,int);
+   central !(ref) : int;
+">
+<param name="exp" value="
+   let r:ref = ref(0);
+   r := 1;
+   let x:int = !(r);
+   return (x);
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=180 height=80 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+   central := (ref,int);
+   central !(ref) : int;
+">
+<param name="exp" value="
+   let r:ref = ref(0);
+   let x:int = !(r);
+   r := 1;
+   return (x);
+">
+</applet>
+</td>
+</tr>
+<tr><td>
+   <b>let</b> <i>r</i>:ref = <font color=magenta>ref</font>(<font color=blue>0</font>);
+</td><td>
+   <b>let</b> <i>r</i>:ref = <font color=magenta>ref</font>(<font color=blue>0</font>);
+</td></tr>
+<tr><td>
+   <i>r</i> <font color=magenta>:=</font> <font color=blue>1</font>;
+</td><td>
+   <b>let</b> <i>x</i>:int = <font color=magenta>!</font>(<i>r</i>);
+</td></tr>
+<tr><td>
+   <b>let</b> <i>x</i>:int = <font color=magenta>!</font>(<i>r</i>);
+</td><td>
+   <i>r</i> <font color=magenta>:=</font> <font color=blue>1</font>;
+</td></tr>
+<tr><td>
+   <b>return</b> <i>x</i>;
+</td><td>
+   <b>return</b> <i>x</i>;
+</td></tr>
+</table>
+</center>
+<p>
+These graphs are isomorphic, but the programs have different semantics.
+
+  </body>
+</html>

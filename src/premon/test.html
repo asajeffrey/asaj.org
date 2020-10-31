@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Premonoidal categories and graphical views of programs</title>
+</head>
+
+<body bgcolor=#ffffff>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x1:X1; y1:Y1;
+   xn:Xn; yn:Yn;
+">
+<param name="exp" value="
+   let (x1:X1...xn:Xn, y1:Y1...yn:Yn) = (x1...xn, y1...yn); (
+      let (y1:Y1...yn:Yn, x1:X1...xn:Xn) = (y1...yn, x1...xn);
+      return (x1...xn, y1...yn);
+   )
+">
+</applet>
+
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>A flow graph applet</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Functions</h1>
+<p>
+
+<h2>Function declarations</h2>
+<p>
+
+Functions can be declared:
+<blockquote>
+   proc <i>name</i> <i>arguments</i> { <i>body</i> }
+</blockquote>
+for example:
+<blockquote>
+   proc hello (name:string) { 
+      print ('Hello, ' ^ name ^ '.'); 
+   }
+</blockquote>
+Function declarations are drawn by putting a box round the function
+body, for example:
+<center>
+<applet code="AppletPremon.class" width=480 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   proc hello (name:string) { print ('Hello, ' ^ name ^ '.'); }
+   hello
+">
+</applet>
+</center>
+If the function returns a result it can be declared with:
+<blockquote>
+   proc <i>name</i> <i>arguments</i> : <i>result type</i>{ <i>body</i> }
+</blockquote>
+for example:
+<blockquote>
+   proc readName () : string { 
+      print ('Name?');
+      return read ();
+   }
+</blockquote>
+drawn as:
+<center>
+<applet code="AppletPremon.class" width=480 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   proc readName () : string { 
+      print ('Name?');
+      return read ();
+   }
+   readName
+">
+</applet>
+</center>
+Functions can be applied in the usual manner:
+<blockquote>
+   hello ('Fred')
+</blockquote>
+drawn with an application node decorated with `@' with a number of incoming
+data arcs: one for the function, and the rest for the arguments:
+<center>
+<applet code="AppletPremon.class" width=480 height=90>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="free" value="
+   proc hello (string);
+">
+<param name="exp" value="
+   hello ('Fred')
+">
+</applet>
+</center>
+For example:
+<blockquote>
+   proc hello (name:string) { 
+      print ('Hello, ' ^ name ^ '.'); 
+   }
+<br>
+   proc readName () : string { 
+      print ('Name?');
+      return read ();
+   }
+<br>
+   hello (readName ())
+</blockquote>
+is drawn:
+<center>
+<applet code="AppletPremon.class" width=300 height=180>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   proc hello (name:string) { 
+      print ('Hello, ' ^ name ^ '.'); 
+   }
+   proc readName () : string { 
+      print ('Name?');
+      return read ();
+   }
+   hello (readName ())
+">
+</applet>
+</center>
+<p>
+After the functions have been expanded, we are left with the graph:
+<center>
+<applet code="AppletPremon.class" width=550 height=120>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   print ('Hello, ' ^ (print ('Name?'); read ()) ^ '.'); 
+">
+</applet>
+</center>
+
+<h2>Categories of functions</h2>
+<p>
+
+All of the above functions have been declared with the keyword `proc',
+indicating that they are processes.  However, we can also declare value 
+or central functions.  Value functions can only contain value nodes,
+and central functions can only contain value and central nodes.
+<p>
+For example we could declare a function to double an integer as:
+<blockquote>
+   proc double (n:int) : int { return (n+n); }<br>
+   double (2)
+</blockquote>
+drawn:
+<center>
+<applet code="AppletPremon.class" width=200 height=100>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   proc double (n:int) : int { return (n+n); }
+   double (2)
+">
+</applet>
+</center>
+but as can be seen from the resulting flow graph, the function has
+no control dependencies.  We can record this by declaring the function 
+as a val, rather than as a proc:
+<center>
+<applet code="AppletPremon.class" width=200 height=90>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   val double (n:int) : int { return (n+n); }
+   double (2)
+">
+</applet>
+</center>
+Note that the application node is now blue, recording the fact that this
+is a value function, not a process function.  These blue application nodes
+are value nodes.  Similarly, we can declare central functions, with central
+application nodes:
+<center>
+<applet code="AppletPremon.class" width=200 height=90>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central ref (int) : ref;
+">
+<param name="exp" value="
+   central doubleRef (n:int) : ref { return ref(n+n); }
+   doubleRef (2)
+">
+</applet>
+</center>
+<p>
+
+<h2>Recursive functions</h2>
+<p>
+
+By default, functions are not recursive, but recursive functions can
+be declared using the keyword `rec'.  For example, a recursive 
+`hello user' program is:
+<blockquote>
+   rec hello; <br>
+   proc hello () {<br>&nbsp;&nbsp;
+      print ('Name?');<br>&nbsp;&nbsp;
+      print ('Hello, ' ^ read () ^ '.'); <br>&nbsp;&nbsp;
+      hello ()<br>
+   }
+</blockquote>
+Recursive functions are drawn as cyclic graphs:
+<center>
+<applet code="AppletPremon.class" width=550 height=160>
+<param name="base" value="
+   proc print (string);
+   proc read() : string;
+   val ^ (string,string) : string;
+">
+<param name="exp" value="
+   rec hello;
+   proc hello () {
+      print ('Name?');
+      print ('Hello, ' ^ read () ^ '.'); 
+      hello ()
+   }
+   hello
+">
+</applet>
+</center>
+<p>
+Note that recursive declarations can only be made of proc
+function declarations.
+<p>
+
+<h2>Higher-order functions</h2>
+<p>
+
+In common with langauges such as SML, Premon allows functions to be
+treated as data, and passed as arguments or returned as results.  For
+example, a function which composes two integer functions together can
+be declared:
+<blockquote>
+   val compose (proc f(int):int, proc g(int):int) (proc(int):int) {<br>&nbsp;&nbsp;
+      proc fog (x:int) {
+         return f(g(x));
+      }<br>&nbsp;&nbsp;
+      return fog;<br>
+   }
+</blockquote>
+This is drawn:
+<center>
+<applet code="AppletPremon.class" width=200 height=90>
+<param name="exp" value="
+   val compose (proc f(int):int, proc g(int):int) : (proc(int):int) {
+      proc fog (x:int) : int {
+         return f(g(x));
+      }
+      return fog;
+   }
+   compose
+">
+</applet>
+</center>
+Note that compose is a val function, even though its arguments and result
+are proc functions.  This is because function declarations are always
+values, even if the function body is a process or is central.
+<p>
+
+<h2>Anonymous functions</h2>
+<p>
+
+In common with languages such as SML, functions do not have to be named.
+Instead we can use <i>anonymous functions</i> which are expressions
+of the form:
+<blockquote>
+   fn proc <i>arguments</i> { <i>body</i> }
+</blockquote>
+and similarly for `fn central' and `fn val'.  For example the composition
+function could be written more succinctly as:
+<blockquote>
+   val compose (proc f(int):int, proc g(int):int) (proc(int):int) {<br>&nbsp;&nbsp;
+      return fn proc (x:int) {
+         return f(g(x));
+      };<br>
+   }
+</blockquote>
+and drawn:
+<center>
+<applet code="AppletPremon.class" width=200 height=90>
+<param name="exp" value="
+   val compose (proc f(int):int, proc g(int):int) : (proc(int):int) {
+      return fn proc (x:int) {
+         return f(g(x));
+      };
+   }
+   compose
+">
+</applet>
+</center>
+<p>
+This is such a common usage that we provide syntax sugar for it,
+writing:
+<blockquote>
+   proc compose (proc f(int):int, proc g(int):int) (x:int) {<br>&nbsp;&nbsp;
+      return f(g(x));<br>
+   }   
+</blockquote>
+
+<h2>Thunks</h2>
+<p>
+
+A <i>thunk</i> is a function with no arguments.  Thunks are used to
+control the order of evaluation of a function.  For example, an `if'
+function should not evaluate its arguments until we know whether
+the boolean is true or false.  The obvious way to provide an `if' statement
+is as a constructor of type:
+<blockquote>
+   proc if (bool) ((),())
+</blockquote>
+and then used for example:
+<blockquote>
+   if (x) (print ('hi'), print ('lo'))
+</blockquote>
+drawn:
+<center>
+<applet code="AppletPremon.class" width=300 height=90>
+<param name="base" value="
+   proc if (bool) ((),());
+   proc print (string);
+">
+<param name="free" value="
+   x:bool;
+">
+<param name="exp" value="
+   if (x) (print ('hi'), print ('lo'))
+">
+</applet>
+</center>
+Unfortunately, as the flow graph makes obvious, this doesn't work,
+since `lo` cannot be printed until `hi` has been, even if the boolean
+is false.
+<p>
+Instead, we need to thunk the two arguments, to stop them evalutating
+until the boolean condition is known.  Now if has the type:
+<blockquote>
+   proc if (bool) (proc()) (proc());
+</blockquote>
+and then used for example:
+<blockquote>
+   if (x) (fn proc () { print ('hi') }) (fn proc () { print ('lo') })
+</blockquote>
+drawn:
+<center>
+<applet code="AppletPremon.class" width=300 height=120>
+<param name="base" value="
+   proc if (bool) (proc()) (proc());
+   proc print (string);
+">
+<param name="free" value="
+   x:bool;
+">
+<param name="exp" value="
+   if (x) (fn proc () { print ('hi') }) (fn proc () { print ('lo') })
+">
+</applet>
+</center>
+This works, but is rather clumsy, so we provide some syntax sugar
+for thunking, writing `{<i>M</i>}' for `fn proc () {<i>M</i>}',
+for example:
+<blockquote>
+   if (x) { print ('hi') } { print ('lo') }
+</blockquote>
+drawn:
+<center>
+<applet code="AppletPremon.class" width=300 height=120>
+<param name="base" value="
+   proc if (bool) (proc()) (proc());
+   proc print (string);
+">
+<param name="free" value="
+   x:bool;
+">
+<param name="exp" value="
+   if (x) { print ('hi') } { print ('lo') }
+">
+</applet>
+</center>
+
+<nolatex>
+<center>
+<a href="demo-exp.html">Previous</a> |
+<a href="demo-category.html">Next</a> 
+</center>
+</nolatex>
+
+  </body>
+</html>

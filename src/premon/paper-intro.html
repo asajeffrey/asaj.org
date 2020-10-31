@@ -1,0 +1,651 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Introduction</h1>
+<p>
+
+Two techniques for giving semantics of programs are <i>graphically</i>
+using data flow and control flow diagrams, or <i>categorically</i> using
+mathematical structures such as monads or premonoidal categories.
+Usually, the graphical presentation is semi-formal, and forms part of
+the dataflow-oriented design process taught to most computer science
+undergraduates, whereas the categorical presentation is used in giving
+formal semantics, and is the subject of specialist research.
+<p>
+In this paper, we shall give a formalization of flow graphs, and show
+how this can be used to give a categorical semantics in a framework based
+on <a href="paper-bib.html#pr96">Power and Robinson's</a> premonoidal
+categories and <a href="paper-bib.html#jsv96">Joyal, Street and Verity's</a>
+traced monoidal categories.
+<p>
+As an example of the flow graphs described in this paper, 
+consider a nondeterministic programming language with
+a single imperative integer variable.  Such a programming language contains
+expressions which can be drawn as data flow diagrams such as:
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=100 height=140 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   return ((1+1)*(1+1));
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = (1+1);
+   return (x*x);
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let y:int = 1;
+   return ((y+y)*(y+y));
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=120 height=75 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let y:int = 1;
+   let x:int = (y+y);
+   return (x*x);
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+We can also add nondeterminism to the language by adding a node
+representing nondeterministic choice, for example:
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=100 height=140 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central \/ (int, int) : int;
+">
+<param name="exp" value="
+   return ((1 \/ 2) * (1 \/ 2));
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central \/ (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = (1 \/ 2);
+   return (x * x);
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+Note that nondeterministic choice nodes are drawn differently to other
+nodes.  This is because other nodes can be duplicated or discarded
+(for example all of the first examples are considered equal) but
+nondeterminism nodes cannot (for example the two nondeterministic
+expressions are not equal since the former might evaluate to 2 where
+the latter can only evaluate to 1 or 4).  We shall call nodes which
+can be duplicated and discarded <font color=blue>value</font> nodes,
+and nodes which cannot <font color=magenta>central</font> nodes (the
+terminology will be explained below).
+<p>
+We can add imperative statements to set an integer variable and get
+its value, but these statements cannot be drawn in the same fashion as
+the others, since order of evaluation is important for imperative
+expressions.  For example, if we were to make imperative expressions
+central, then the following diagrams would be graph isomorphic:
+<center>
+<applet code="AppletPremon.class" width=120 height=70 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central set (int);
+   central get () : int;
+">
+<param name="exp" value="
+   let x:int = get();
+   set (1);
+   return x;
+">
+</applet>
+<applet code="AppletPremon.class" width=120 height=70 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   central set (int);
+   central get () : int;
+">
+<param name="exp" value="
+   set (1);
+   let x:int = get();
+   return x;
+">
+</applet>
+</center>
+To distinguish graphs such as these, we add a new class of 
+<font color=red>process</font> nodes, and a new class of
+<font color=red>control</font> arcs.  The control arcs allow
+us to specify the causal order of a program, for example
+we can now distinguish between the graphs:
+<center>
+<applet code="AppletPremon.class" width=150 height=90 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   let x:int = get();
+   set (1);
+   return x;
+">
+</applet>
+<applet code="AppletPremon.class" width=140 height=90 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   set (1);
+   let x:int = get();
+   return x;
+">
+</applet>
+</center>
+We can add higher-order functions to this graphical language by
+allowing function nodes which contain subgraphs, for example a
+function to increment the variable is:
+<center>
+<applet code="AppletPremon.class" width=150 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   proc incr () {
+      set (get () + 1);
+   }
+   return incr;
+">
+</applet>
+</center>
+Function application is denoted using application nodes, for example
+applying the increment function twice is drawn:
+<center>
+<applet code="AppletPremon.class" width=250 height=110 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   proc incr () {
+      set (get () + 1);
+   }
+   incr ();
+   incr ();
+">
+</applet>
+</center>
+These graphs are viewed up to an equivalence where:
+<center>
+<table>
+<tr>
+<td></td>
+<td>
+<applet code="AppletPremon.class" width=250 height=110 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   proc incr () {
+      set (get () + 1);
+   }
+   incr ();
+   incr ();
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=350 height=110 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   proc incr () {
+      set (get () + 1);
+   }
+   set (get () + 1);
+   incr ();
+">
+</applet>
+</td>
+<td>(Beta)</td>
+</tr>
+</tr>
+<tr>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=440 height=110 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   proc incr () {
+      set (get () + 1);
+   }
+   set (get () + 1);
+   set (get () + 1);
+">
+</applet>
+</td>
+<td>(Beta)</td>
+</tr>
+</tr>
+<tr>
+<td>=</td>
+<td>
+<applet code="AppletPremon.class" width=280 height=110 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   set (get () + 1);
+   set (get () + 1);
+">
+</applet>
+</td>
+<td>(Garbage collection)</td>
+</tr>
+</tr>
+</table>
+</center>
+For recursive function declarations we allow cyclic graphs, for example
+a factorial function is:
+<center>
+<applet code="AppletPremon.class" width=400 height=170 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   val == (int, int) : bool;
+   proc if (bool) (proc () : int) (proc () : int) : int;
+">
+<param name="exp" value="
+   rec fact;
+   proc fact (n:int) : int {
+      if (n==0) {
+         return 1;
+      } {
+         return n * fact (n-1);
+      }
+   }
+   return fact;
+">
+</applet>   
+</center>
+
+We can give a denotational semantics for this language using domains:<p>
+<ul>
+
+<li> <font color=blue>value</font> expressions
+   can be given a semantics in the category of 
+   complete partial orders (not necessarily with bottom)
+   <b>Cpo</b>.<p>
+
+<li> <font color=magenta>central</font> expressions
+   can be given a semantics in the category of 
+   complete partial orders with binary join (to give
+   the semantics for nondeterminism)
+   <b>Cpo</b><sub><img src="img-vee.gif"></sub>.<p>
+
+<li> <font color=red>process</font> expressions
+   can be given a semantics in the category of 
+   complete partial orders with binary join, 
+   bottom (to give the semantics of fixed points) and a 
+   state of type <b>N</b> (to give the semantics for imperative statements)
+   <font color=red>State</font><sub><b>P</b>(<b>N</b>)</sub>(<b>Cpo</b><sub><img src="img-bot.gif"><img src="img-vee.gif"></sub>).<p>
+
+</ul>
+where, when <b>C</b> is a symmetric monoidal category with object
+<i>X</i>, <font color=red>State</font><sub><i>X</i></sub>(<b>C</b>) 
+is the category given by:
+<ul>
+
+<li> Objects are objects from <b>C</b>.<p>
+
+<li> Morphisms <i>Y</i>&nbsp;<img src="img-rightarrow.gif">&nbsp;<i>Z</i> 
+   in <font color=red>State</font><sub><i>X</i></sub>(<b>C</b>) 
+   are morphisms 
+   <i>Y</i>&nbsp;<img src="img-otimes.gif">&nbsp;<i>X</i>&nbsp;<img src="img-rightarrow.gif">&nbsp;<i>Z</i>&nbsp;<img src="img-otimes.gif">&nbsp;<i>X</i> in <b>C</b>.<p>
+
+</ul>
+This gives a concrete denotational semantics in particular categories of
+domains.  Abstracting away from the details of domain theory, we discover
+that the structures necessary to give this denotational semantics were:<p>
+<ul>
+
+<li> A category <font color=blue>V</font> in which to interpret
+   <font color=blue>value</font> expressions.  Since this language
+   has tuples and allows expressions to be duplicated or discarded,
+   <font color=blue>V</font> should be a strict cartesian category
+   (a strict symmetric monoidal category where the monoidal 
+   structure forms finite products).<p>
+
+<li> A category <font color=magenta>C</font> in which to interpret
+   <font color=magenta>central</font> expressions.  Central expressions
+   have tuples which cannot be duplicated or discarded, so
+   <font color=magenta>C</font> should be a strict 
+   symmetric monoidal category.<p>
+
+<li> A category <font color=red>P</font> in which to interpret
+   <font color=red>process</font> expressions.  Process expressions
+   have tuples which cannot be duplicated or discarded and for which
+   evaluation order is important, so
+   <font color=red>P</font> should be a strict symmetric premonoidal category
+   (defined by <a href="paper-bib.html#pr96">Power and Robinson</a>
+   for such semantics).<p>
+
+<li> We have identity-on-objects inclusions
+   <font color=blue>V</font> 
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>C</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>
+   which respect the product/symmetric monoidal/symmetric premonoidal 
+   structure.<p>
+
+<li> To model recursive declarations, we have a <i>partial trace</i>
+   in <font color=blue>V</font>.  This is an adaptation of
+   <a href="paper-bib.html#jsv96">Joyal, Street and Verity's</a>
+   traced monoidal categories taking account of the fact that
+   we cannot find fixed points for every object in <font color=blue>V</font>.
+   In our <b>Cpo</b> example it is only objects which have least elements which
+   can be traced.<p>
+
+<li> To model functions we have adjunctions:<p>
+<center>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-blue-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=blue>V</font>[<i>X</i> <img src="img-blue-times.gif"> <i>Y</i>, <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-magenta-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=magenta>C</font>[<i>X</i> <img src="img-magenta-otimes.gif"> <i>Y</i>, <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-red-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=red>P</font>[<i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>, <i>Z</i>]
+</center>
+<p>
+
+<li> To model recursive functions, we have all objects of the form
+   <i>X</i>&nbsp;<img src="img-red-Rightarrow.gif">&nbsp;<i>Y</i> 
+   are traceable.<p>
+
+</ul>
+There are a large number of such triples, for example:
+<ul>
+
+<li> Take <font color=blue>V</font> to be <b>Set</b> and
+   <font color=magenta>C</font> and <font color=red>P</font>
+   to be <b>Rel</b>.<p>
+
+<li> Take <font color=blue>V</font> to be any 
+   partially traced cartesian closed category
+   with a commutative strong monad <i>T</i>,
+   a strong monad <i>U</i>, both satisfying the mono requirement,
+   and a monic natural transformation
+   <i>T</i>&nbsp;<img src="img-rightarrow.gif">&nbsp;<i>U</i>
+   which respects the monad structure.  Then
+   let <font color=magenta>C</font> be the Kleisli category
+   <font color=blue>V</font><sub><i>T</i></sub>
+   and let <font color=red>P</font> be the Kleisli category
+   <font color=blue>V</font><sub><i>U</i></sub>.<p>
+
+<li> Take <font color=blue>V</font>,
+   <font color=magenta>C</font> and <font color=red>P</font>
+   to be appropriate categories of mixed data flow and
+   control flow graphs.<p>
+   
+</ul>
+Since there are so many examples of such triples of categories, it
+would be useful if there was an <i>initial</i> such triple.  Then
+providing a semantics in this initial triple would be enough to
+give a semantics in <i>any</i> such triple.
+<p>
+
+The purpose of this paper is to show that flow graphs form the initial
+such triple of categories, so by giving the flow graph for a program,
+its semantics is given for any categorical semantics fitting the framework
+given above.
+<p>
+The paper is divided into sections:<p>
+<ul>
+
+<li> <a href="paper-value.html">First</a>, 
+   we show that an appropriate category of data flow graphs
+   <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+   is the initial category with finite products over a signature
+   <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.<p>
+
+<li> <a href="paper-central.html">Then</a>
+   we show that an appropriate category of two-coloured data flow graphs
+   <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+   is the initial symmetric monoidal category over a signature
+   <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>
+   with <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+   as a sub smc.<p>
+
+<li> <a href="paper-process.html">Then</a>
+   we show that an appropriate category of mixed data flow and control flow graphs
+   <font color=red>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+   is the initial symmetric monoidal category over a signature
+   <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>
+   with centre <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>).<p>
+
+<li> <a href="paper-trace.html">Then</a>
+   we show that by allowing appropriate cyclic graphs we 
+   have the initial triple of categories where
+   <font color=blue>V</font> is a partially traced cartesian category.<p>
+
+<li> <a href="paper-fun.html">Finally</a>
+   we add nodes with nested subgraphs, and show that this gives
+   us the required closed structure.<p>
+
+</ul>
+The last section is more speculative than the others, since it requires
+factoring the category of graphs up to beta-equivalence, eta-equivalence,
+and naturality.  The other sections do not require such factoring, and
+view graphs up to an appropriate notion of bisimulation.  
+<p>
+In each case, the main result is a soundness and completeness result,
+given in an appendix.  These results make heavy use of the graphical
+presentation, which make the proofs much simpler to read.  The style
+of the proofs should be familiar to readers with a background in
+process algebra, for example the normal form result for cyclic graphs
+is similar to <a href="paper-bib.html#mil84">Milner's</a> proof
+of completeness of his axiomatization of strong bisimulation.
+<p>
+The observant reader may have noted that in the above example
+(where the premonoidal category is given as a <font color=red>State</font>
+construction over a symmetric monoidal category) that the control line
+can be considered as just another data line, carrying the value of
+the state variable.  For example we could consider the constructors:
+<center>
+<applet code="AppletPremon.class" width=70 height=50 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   set (x);
+">
+</applet>
+<applet code="AppletPremon.class" width=70 height=50 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+   proc set (int);
+   proc get () : int;
+">
+<param name="exp" value="
+   return get ();
+">
+</applet>
+</center>
+as syntax sugar for:
+<center>
+<applet code="AppletPremon.class" width=70 height=50 align=middle>
+<param name="free" value="
+   x:int; state:int;
+">
+<param name="exp" value="
+   let (x:int,state:int) = (x,state);
+   return (x);
+">
+</applet>
+<applet code="AppletPremon.class" width=70 height=50 align=middle>
+<param name="free" value="
+   state:int;
+">
+<param name="exp" value="
+   return (state,state);
+">
+</applet>
+</center>
+This similarity is not a coincidence: the categorical basis of
+the graphical presentation of premonoidal categories as single-threaded
+graphs with one control line is that <i>any</i> premonoidal category
+<font color=magenta>C</font>&nbsp;<img src="img-hookrightarrow.gif">&nbsp;<font color=red>P</font> 
+is a full sub-symmetric-premonoidal-category of a state transformer
+category <font color=magenta>D</font>&nbsp;<img src="img-hookrightarrow.gif">&nbsp;<font color=red>State</font>(<font color=magenta>D</font>).
+This result is proved in <a href="paper-state.html">appendix</a>.
+<p>
+We also provide a sketch of how two-categorical structure can be used to
+give an <a href="paper-opsem.html">operational semantics</a> for the
+graphical language, adapting <a href="paper-bib.html#mil96">Milner's</a>
+semantics for action calculi.
+<p>
+The semantics has been implemented as a Java applet, which takes a
+program text and draws the corresponding flow graph (all the diagrams
+in this paper are drawn using this applet).
+<p>
+I would like to thank 
+Adam Eppendahl,
+Philipa Gardner,
+Andy Gordon,
+Matthew Hennessy,
+Paul Levy,
+Rudi Lutz,
+Valeria de&nbsp;Paiva,
+Dusko Pavlovic,
+Prakash Panangaden,
+Eike Ritter,
+Edmund Robinson
+and 
+Peter Selinger
+for discussions and suggestions.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-title.html">Previous</a> |
+<a href="paper-value.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

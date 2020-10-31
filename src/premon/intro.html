@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Introduction</font></b></center>
+<p>
+
+Categories are often used to give an abstract view of programming
+language features.  For example, most programming languages have a
+features such as tuples, records, or objects which allows data to be
+collected together.  Different languages have different syntax, but by
+viewing the languages categorically, we can see what they have in
+common, and where there are important semantic differences.  For
+example, in some languages records might correspond categorically to
+products, where in another they might correspond to monoidal
+structure.  Looking at languages categorically allows us to
+concentrate on semantics rather than syntax.
+<p>
+Since <a href="bib.html#moggi???">Moggi's</a> seminal paper on
+<em>computational monads</em> there has been much interest in the
+semantics of non-trivial computation, such as mutable state (<a
+href="bib.html#pitts???">Pitts</a>), concurrency (<a
+href="bib.html#jeffrey???">Jeffrey</a>), and I/O (<a
+href="bib.html#gordon???">Gordon</a>).  <a href="bib.html#pr??">Power
+and Robinson</a> have suggested <em>premonoidal categories</em> as
+an alternative presentation of computational monads, and in this paper
+we show how premonoidal categories provide a formal notion of
+data/control flow graphs for programs.
+<p>
+The presentation we adopt here is a slight variant of 
+<a href="bib.html#pr??">Power and Robinson's</a> original presentation
+where we consider three categories, all with the same objects:
+<ul>
+
+<li> <font color=blue>V</font> is a category of <em>values</em>,
+   which are terms in normal form.  It is a category with finite
+   products.
+
+<li> <font color=magenta>C</font> is a category of <em>central
+   terms</em>, which may have side-effects, but for which order of
+   evaluation is unimportant.  These terms might include
+   nondeterminism, unique name generation, channel generation or new
+   variable generation.  For example, most of <a
+   href="bib.html#ps???">Pitts and Stark's</a> nu-calculus might live in
+   this category.  It is a symmetric monoidal category.
+
+<li> <font color=red>P</font> is a category of
+   <em>processes</em>, which are terms which may have arbitrary
+   side-effects, including non-termination, assignment, concurrency or
+   I/O.  It is a symmetric premonoidal category.
+
+</ul>
+These categories are included in each other:
+<p>
+<center>
+   <font color=blue>V</font> 
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>C</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>
+</center>
+<p>
+These inclusions respect the product/monoidal/premonoidal structure of
+the three categories, and are the identity on objects.
+<p>
+This gives us enough structure to model simple expressions, but for
+more realistic examples we need to add functions and recursion.
+Functions are treated by adding adjunctions to the
+product/monoidal/premonoidal structure:
+<p>
+<center>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-blue-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=blue>V</font>[<i>X</i> <img src="img-blue-times.gif"> <i>Y</i>, <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-magenta-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=magenta>C</font>[<i>X</i> <img src="img-magenta-otimes.gif"> <i>Y</i>, <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-red-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=red>P</font>[<i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>, <i>Z</i>]
+</center>
+<p>
+Recursion is treated by allowing functions from <font
+color=red>P</font> to be traced, in an adaptation of <a
+href="bib.html#jsv??">Joyal, Street and Verity</a>'s <em>monoidal
+traced categories</em>.  This is similar to <a
+href="bib.html#hasegawa???">Hasegawa's</a> use of traced monoidal
+categories to model recursive declarations, except that where he uses
+tracing in <font color=red>P</font> to model call-by-name, we use
+tracing in <font color=blue>V</font> to model call-by-value.
+<p>
+We can give a syntactic presentation of these categories as a simple
+programming language, and a graphical presentation using mixed
+dataflow and controlflow graphs.  This presentation is similar to
+<a href="bib.html#gar??">Gardner's</a> name-free presentation of
+<a href="bib.html#mil??">Milner's</a> control structures, and in the
+<a href="conclusions.html">conclusion</a> some ideas for future work
+are presented, showing how Milner's operational semantics for control
+structures might be adapted to the premonoidal setting.
+<p>
+
+<nolatex>
+<center>
+<a href="frontmatter.html">Previous</a> |
+<a href="value.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

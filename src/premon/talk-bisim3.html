@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Equivalence between flow graphs</h1>
+
+Almost bisimulation is almost the equivalence we would like between
+graphs.  For example:
+<center>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      let (y1:Y1...yn:Yn) = (y1...yn);
+      (y1...yn,y1...yn)
+   ">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (x1:X1...xm:Xm) = (x1...xm);
+      let (y1a:Y1...yna:Yn, y1b:Y1...ynb:Yn) = (G(x1...xm), G(x1...xm));
+      (y1a...yna,y1b...ynb)
+   ">
+</applet>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn);
+      ()
+   ">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      (x1...xm);
+      ()
+   ">
+</applet>
+</center>
+Unfortunately, it is too coarse, and fails to be a congruence:
+<center>
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (x1,x2);
+   ">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=70 align=absmiddle>
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (x2,x1);
+   ">
+</applet>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+   <param name="base" value="
+      val c(X):Y;
+      val d(X):Y;
+   ">
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (c(x1),d(x2));
+   ">
+</applet>
+<img src="img-neq.gif">
+<applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+   <param name="base" value="
+      val c(X):Y;
+      val d(X):Y;
+   ">
+   <param name="free" value="
+      x1:X; x2:X;
+   ">
+   <param name="exp" value="
+      let (x1:X,x2:X) = (x1,x2);
+      return (c(x2),d(x1));
+   ">
+</applet>
+</center>
+A <i>simulation</i> between <i>G1</i> and <i>G2</i>
+is an almost simulation which is a function on
+incoming edges of <i>G1</i>.
+
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Premonoidal categories and graphical views of programs</title>
+</head>
+
+<body bgcolor=#ffffff>
+
+<center>
+<h1>Flow graphs and semantics of programs</h1>
+<p>
+Alan Jeffrey<p>
+<table width=60%><tr valign=top><td align=center>
+   COGS, University of Sussex<br>
+   Brighton BN1 9QH, UK<br>
+   <i>alanje@cogs.susx.ac.uk</i>
+</td><td align=center>
+   CTI, DePaul University<br>
+   243 South Wabash Ave.<br>
+   Chicago IL 60604, USA<br>
+   <i>ajeffrey@cs.depaul.edu</i>
+</td></tr></table>
+<p>
+<applet code="AppletPremon.class" width=300 height=120 align=middle>
+<param name="base" value="
+   central ref (int) : ref;
+   proc !(ref):int;
+   proc := (ref,int);
+   val + (int, int) : int;
+">
+<param name="exp" value="
+   let r:ref = ref(0); 
+   r := (1 + !(r));
+   r
+">
+</applet>
+<p>
+June 1998<p>
+</center>
+
+This document describes a categorically motivated graphical
+presentation of the semantics of programs, including an implementation
+as a Java applet.
+<p>
+<ul>
+
+<li> <i><a href="paper.html">Premonoidal categories and a graphical
+   view of programs</a></i> describes a correspondence between a
+   categorical and a graphical semantics of programs.  This is also
+   available in PostScript in two parts: the <a href="paper.ps.gz">main
+   text</a> and the <a href="appendices.ps.gz">appendices</a>.<p>
+
+<li> <a href="talk.html">The slides</a> from a talk on the subject,
+   also available as <a href="talk-slides.ps.gz">PostScript</a>.<p>
+
+<li> <i><a href="demo.html">A flow graph applet</a></i> 
+   gives a demonstration of the features of the applet.<p>
+
+<li> <a href="api.html">Source code and Javadoc documentation</a>
+   are also available.<p>
+
+<li> You can also download this whole site, including the source
+   code and documentation, as a <a href=premon.tgz>700k compressed tar file</a>
+   or as a <a href=premon.zip>1100k zip file</a>.<p>
+
+</ul>
+<p>
+These papers contain Java 1.1, so should be viewed in a recent
+browser such as Netscape 4.5 or Internet Explorer 4.  The applet
+was compiled using the freeware
+<a href="http://www.transvirtual.com/kaffe.html">Kaffe</a>
+compiler, which in turn uses the 
+<a href="http://www.cis.unisa.edu.au/~pizza/Pizza">Pizza</a> compiler.
+<p>
+
+<center>
+<a href="paper.html">Semantics</a> |
+<a href="talk.html">Slides</a> |
+<a href="demo.html">Demonstration</a> |
+<a href="api.html">API</a>
+</center>
+</body>
+</html>

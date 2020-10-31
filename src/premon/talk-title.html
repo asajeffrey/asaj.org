@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<div align=center>
+
+<nolatex>
+    <h1>Premonoidal categories<br>and a graphical view<br>of programs</h1>
+</nolatex>
+
+<address>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=300 height=120 align=middle>
+<param name="base" value="
+   central ref (int) : ref;
+   proc !(ref):int;
+   proc := (ref,int);
+   val + (int, int) : int;
+">
+<param name="exp" value="
+   let r:ref = ref(0); 
+   r := (1 + !(r));
+   r
+">
+</applet>
+</td></tr><tr><td align="center">
+Alan Jeffrey
+<nolatex><br>
+   School of Cognitive and Computing Sciences<br>
+   University of Sussex<br>
+   Brighton BN1 9QH<br>
+   UK<br>
+   alanje@cogs.susx.ac.uk
+</nolatex>
+</td></tr>
+</table>
+</address>
+
+</div>
+
+  </body>
+</html>

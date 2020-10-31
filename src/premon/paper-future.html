@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Future work</h1>
+<p>
+
+<h2>Operational semantics</h2>
+<p>
+The operational semantics discussed in the 
+<a href="paper-opsem.html">previous section</a>
+is still preliminary, and needs more work.  For example, there should
+be a direct graphical presentation where 
+<font color=red>G</font>&nbsp;<img src="img-red-Rightarrow.gif">&nbsp;<font color=red>G<img src="img-primesup.gif"></font> iff 
+<font color=red>G</font> has a subgraph 
+<font color=red>G<sub>1</sub></font>, there is an axiom
+<font color=red>G<sub>1</sub></font>&nbsp;<img src="img-red-Rightarrow.gif">&nbsp;<font color=red>G<img src="img-primesup.gif"><sub>1</sub></font>, and
+<font color=red>G<img src="img-primesup.gif"></font> is <font color=red>G</font> with
+<font color=red>G<sub>1</sub></font> replaced by <font color=red>G<img src="img-primesup.gif"><sub>1</sub></font>.
+<p>
+Having defined a notion of labelled transition system for graphs, this
+opens up the usual questions of bisimulation, higher-order bisimulation,
+fully abstract semantics, and so on.
+<p>
+We could also investigate lax versions of the categorical structure,
+for example rather than having beta-equivalence, we could add a 2-cell
+for beta-reduction.  This would add extra complexity to the categorical
+picture, but would fit better with the usual practice in defining
+operational semantics, and would allow us to remove all of the 
+equivalences which are not graph bisimulations.  This would improve
+the correspondence between the graphical and equational presentations:
+terms would be provably equal precisely when they are bisimilar.
+<p>
+
+<h2>Typing issues</h2>
+<p>
+There are various typing issues left for future work, such as 
+recursive types, universal and existential polymorphism, and subtyping.
+<p>
+Also, tracing is currently restricted to value declarations.  Whilst
+this is adequate for the motivating example of recursive functions,
+there are natural examples (such as building cyclic ref-structures)
+where it would be appropriate to allow tracing in central declarations
+as well.  This is left for future work.
+<p>
+
+<h2>Coproducts</h2>
+<p>
+Currently, if-statements are only supported through thunks to delay the
+evalutation of the result until the value of the guard is known,
+for example:
+<center>
+<applet code="AppletPremon.class" width=350 height=120 align=absmiddle>
+<param name="base" value="
+   proc if (bool) (proc()) (proc());
+   proc print (string);
+">
+<param name="free" value="
+   b:bool;
+">
+<param name="exp" value="
+   if (b) { print ('hello') } { print ('world') }
+">
+</applet>
+</center>
+A better approach would be to add coproducts to each category, respected
+by each of the inclusions
+   <font color=blue>V</font> 
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>C</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>.
+We can easily add case-statements to the language to incorporate coproducts,
+but finding a graphical representation is slightly trickier.  The coproduct
+structure is monoidal, so we can represent it graphically, however we
+need to distinguish between the coproduct graphical structure and
+the premonoidal graphical structure.  One possible graphical representation
+is (giving the version in <font color=red>P</font> since the others are
+simpler) as follows.
+<p>
+The morphsim <font color=red>f + g</font>:<p>
+<center>
+   <img src="img-coprodeps.gif"><p>
+</center>
+The mediating morphism <font color=red>f + g</font>:<p>
+<center>
+   <img src="img-mediateeps.gif"> <p>
+</center>
+The injections <font color=red>inl</font>
+and <font color=red>inr</font>:<p>
+<center>
+   <img src="img-inleps.gif"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   <img src="img-inreps.gif"><p>
+</center>
+If we also add a graphical representation for 
+<font color=red>cond</font> : bool <img src="img-rightarrow.gif"> 1+1
+as:<p>
+<center>
+   <img src="img-ifeps.gif"> <p>
+</center>
+then we have a slightly better representation for closed if-statements
+such as:<p>
+<center>
+   <img src="img-sampleeps.gif"> <p>
+</center>
+Finding a good representation for open if-statements and
+case-statements is left for future work.
+<p>
+
+<h2>Concurrency</h2>
+<p>
+All of the computations we have looked at in this paper have been 
+single-threaded, since there is only one control arc running through
+the graph.  There is an obvious generalization to multi-threaded
+computations, very similar to action calculi, 
+where we consider graphs with more than one control line.
+We could then add concurrent features to the langauge such as
+process forking:<p>
+<center>
+   <img src="img-forkeps.gif"><p>
+</center>
+With the appropriate asynchronous pi-calculus constructors:
+<center>
+<applet code="AppletPremon.class" width=70 height=60 align=absmiddle>
+<param name="base" value="
+   central new () : chan;
+">
+<param name="exp" value="
+   new ()
+">
+</applet>
+<applet code="AppletPremon.class" width=70 height=60 align=absmiddle>
+<param name="base" value="
+   proc out (int,chan);
+">
+<param name="free" value="
+   c:chan;   x:int;
+">
+<param name="exp" value="
+   out (x,c)
+">
+</applet>
+<applet code="AppletPremon.class" width=70 height=60 align=absmiddle>
+<param name="base" value="
+   proc in (chan) : int;
+">
+<param name="free" value="
+   c:chan;
+">
+<param name="exp" value="
+   in (c)
+">
+</applet>
+</center>
+we can then add the asynchronous pi-calculus, with operational semantics
+generated from:<p>
+<center>
+   <img src="img-commOneeps.gif" align="absmiddle">
+   <img src="img-red-Rightarrow.gif">
+   <img src="img-commTwoeps.gif" align="absmiddle">
+</center>
+<p>
+Although this presentation is graphically appealing, it is not obvious
+what the categorical presentation should be.  This is left for future work.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-compare.html">Previous</a> |
+<a href="paper-complete-cfp.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

@@ -1,0 +1,392 @@
+/*
+ * This is a JavaCC grammar for the Premon language.
+ *
+ * It is an LL(1) grammar, based loosely on Pascal, C and ML,
+ * but  with a semantics based on partially traced premonoidal 
+ * categories. 
+ *
+ * For more details see the paper on:
+ *
+ *    http://www.cogs.susx.ac.uk/users/alanje/premon/
+ *
+ * The main problem with this parser is that there's no way to record
+ * the current character number (only the current line/column numbers)
+ * which makes it impossible to relate the AST back to the TextArea
+ * which created it.  TextAreas record positions as character numbers,
+ * JavaCC parsers record it as line/column numbers, so (eg) it's impossible
+ * to get a parse error to record the info required to get the text area
+ * to highlight the malformed text.  Sigh.
+ */
+
+options {
+  MULTI=true;
+  STATIC=false;
+  NODE_DEFAULT_VOID=true;
+  NODE_PREFIX="PremonJJT";
+}
+
+PARSER_BEGIN(PremonJJTParser)
+
+import java.io.*;
+
+/**
+ * The class of parsers for the Premon language.
+ * This parser is created using Sun's JJTree AST generator.
+ */
+
+public class PremonJJTParser { 
+
+  /**
+   * Parse an expression.
+   * @return an expression parsed from the input stream.
+   * @exception ParseException thrown if there is a parse error.
+   */
+  public PremonJJTExp parseExp () throws ParseException {
+    return getExp ();
+  }
+
+  /**
+   * Parse a context.
+   * @return an expression parsed from the input stream.
+   * @exception ParseException thrown if there is a parse error.
+   */
+  public PremonJJTCon parseCon () throws ParseException {
+    return getCon ();
+  }
+
+  /**
+   * Create a new parser.
+   * @param s the string to parse.
+   */
+  public PremonJJTParser (String s) {
+    this (new StringBufferInputStream (s));
+  }
+
+}
+
+PARSER_END(PremonJJTParser)
+
+/* 
+ * Whitespace and C-style comments are ignored.
+ */
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+/*
+ * Mercifully few keywords.
+ */
+
+TOKEN : /* KEYWORDS */
+{
+   < EQ : "=" >
+|
+   < SEMI : ";" >
+|
+   < COMMA : "," >
+|
+   < COLON : ":" >
+|
+   < LPAREN : "(" >
+|
+   < RPAREN : ")" >
+|
+   < LBRACE : "{" >
+|
+   < RBRACE : "}" >
+|
+   < DOTS : "..." >
+|
+   < FN: "fn" >
+|
+   < LET: "let" >
+|
+   < REC: "rec" >
+|
+   < VAL: "val" >
+|
+   < CENTRAL: "central">
+|
+   < PROC: "proc" >
+|
+   < LOCAL: "local" >
+|
+   < RETURN: "return" >
+}
+
+/* 
+ * For the moment, only simple integer, double and string literals
+ * are provided.  At a later date, these might be extended to 
+ * include octal, hex, string escape sequences, etc. etc.
+ */
+
+TOKEN : /* LITERALS */
+{
+  < INT: (["0"-"9"])+ >
+|  
+  < DOUBLE: (["0"-"9"])+ "." (["0"-"9"])* >
+|  
+  < STRING: ( "\"" (~["\""])* "\"" ) | ( "'" (~["'"])* "'" ) >
+}
+
+/*
+ * Identifiers are either symbolic or alphanumeric.
+ */
+
+TOKEN : /* IDENTIFIERS */
+{
+  < ID: 
+      <ALPHANUMERIC>
+    | <SYMBOLIC>
+  >
+|
+  < #ALPHANUMERIC: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER: ["_","a"-"z","A"-"Z"] >
+|
+  < #DIGIT: ["0"-"9"] >
+|
+  < #SYMBOLIC: (<SYMBOL>)+ >
+|
+  < #SYMBOL:  ["!","#","$","&","*","+","-",".","/",":","<"-"@","["-"^","|","~"] >
+}
+
+/* 
+ * There are two top-level functions to parse an expression
+ * or a context.
+ */
+
+PremonJJTExp getExp() : {}
+{
+   Exp () #ExpTopLevel(1) <EOF> { return (PremonJJTExp)(jjtree.popNode()); }
+}
+
+PremonJJTCon getCon() : {}
+{
+   Con () <EOF> { return (PremonJJTCon)(jjtree.popNode()); }
+}
+
+/*
+ * Categories.
+ *
+ *    C ::= val | central | proc 
+ */
+
+void Cat() : {}
+{
+   ( <VAL> )     #CatVal
+ | ( <CENTRAL> ) #CatCentral
+ | ( <PROC> )    #CatProc
+}
+
+/*
+ * Types.
+ *
+ *    T ::= B | C T1...Tn [: T] | (T1,...,Tn) | (T "..." T)
+ */
+
+void Type() : {}
+{
+   ( Id() )                  #TypeVar
+ | ( 
+      Cat() 
+      ( TypeTuple() )+ 
+      ( [ <COLON> Type() ] ) #TypeResult
+   )                         #TypeFunCurried
+ | TypeTuple()
+}
+
+void TypeTuple() : {}
+{
+   <LPAREN> (
+      ( <RPAREN> )                            #TypeTuple
+    | ( Type() ( 
+           ( <COMMA> Type() )
+         | ( <DOTS> Type() #TypeDots(2) )
+      )* <RPAREN> ) #TypeTuple(>1)
+   )
+}
+
+/*
+ * Expressions.
+ *
+ *    M ::= x | fn C P1...Pn {M} | fn C P1...Pn {}
+ *        | {M} | {} | (M1,...,Mn) | <int> | <double> | <string>
+ *        | M M | M x M | D M | M; [M] | return M; | (M "..." M)
+ */
+
+void ExpAtom() : {}
+{
+   ( Id() )                                   #ExpVar
+ | ( <FN> Cat() ( PatTuple() )+ ExpBlock() )  #ExpFunCurried
+ | ( ExpBlock() )                             #ExpFunThunk
+ | ( <RETURN> ExpAppInfix() <SEMI> )          #ExpReturn
+ | ExpTuple()
+ | ExpLiteral()
+}
+
+void ExpTuple() : {}
+{
+   <LPAREN> (
+      ( <RPAREN> )                          #ExpTuple
+    | ( Exp() ( 
+         ( <COMMA> Exp() )
+       | ( <DOTS> Exp() #ExpDots(2) )
+      )* <RPAREN> ) #ExpTuple(>1)
+   )
+}
+
+void ExpLiteral() : { Token t; }
+{
+   ( t=<INT> { jjtThis.setValue(Integer.parseInt(t.image)); } )                #ExpInt
+ | ( t=<DOUBLE> { jjtThis.setValue(Double.valueOf(t.image).doubleValue()); } ) #ExpDouble
+ | ( t=<STRING> { jjtThis.setValue(t.image); } )                               #ExpString
+}
+
+void ExpApp() : {}
+{
+   ( ExpAtom() ( ( ExpTuple() | ( ExpBlock()) #ExpFunThunk ) #ExpApp(2) )* )
+}
+
+void ExpAppInfix() : {}
+{
+   ( ExpApp() ( Id() ExpApp() #ExpAppInfix(3) )* )
+}
+
+void ExpComp() : {}
+{
+   ( ExpAppInfix() [ ( <SEMI> [ Exp() ] ) #ExpOptional ] ) #ExpComp(>1)
+}
+
+void Exp() : {}
+{
+   ( [ Dec() ] ExpComp() ) #ExpDec(>1)
+}
+
+void ExpBlock() : {}
+{
+   <LBRACE> (
+      ( <RBRACE> #ExpTuple(0) )
+    | ( Exp() <RBRACE> )
+   )
+}
+
+/* 
+ * Patterns.
+ *
+ *    P ::= x : T | C x T1...Tn [: T] | (P1,...,Pn) | (P "..." P)
+ */
+
+void Pat() : {}
+{
+   ( Id() <COLON> Type() )     #PatBind
+ | ( 
+      Cat() 
+      Id() 
+      ( TypeTuple() )+ 
+      ([ <COLON> Type() ])     #TypeResult
+   )                           #PatBindFunCurried
+ | PatTuple()
+}
+
+void PatTuple() : {}
+{
+   <LPAREN> (
+      ( <RPAREN> )                          #PatTuple
+    | ( Pat() ( 
+         ( <COMMA> Pat() )
+       | ( <DOTS> Pat() #PatDots(2) )
+      )* <RPAREN> ) #PatTuple(>1)
+   )
+}
+
+/*
+ * Declarations.
+ *
+ *    D ::= let P = M; [D] 
+ *        | C x P1...Pn [: T] {M}; [D]
+ *        | local rec x1,...,xn; D 
+ *        | rec x1,...,xn; D
+ *        |
+ */
+
+void Dec() : {}
+{
+   DecAtom() ( DecAtom() #DecComp(2) )* [ DecNonAtom() #DecComp(2) ]
+ | DecNonAtom()
+}
+
+void DecAtom() : {}
+{
+   ( 
+      <LET> 
+      Pat() 
+      <EQ> 
+      ExpAppInfix() 
+      <SEMI> 
+   )                         #DecBind
+ | ( 
+      Cat() 
+      Id() 
+      ( PatTuple() )+ 
+      [ <COLON> Type() ]     #TypeResult
+      ExpBlock() 
+   )                         #DecBindFunCurried
+}
+
+void DecNonAtom() : {}
+{
+   ( 
+      <LOCAL> <REC> 
+      Id() ( <COMMA> Id() )* 
+      <SEMI> Dec() 
+   )                         #DecLocalRecMany
+ | ( 
+      <REC> 
+      Id() ( <COMMA> Id() )* 
+      <SEMI> Dec() 
+   )                         #DecRecMany
+}
+
+/*
+ * Contexts.
+ *
+ *    Gamma ::= x:T; | C x T1...Tn [: T]; | | Gamma Gamma
+ */
+
+void Con() : {}
+{
+   ( [ ConAtom() ( ConAtom() #ConComp(2) )* ] ) #ConOptional
+}
+
+void ConAtom() : {}
+{
+   ( Id() <COLON> Type() <SEMI> )   #ConBind
+ | ( 
+      Cat() 
+      Id() 
+      ( TypeTuple() )+ 
+      ( [ <COLON> Type() ] )         #TypeResult
+      <SEMI> 
+   )                                 #ConBindFunCurried
+}
+
+/* 
+ * Identifiers.
+ */
+
+void Id() #Id : { Token t; } 
+{
+  t=<ID> { jjtThis.setName(t.image); }
+}
+
+/* 
+ * That's all folks.
+ */

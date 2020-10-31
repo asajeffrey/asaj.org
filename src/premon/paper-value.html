@@ -1,0 +1,660 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Value category</h1>
+<p>
+
+<h2>Syntax</h2>
+<p>
+
+A <em>signature</em> <img src="img-Sigma.gif"> is:
+<ul>
+
+<li> A set of sorts (ranged over by <i>X, Y, Z</i>).<p>
+
+<li> A set of constructors (ranged over by <i>c, d</i>).<p>
+
+<li> For each constructor, a source and target vector of sorts,
+   written 
+   <i>c</i>&nbsp;:&nbsp;<b>X</b>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>Y</b>.<p>
+
+</ul>
+
+Given a signature <img src="img-blue-Sigma.gif"><sub><font
+color=blue>V</font></sub>, define the language Exp(<img
+src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) as
+having types:<p>
+<center>
+<table>
+   <tr><td><i>T</i> </td> <td> ::= </td> <td><i>X</i></td><td>(Base type, <i>X</i> in <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)</td></tr>
+   <tr><td></td> <td>|</td> <td> (<i>T</i>,...,<i>T</i>)</td>
+   <td>(Tuple type)</td></tr>
+</table>
+</center>
+<p>
+
+expressions:<p>
+<center>
+<table>
+   <tr><td><i>M</i> </td> <td> ::= </td> <td><i>x</i></td><td>(Variable)</td></tr>
+   <tr><td></td> <td>|</td> <td><font color=blue>c</font> <i>M</i></td><td>(Value constructor, <font color=blue>c</font> in <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)</td></tr>
+   <tr><td></td> <td>|</td> <td>(<i>M</i>,...,<i>M</i>)</td>
+   <td>(Tuple expression)</td></tr>
+   <tr><td></td> <td>|</td> <td><i>D M</i></td>
+   <td>(Declaration binding)</td></tr>
+</table>
+</center>
+<p>
+
+declarations:<p>
+<center>
+<table>
+   <tr><td><i>D</i> </td> <td> ::= </td> <td><b>let</b> <i>P</i> = <i>M</i>;</td>
+   <td>(Singleton declaration)</td></tr>
+   <tr><td></td> <td>|</td> <td> <i>D D</i></td>
+   <td>(Composition of declarations)</td></tr>
+   <tr><td></td> <td>|</td> <td> </td>
+   <td>(Singleton declaration)</td></tr>
+</table>
+</center>
+<p>
+
+and patterns:<p>
+<center>
+<table>
+   <tr><td><i>P</i> </td> <td> ::= </td> <td><i>x</i> : <i>T</i></td>
+   <td>(Singleton pattern)</td></tr>
+   <tr><td></td> <td>|</td> <td> (<i>P</i>,...,<i>P</i>) </td>
+   <td>(Tuple pattern)</td></tr>
+</table>
+</center>
+<p>
+This language is similar to <a
+href="paper-bib.html#dpr97">de&nbsp;Paiva and Ritter's</a>
+lambda-calculus with explicit substitutions, although we have
+presented explicit substitutions as declarations.
+<p>
+In examples, we will use some syntax sugar, for example 
+writing <font color=blue>1&nbsp;+&nbsp;2</font>
+for <font color=blue>+</font>(<font color=blue>1</font>(),<font color=blue>2</font>()).
+<p>
+The novel feature of the type system for this language is to tag
+the judgements with a <i>category</i> <b>C</b> to determine whether
+the expression is a value expression, a central expression, or a 
+process expression:<p>
+<center>
+   <img src="img-Gamma.gif"> <img src="img-vdash.gif"> 
+   <i>M</i> : <i>T</i> in <b>C</b>
+</center>
+<p>
+For example the expression <font color=blue>1&nbsp;+&nbsp;2</font> is 
+entirely composed of value constructors, so is in the 
+<font color=blue>val</font> category:<p>
+<center>
+   <img src="img-vdash.gif"> (<font color=blue>1 + 2</font>) : int in <font color=blue>val</font>
+</center>
+<p>
+whereas <font color=red>set</font>(<font color=blue>1&nbsp;+&nbsp;2</font>)
+contains a process constructor, so is in the process category:<p>
+<center>
+   <img src="img-vdash.gif"> <font color=red>set</font>(<font color=blue>1 + 2</font>) : () in <font color=red>proc</font>
+</center>
+<p>
+For this section, we shall only consider value constructors, 
+so the only category we need consider is <font color=blue>val</font>.
+Later sections will introduce the 
+<font color=magenta>central</font> and <font color=red>proc</font>
+categories.<p>
+<center>
+<table>
+   <tr><td><b>C</b> </td> <td> ::= </td> <td><font color=blue>val</font></td></tr>
+</table>
+</center>
+<p>
+With this exception, the type system is given as usual for the term
+algebra with declarations, using contexts:<p>
+<center>
+<table>
+   <tr><td><img src="img-Gamma.gif"> </td> <td> ::= </td> <td><i>x</i> : <i>T</i>,..., <i>x</i> : <i>T</i></td></tr>
+</table>
+</center>
+<p>
+The judgements for expressions are of the form
+<img src="img-Gamma.gif"> <img src="img-vdash.gif"> <i>M</i> : <i>T</i> in <b>C</b>, and are given for 
+variables:
+<p>
+
+<center>
+<table>
+<tr valign=top><td>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif">, <i>x</i>:<i>T</i>, <img src="img-Gamma.gif"><img src="img-primesup.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>x</i> : <i>T</i> in <b>C</b></td>
+   </tr>
+</table>
+</td><td>[<i>x</i> not in <img src="img-Gamma.gif"><img src="img-primesup.gif">]</td>
+</tr>
+</table>
+</center>
+<p>
+value constructors:
+<p>
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i>) in <font color=blue>val</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=blue>c</font> <i>M</i> : (<i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub>) in <font color=blue>val</font></td>
+   </tr>
+</table>
+</td><td>
+[<font color=blue>c</font> : <i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i> <img src="img-rightarrow.gif"> <i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub> in <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>]
+</td></tr>
+</table>
+</center>
+<p>
+tuples:
+<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i><sub>1</sub> : <i>T</i><sub>1</sub> in <b>C</b></td>
+   </tr>
+   <tr>
+      <td></td>
+      <td><img src="img-vdots.gif"></td>
+      <td></td>
+   </tr>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M<sub>n</sub></i> : <i>T<sub>n</sub></i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>M</i><sub>1</sub>,...,<i>M<sub>n</sub></i>) : (<i>T</i><sub>1</sub>,...,<i>T<sub>n</sub></i>) in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+and declaration bindings:
+<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <img src="img-Gamma.gif"><img src="img-primesup.gif"> in <b>C</b></td>
+   </tr>
+   <tr>
+      <td><img src="img-Gamma.gif">, <img src="img-Gamma.gif"><img src="img-primesup.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D M</i> : <i>T</i> in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+Judgements for declarations are of the form
+<img src="img-Gamma.gif"> <img src="img-vdash.gif"> <i>D</i> : <img src="img-Gamma.gif"> in <b>C</b>
+and are given for singleton declarations:
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P</i> : <i>T</i>) : <img src="img-Gamma.gif"><img src="img-primesup.gif"></td>
+   </tr>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><b>let</b> <i>P</i> = <i>M</i>; : <img src="img-Gamma.gif"><img src="img-primesup.gif"> in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+composition of declarations:
+<p>
+<center>
+<table><tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i><sub>1</sub> : <img src="img-Gamma.gif"><sub>1</sub> in <b>C</b></td>
+   </tr>
+   <tr>
+      <td><img src="img-Gamma.gif">, <img src="img-Gamma.gif"><sub>1</sub></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i><sub>2</sub> : <img src="img-Gamma.gif"><sub>2</sub> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i><sub>1</sub> <i>D</i><sub>2</sub> : <img src="img-Gamma.gif"><sub>1</sub>, <img src="img-Gamma.gif"><sub>2</sub> in <b>C</b></td>
+   </tr>
+</table>
+</td><td>
+[<img src="img-Gamma.gif"><sub>1</sub> and <img src="img-Gamma.gif"><sub>2</sub> disjoint]
+</td></tr></table>
+</center>
+<p>
+and empty declarations:
+<p>
+<center>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td> () : () in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+Judgements for patterns are of the form
+<img src="img-Gamma.gif"> <img src="img-vdash.gif"> (<i>P</i> : <i>T</i>) : <img src="img-Gamma.gif">
+and are given for singleton patterns:<p>
+
+<center>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>((<i>x</i> : <i>T</i>) : <i>T</i>) : (<i>x</i> : <i>T</i>)</td>
+   </tr>
+</table>
+</center>
+<p>
+and tuple patterns:<p>
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P</i><sub>1</sub> : <i>T</i><sub>1</sub>) : <img src="img-Gamma.gif"><sub>1</sub></td>
+   </tr>   
+   <tr>
+      <td></td>
+      <td><img src="img-vdots.gif"></td>
+      <td></td>
+   </tr>   
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P<sub>n</sub></i> : <i>T<sub>n</sub></i>) : <img src="img-Gamma.gif"><sub><i>n</i></sub></td>
+   </tr>   
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>((<i>P</i><sub>1</sub>,...,<i>P<sub>n</sub></i>) :
+         (<i>T</i><sub>1</sub>,...,<i>T<sub>n</sub></i>)) :
+            (<img src="img-Gamma.gif"><sub>1</sub>,...,<img src="img-Gamma.gif"><sub><i>n</i></sub>)</td>
+   </tr>
+</table>
+</td><td>
+[<img src="img-Gamma.gif"><sub><i>i</i></sub> have disjoint vars]
+</td></tr>
+</table>
+</center>
+<p>
+
+<h2>Graphical semantics</h2>
+<p>
+
+The semantics of a type is given as a vector of sorts:<p>
+<center>
+   [[<i>X</i>]] = <i>X</i> &nbsp; &nbsp; &nbsp; 
+   [[(<i>T</i><sub>1</sub>,...,<i>T<sub>n</sub></i>)]] =
+      [[<i>T</i><sub>1</sub>]],...,[[<i>T<sub>n</sub></i>]]
+</center>
+<p>
+The semantics of a context is given as a vector of sorts:<p>
+<center>
+   [[<i>x</i><sub>1</sub>:<i>T</i><sub>1</sub>,...,<i>x<sub>n</sub></i>:<i>T<sub>n</sub></i>]] =
+      [[<i>T</i><sub>1</sub>]],...,[[<i>T<sub>n</sub></i>]]
+</center>
+<p>
+The semantics of terms is given as a flow graph
+(defined formally in <a href="paper-complete-cfp.html">an appendix</a>):<p>
+<center>
+   [[<img src="img-Gamma.gif"> <img src="img-vdash.gif"> <i>M</i> : <i>T</I> in <font color=blue>val</font>]] :
+   [[<img src="img-Gamma.gif">]]
+   <img src="img-rightarrow.gif">
+   [[<i>T</i>]]
+</center>
+<p>
+These graphs can be drawn with incoming edges on the left and outgoing
+edges on the right:
+<center>
+   <applet code="AppletPremon.class" width=100 height=80 align=absmiddle>
+   <param name="base" value="
+      val G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+We shall usually elide the context and types where they are obvious.
+The semantics is defined inductively:
+<center>
+<table>
+<tr>
+   <td>[[<i>x</i> in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+<param name="free" value="
+   y1:Y1; yn:Yn; x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm,z1:Z1...zo:Zo) = (y1...yn,x1...xm,z1...zo);
+   return (x1...xm);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<font color=blue>c</font> <i>M</i> in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="base" value="
+   val c (B1...Bm) : (C1...Cn);
+   val M (Z1...Zo) : (B1...Bm);
+">
+<param name="free" value="
+   z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (b1:B1...bm:Bm) = M(z1...zo);
+   let (c1:C1...cn:Cn) = c(b1...bm);
+   return (c1...cn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[(<i>M1</i>,...,<i>Mn</i>) in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=120 align=absmiddle>
+<param name="base" value="
+   val M1 (X1...Xm) : (Y11...Y1n);
+   val Mn (X1...Xm) : (Yn1...Ynn);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let ((y11:Y11...y1n:Y1n)...(yn1:Yn1...ynn:Ynn)) = (M1(x1...xm)...Mn(x1...xm));
+   return ((y11...y1n)...(yn1...ynn));
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>D M</i> in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=120 align=absmiddle>
+<param name="base" value="
+   val D (X1...Xm) : (Y1...Yn);
+   val M (X1...Xm,Y1...Yn) : (Z1...Zo);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = D(x1...xm);
+   let (z1:Z1...zo:Zo) = M(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+The semantics of declarations is given as a graph:<p>
+<center>
+   [[<img src="img-Gamma.gif"> <img src="img-vdash.gif"> <i>D</i> : <img src="img-Gamma.gif"><img src="img-primesup.gif"> in <font color=blue>val</font>]] :
+   [[<img src="img-Gamma.gif">]]
+   <img src="img-rightarrow.gif">
+   [[<img src="img-Gamma.gif"><img src="img-primesup.gif">]]
+</center>
+<p>
+The semantics is defined inductively:
+<center>
+<table>
+<tr>
+   <td>[[<b>let</b> <i>P</i> = <i>M</i>; in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="base" value="
+   val M (X1...Xm) : (Y1...Yn);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = M(x1...xm);
+   return (y1...yn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>D1 D2</i> in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+<param name="base" value="
+   val D1 (X1...Xm) : (Y1...Yn);
+   val D2 (Y1...Yn,X1...Xm) : (Z1...Zo);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm) = (D1(x1...xm),x1...xm);
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm) = (y1...yn,x1...xm);
+   let (z1:Z1...zo:Zo) = D2(y1...yn,x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[  in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=70 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   return ();
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+For example, here are four graphs for the same arithmetic expression:
+<center>
+<table>
+<tr><td>
+<applet code="AppletPremon.class" width=100 height=140 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   return ((1+1)*(1+1));
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let x:int = (1+1);
+   return (x*x);
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=100 height=100 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let y:int = 1;
+   return ((y+y)*(y+y));
+">
+</applet>
+</td><td>
+<applet code="AppletPremon.class" width=120 height=75 align=middle>
+<param name="base" value="
+   val * (int, int) : int;
+   val + (int, int) : int;
+   val - (int, int) : int;
+   val / (int, int) : int;
+">
+<param name="exp" value="
+   let y:int = 1;
+   let x:int = (y+y);
+   return (x*x);
+">
+</applet>
+</td></tr>
+<tr><td>
+   <b>return</b>&nbsp;((<font color=blue>1+1</font>)<font color=blue>*</font>(<font color=blue>1+1</font>));
+</td><td>
+   <b>let</b>&nbsp;<i>x</i>:int = <font color=blue>1+1</font>;
+</td><td>
+   <b>let</b>&nbsp;<i>y</i>:int = <font color=blue>1</font>;
+</td><td>
+   <b>let</b>&nbsp;<i>y</i>:int = <font color=blue>1</font>;
+</td></tr>
+<tr><td></td><td>
+   <b>return</b>&nbsp;(<i>x</i><font color=blue>*</font><i>x</i>);
+</td><td>
+   <b>return</b>&nbsp;((<i>y</i><font color=blue>+</font><i>y</i>)<font color=blue>*</font>(<i>y</i><font color=blue>+</font><i>y</i>));
+</td><td>
+   <b>let</b>&nbsp;<i>x</i>:int = <i>y</i><font color=blue>+</font><i>y</i>;
+</td></tr>
+<tr><td></td><td></td><td></td><td>
+   <b>return</b>&nbsp;(<i>x</i><font color=blue>*</font><i>x</i>);
+</td>
+</tr>
+</table>
+</center>
+<p>
+These graphs can be proved equal using the axioms for a category with
+finite products, but they are <i>not</i> graph isomorphic.  This means
+that graph isomorphism is not an appropriate equivalence on graphs if
+we wish to build the initial category with finite products over
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.
+Instead, in <a href="paper-complete-cfp.html">an appendix</a>
+we define an appropriate notion of bisimulation on flow graphs, and
+construct a 
+category <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) where:<p>
+<ul>
+
+<li> Objects are vectors of sorts.<p>
+
+<li> Morphisms are acyclic flow graphs, viewed up to bisimulation.<p>
+
+</ul>
+We show that <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>) is the initial strict cartesian category
+over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.  Thus the
+graphical semantics defined above uniquely determines a semantics in
+<i>any</i> category with finite products over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.
+
+<nolatex>
+<p>
+<center>
+<a href="paper-intro.html">Previous</a> |
+<a href="paper-central.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

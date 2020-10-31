@@ -1,0 +1,358 @@
+<html>
+<head>
+<title>Premonoidal categories and a graphical view of programs</title>
+</head>
+
+<body bgcolor=#ffffff>
+
+<h1>Premonoidal categories and state transformers</h1>
+<p>
+
+The graphical presentation of symmetric premonoidal categories uses extra control
+arcs to model control dependencies.  This can be seen as a simple form
+of <i>state transformer</i> where each graph has one extra incoming arc
+and one extra outgoing arc.
+<p>
+Given a strict symmetric monoidal category <font color=magenta>C</font> with a chosen
+object <font color=red>S</font>, the <i>state transformer category</i> of 
+<font color=magenta>C</font>, <font color=red>State</font>(<font color=magenta>C</font>) is given
+by:
+<ul>
+<li> Objects are those of <font color=magenta>C</font>.<p>
+<li> The homset <font color=red>State</font>(<font color=magenta>C</font>)[<i>X</i>, <i>Y</i>]
+   is <font color=magenta>C</font>[<i>X</i> <img src="img-magenta-otimes.gif"> <font color=red>S</font>, <i>Y</i> <img src="img-magenta-otimes.gif"> <font color=red>S</font>].<p>
+
+</ul>
+The identity-on-objects inclusion 
+<font color=magenta>C</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>State</font>(<font color=magenta>C</font>)
+maps <font color=magenta>f</font>
+to <font color=magenta>f <img src="img-magenta-otimes.gif"> id</font><sub><font color=red>S</font></sub>.  
+<p>
+
+<font color=magenta>C</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>State</font>(<font color=magenta>C</font>)
+is a strict symmetric premonoidal category with premonoidal structure given by:
+<ul>
+
+<li> <font color=magenta>f</font> <img src="img-red-oslash.gif"> 
+   <font color=magenta>g</font> is
+   <font color=magenta>f</font> <img src="img-magenta-otimes.gif"> 
+   <font color=magenta>g</font>.<p>
+
+<li> <font color=magenta>f</font> <img src="img-red-obslash.gif"> 
+   <font color=magenta>g</font> is
+   (<font color=magenta>id</font> <img src="img-magenta-otimes.gif"> 
+   <font color=magenta>symm</font>) ;
+   (<font color=magenta>f</font> <img src="img-magenta-otimes.gif"> 
+   <font color=magenta>g</font>) ;
+   (<font color=magenta>id</font> <img src="img-magenta-otimes.gif"> 
+   <font color=magenta>symm</font>).<p>
+
+</ul>
+
+The state transformer construction is well-known, and is given by
+Power and Robinson as one of the canonical examples of a symmetric premonoidal
+category.  We shall now show that state transformers are canonical
+strict symmetric premonoidal categories by showing that for <i>any</i> 
+strict symmetric premonoidal category <font color=magenta>C</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>P</font>
+we can find a strict symmetric monoidal category 
+<font color=magenta>D</font>
+such that:
+
+<center><table>
+<tr>
+   <td><font color=magenta>C</font></td>
+   <td><img src="img-hookrightarrow.gif"></td>
+   <td><font color=red>P</font></td>
+</tr>
+<tr>
+   <td><img src="img-fulldownarrow.gif"></td>
+   <td></td>
+   <td><img src="img-fulldownarrow.gif"></td>
+</tr>
+<tr>
+   <td><font color=magenta>D</font></td>
+   <td><img src="img-hookrightarrow.gif"></td>
+   <td><font color=red>State</font>(<font color=magenta>D</font>)</td>
+</tr>
+</table></center>
+<p>
+that is
+<font color=magenta>C</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>P</font>
+is a full sub-strict-symmetric-premonoidal-category of 
+<font color=magenta>D</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>State</font>(<font color=magenta>D</font>).
+<p>
+
+The rest of this section shows how to construct 
+<font color=magenta>D</font>, and show that it has the
+required properties.
+<p>
+
+Let <font color=magenta>LGraph</font>(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+be the subcategory of <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+category of <i>linear</i> flow graphs, that is ones where:
+<ul>
+
+<li> All nodes are labelled from <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>.<p>
+
+<li> Each edge occurs exactly once either as an outgoing edge of the
+   graph, or an incoming edge of a node.<p>
+
+</ul>
+Note in particular that since we cannot duplicate or discard edges, this
+means this category has no diagonal or terminal.  In fact, we can
+adapt the <a href="proof-complete-smc">previous proof</a> to show that
+this is the initial strict symmetric monoidal category over
+<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>.
+<p>
+Similarly, let <font color=red>LGraph</font>(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+be the subcategory of <font color=red>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+where:
+<ul>
+
+<li> All nodes are labelled from <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> or <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>.<p>
+
+<li> Each edge occurs exactly once either as an outgoing edge of the
+   graph, or an incoming edge of a node.<p>
+
+</ul>
+We can adapt the <a href="proof-complete-pmc">previous proof</a> to show that
+this is the initial strict symmetric premonoidal category over
+<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>
+with centre
+<font color=magenta>LGraph</font>(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>).
+<p>
+Given two signatures 
+<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> and
+<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub> with the same sorts, 
+define Mix(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+to be the signature with:<p>
+<ul>
+
+<li> Sorts those of <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> plus a new
+   sort <font color=red>S</font>.<p>
+
+<li> Constructors the disjoint union of those of
+   <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> and those of
+   <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>.<p>
+   
+<li> <font color=magenta>c</font>&nbsp;:&nbsp;<b>X</b>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>Y</b>
+   in Mix(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+   whenever <font color=magenta>c</font>&nbsp;:&nbsp;<b>X</b>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>Y</b>
+   in <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>.<p>
+   
+<li> <font color=red>c</font>&nbsp;:&nbsp;<b>X</b><font color=red>S</font>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>Y</b><font color=red>S</font>
+   in Mix(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+   whenever <font color=red>c</font>&nbsp;:&nbsp;<b>X</b>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>Y</b>
+   in <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>.<p>
+
+
+</ul>
+We then have:
+
+<center><table>
+<tr>
+   <td align=right><font color=magenta>LGraph</font>(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)</td>
+   <td><img src="img-hookrightarrow.gif"></td>
+   <td><font color=red>LGraph</font>(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)</td>
+</tr>
+<tr>
+   <td align=center><img src="img-fulldownarrow.gif"></td>
+   <td></td>
+   <td><img src="img-fulldownarrow.gif"></td>
+</tr>
+<tr>
+   <td align=right><font color=magenta>LGraph</font>(Mix(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>))</td>
+   <td><img src="img-hookrightarrow.gif"></td>
+   <td><font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)))</td>
+</tr>
+</table></center>
+<p>
+where the full subcategories are taken by only including objects which
+do not include the new sort <font color=red>S</font>.
+<p>
+We can regard a monoidal category 
+<font color=magenta>C</font>
+as a signature with:
+<ul>
+
+<li> Sorts are objects.<p>
+
+<li> Constructors <i>f</i> : <i>X</i><sub>1</sub>,...,<i>X<sub>m</sub></i>
+   <img src="img-rightarrow.gif"> 
+   <i>Y</i><sub>1</sub>,...,<i>Y<sub>n</sub></i>
+   are morphisms  <i>f</i> : <i>X</i><sub>1</sub><img src="img-magenta-otimes.gif">...<img src="img-magenta-otimes.gif"><i>X<sub>m</sub></i>
+   <img src="img-rightarrow.gif"> 
+   <i>Y</i><sub>1</sub><img src="img-magenta-otimes.gif">...<img src="img-magenta-otimes.gif"><i>Y<sub>n</sub></i>.<p>
+
+</ul>
+and similarly for premonoidal categories.  Any category is trivially
+a category over itself, and so we have a unique symmetric premonoidal functor:<p>
+<center><table>
+<tr>
+   <td>[[_]]<sub>C</sub> : </td>
+   <td><font color=magenta>LGraph</font>(<font color=magenta>C</font>)</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=magenta>C</font></td>
+</tr><tr>
+   <td>[[_]]<sub>P</sub> : </td>
+   <td><font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=red>P</font></td>
+</tr>
+</table>
+</center>
+<p>
+such that:
+<center>
+   [[
+      <applet code="AppletPremon.class" width=40 height=75 align=middle>
+      <param name="base" value="
+         central c(X):Y;
+      ">
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="exp" value="
+         c(x)
+      ">
+      </applet>
+   ]]<sub>C</sub>
+   =
+   <i>c</i>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   [[
+      <applet code="AppletPremon.class" width=40 height=75 align=middle>
+      <param name="base" value="
+         proc d(X):Y;
+      ">
+      <param name="free" value="
+         x:X;
+      ">
+      <param name="exp" value="
+         d(x)
+      ">
+      </applet>
+   ]]<sub>P</sub>
+   =
+   <i>d</i>
+</center>
+
+and so we can define 
+<font color=magenta>D</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>Q</font> 
+as a pushout in the category of strict symmetric premonoidal categories:<p>
+<center><table>
+<tr>
+   <td>[[_]]<sub>C</sub> : </td>
+   <td align=right><font color=magenta>LGraph</font>(<font color=magenta>C</font>)</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=magenta>C</font></td>
+</tr>
+<tr>
+   <td></td>
+   <td align=center><img src="img-hookdownarrow.gif"></td>
+   <td></td>
+   <td><img src="img-downarrow.gif"></td>
+</tr>
+<tr>
+   <td>[[_]]<sub>D</sub> : </td>
+   <td align=right><font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>))</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=magenta>D</font></td>
+</tr>
+</table><p><table>
+<tr>
+   <td>[[_]]<sub>P</sub> : </td>
+   <td align=right><font color=red>LGraph</font>(<font color=magenta>C</font>,<font color=red>P</font>)</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=red>P</font></td>
+</tr><tr>
+   <td></td>
+   <td align=center><img src="img-hookdownarrow.gif"></td>
+   <td></td>
+   <td><img src="img-downarrow.gif"></td>
+</tr><tr>
+   <td>[[_]]<sub>Q</sub> : </td>
+   <td align=right><font color=red>State</font>(<font color=magenta>LGraph</font>(Mix(<font color=magenta>C</font>,<font color=red>P</font>)))</td>
+   <td><img src="img-rrightarrow.gif"></td>
+   <td><font color=red>Q</font></td>
+</tr>
+</table></center>
+<p>
+
+
+<a name="full-subcat">
+<b>Proposition (Full sub-strict-symmetric-premonoidal-category).</b></a><i>
+<font color=magenta>C</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>P</font>
+is a full sub-strict-symmetric-premonoidal category of
+<font color=magenta>D</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>Q</font>.
+</i><p>
+
+<latexinput src="proof-full-subcat.html">
+<a href="proof-full-subcat.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+<a name="q-is-state-d">
+<b>Proposition (Q is State(D)).</b></a><i>
+<font color=red>Q</font> is isomorphic to
+<font color=red>State</font>(<font color=magenta>D</font>).
+</i><p>
+
+<latexinput src="proof-q-is-state-d.html">
+<a href="proof-q-is-state-d.html"><b>Proof.</b></a>
+<img src="img-Box.gif"><p>
+</latexinput>
+
+Thus for any strict symmetric premonoidal category 
+<font color=magenta>C</font>
+<img src="img-hookrightarrow.gif">
+<font color=red>P</font>
+we can find an strict symmetric monoidal category
+<font color=magenta>D</font> such that:<p>
+
+
+<center><table>
+<tr>
+   <td><font color=magenta>C</font></td>
+   <td><img src="img-hookrightarrow.gif"></td>
+   <td><font color=red>P</font></td>
+</tr>
+<tr>
+   <td><img src="img-fulldownarrow.gif"></td>
+   <td></td>
+   <td><img src="img-fulldownarrow.gif"></td>
+</tr>
+<tr>
+   <td><font color=magenta>D</font></td>
+   <td><img src="img-hookrightarrow.gif"></td>
+   <td><font color=red>State</font>(<font color=magenta>D</font>)</td>
+</tr>
+</table></center>
+<p>
+
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html">Previous</a> |
+<a href="paper-bib.html">Next</a>
+</center>
+</nolatex>
+
+</body>
+</html>

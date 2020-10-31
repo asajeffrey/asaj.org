@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Operational semantics</h1>
+
+As another example, we can allow 2-cells labelled with strings,
+so we can model a language with print statements, for example:
+
+<center>
+<table>
+<tr><td></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   print ('hello'); print ('world')
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-eq.gif"><font color=red>'hello'</font><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   print ('world')
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-red-eq.gif"><font color=red>'world'</font><img src="img-red-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=40 align=absmiddle>
+<param name="red" value="true">
+<param name="base" value="
+   proc print (string);
+">
+<param name="exp" value="
+   ()
+">
+</applet></td>
+</tr>
+</table>
+</center>
+
+  </body>
+</html>

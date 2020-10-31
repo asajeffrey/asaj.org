@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Proof of normalization of permutations</font></b></center>
+<p>
+
+<a href="tracedef.html#permute-normal">
+<b>Proposition (Normalization of permutations).</b><i>
+   For any permutation 
+   <font color=blue>p</font> : <b>X<sub>1</sub></b>,X,<b>X<sub>2</sub></b> 
+   <img src="img-rightarrow.gif"> <b>Y</b> we can find
+   <b>Y<sub>1</sub></b>,X,<b>Y<sub>2</sub></b> = <b>Y</b> 
+   and <font color=blue>q</font> : <b>X<sub>1</sub></b>,<b>X<sub>2</sub></b> 
+   <img src="img-rightarrow.gif"> <b>Y<sub>1</sub></b>,<b>Y<sub>2</sub></b>
+   such that:
+   <p>
+   <center>
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X2 x2
+      ">
+      <param name="base" value="
+         val (Y1,Y,Y2) (X1,X,X2) p
+      ">
+      <param name="exp" value="
+         p(x1,x,x2)
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=85 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X2 x2
+      ">
+      <param name="base" value="
+         val (Y1,Y2) (X1,X2) q
+      ">
+      <param name="exp" value="
+         let (X1 x1, X x, X2 x2) = (x1,x,x2);
+         (let (Y1 y1, Y2 y2) = q(x1,x2); (y1,x,y2))
+      ">
+      </applet>
+   </center>
+</i><p>
+
+<b>Proof.</b>
+   Induction on <font color=blue>p</font>.<p>
+   <ul>
+   <li> If <font color=blue>p</font> = <font color=blue>id</font>
+      then let <font color=blue>q</font> = <font color=blue>id</font>,
+      and:
+   <p>
+   <center>
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X2 x2
+      ">
+      <param name="exp" value="
+         (x1,x,x2)
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X2 x2
+      ">
+      <param name="exp" value="
+         let (X1 x1, X x, X2 x2) = (x1,x,x2);
+         (let (X1 x1, X2 x2) = (x1,x2); (x1,x,x2))
+      ">
+      </applet>
+   </center>
+
+   <li> If <font color=blue>p</font> =  <font color=blue>p1 ; p2</font>
+        then by induction we can find appropriate 
+        <font color=blue>q1 ; q2</font> such that:
+   <center>
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X2 x2
+      ">
+      <param name="base" value="
+         val (Y1,Y,Y2) (X1,X,X2) p1; val (Z1,Z,Z2) (Y1,Y,Y2) p2
+      ">
+      <param name="exp" value="
+         p2(p1(x1,x,x2))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=160 height=85 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X2 x2
+      ">
+      <param name="base" value="
+         val (Y1,Y2) (X1,X2) q1; val (Z1,Z2) (Y1,Y2) q2
+      ">
+      <param name="exp" value="
+         let (X1 x1, X x, X2 x2) = (x1,x,x2);
+         (let (Y1 y1, Y2 y2) = q1(x1,x2); 
+          (let (Y1 y1, X x, Y2 y2) = (y1,x,y2);
+           (let (Z1 z1, Z2 z2) = q2(y1,y2); (z1,x,z2))))
+      ">
+      </applet>
+      =
+      <applet code="AppletPremon.class" width=130 height=85 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X2 x2
+      ">
+      <param name="base" value="
+         val (Y1,Y2) (X1,X2) q1; val (Z1,Z2) (Y1,Y2) q2
+      ">
+      <param name="exp" value="
+         let (X1 x1, X x, X2 x2) = (x1,x,x2);
+         (let (Y1 y1, Y2 y2) = q1(x1,x2); 
+          (let (Z1 z1, Z2 z2) = q2(y1,y2); (z1,x,z2)))
+      ">
+      </applet>
+   </center>
+
+   <li> If <font color=blue>p</font> = 
+        <font color=blue>p1 <img src="img-blue-otimes.gif"> p2</font>
+        then either:<p>
+
+        <ul>
+
+        <li> we can induct on <font color=blue>p1</font>, and:
+   <center>
+      <applet code="AppletPremon.class" width=80 height=100 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X21 x21; X22 x22
+      ">
+      <param name="base" value="
+         val (Y1,X,Y21) (X1,X,X21) p1; val Y22 (X22) p2
+      ">
+      <param name="exp" value="
+         (p1(x1,x,x21),p2(x22))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X21 x21; X22 x22
+      ">
+      <param name="base" value="
+         val (Y1,Y21) (X1,X21) q1; val Y22 (X22) p2
+      ">
+      <param name="exp" value="
+         (let (X1 x1, X x, X21 x21) = (x1,x,x21);
+          (let (Y1 y1, Y21 y21) = q1(x1,x21); (y1,x,y21)),
+          p2(x22))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=130 height=100 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X21 x21; X22 x22
+      ">
+      <param name="base" value="
+         val (Y1,Y21) (X1,X21) q1; val Y22 (X22) p2
+      ">
+      <param name="exp" value="
+         let (X1 x1, X x, X21 x21, X22 x22) = (x1, x, x21, x22);
+         (let (X1 x1, X21 x21, X x, X22 x22) = (x1, x21, x, x22);
+         (let (X1 x1, X21 x21, X22 x22, X x) = (x1, x21, x22, x);
+         (let ((Y1 y1, Y21 y21), X x, Y22 y22) = (q1(x1,x21), x, p2(x22));
+         (y1,x,y21,y22))))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=130 height=100 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X21 x21; X22 x22
+      ">
+      <param name="base" value="
+         val (Y1,Y21) (X1,X21) q1; val Y22 (X22) p2
+      ">
+      <param name="exp" value="
+         let (X1 x1, X x, X21 x21, X22 x22) = (x1, x, x21, x22);
+         (let (X1 x1, X21 x21, X x, X22 x22) = (x1, x21, x, x22);
+         (let ((Y1 y1, Y21 y21), Y22 y22, X x) = (q1(x1,x21), p2(x22), x);
+         (let (Y1 y1, Y21 y21, X x, Y22 y22) = (y1, y21, x, y22);
+         (y1,x,y21,y22))))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=130 height=100 align=absmiddle>
+      <param name="free" value="
+         X1 x1; X x; X21 x21; X22 x22
+      ">
+      <param name="base" value="
+         val (Y1,Y21) (X1,X21) q1; val Y22 (X22) p2
+      ">
+      <param name="exp" value="
+         let (X1 x1, X x, X21 x21, X22 x22) = (x1, x, x21, x22);
+         (let ((Y1 y1, Y21 y21), Y22 y22, X x) = (q1(x1,x21), p2(x22), x);
+         (y1,x,y21,y22))
+      ">
+      </applet>      
+   </center>
+
+        <li> or we can induct on <font color=blue>p2</font>, and:
+   <center>
+      <applet code="AppletPremon.class" width=80 height=100 align=absmiddle>
+      <param name="free" value="
+         X11 x11; X12 x12; X x; X2 x2
+      ">
+      <param name="base" value="
+         val Y11 (X11) p1; val (Y12,X,Y2) (X12,X,X2) p2
+      ">
+      <param name="exp" value="
+         (p1(x11),p2(x12,x,x2))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=90 height=100 align=absmiddle>
+      <param name="free" value="
+         X11 x11; X12 x12; X x; X2 x2
+      ">
+      <param name="base" value="
+         val Y11 (X11) p1; val (Y12,Y2) (X12,X2) q2
+      ">
+      <param name="exp" value="
+         (p1(x11),
+          let (X12 x12, X x, X2 x2) = (x12, x, x2);
+          (let (Y12 y12, Y2 y2) = q2(x12,x2);
+           (y12,x,y2)))
+      ">
+      </applet>      
+   </center>
+
+        </ul>
+
+   </ul>
+<img src="img-Box.gif"><p>
+
+
+<center>
+<a href="complete.html#permute-normal">Back</a>
+</center>
+
+  </body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of parameterized dinaturality</h1>
+<p>
+
+<a href="paper-complete-ptm.html#paramdinat">
+<b>Proposition (Parameterized dinaturality)</b></a>
+(for 
+   <font color=blue>f</font> : 
+   <i>Z <img src="img-otimes.gif"> U(B)
+      <img src="img-rightarrow.gif"> 
+   U(A)</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U(A)
+      <img src="img-rightarrow.gif"> 
+   Y <img src="img-otimes.gif"> U(B)</i>
+in <b>C</b>):
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=220 height=130 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec a;
+   let ((y1:Y1...yn:Yn, proc b():B),z1:Z1...zo:Zo) = (
+      (let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a); (y1...yn,b)),
+      z1...zo
+   );
+   let proc a():A = f(z1...zo,b);
+   return (y1...yn);
+">
+</applet></td><td>
+   =
+</td><td>
+<applet code="AppletPremon.class" width=220 height=130 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec b;
+   let (x1:X1...xm:Xm,proc a():A) = (x1...xm,f(z1...zo, b));
+   let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a);
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>(X <img src="img-otimes.gif"> Z) Y A</i></sub> 
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>symm</font><sub><i>Z U(A)</i></sub>);
+    (<font color=blue>g</font>
+     <img src="img-otimes.gif"> 
+     <font color=blue>id</font><sub><i>Z</i></sub>);
+    (<font color=blue>id</font><sub><i>Y</i></sub>
+     <img src="img-otimes.gif"> 
+     (<font color=blue>symm</font><sub><i>U(B) Z)</i></sub>;
+      <font color=blue>f</font>)))
+</td><td>
+   = 
+</td><td align=center>
+   Tr<sub><i>(X <img src="img-otimes.gif"> Z) Y B</i></sub> 
+   ((<font color=blue>id</font><sub><i>X</i></sub>
+     <img src="img-otimes.gif"> 
+     <font color=blue>f</font>);
+    <font color=blue>g</font>)
+</td></tr></table></center>
+<p>
+
+</nolatex>
+
+<b>Proof.</b>
+<p><center>
+<table>
+<tr><td></td><td>
+<applet code="AppletPremon.class" width=220 height=130 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec a;
+   let ((y1:Y1...yn:Yn, proc b():B),z1:Z1...zo:Zo) = (
+      (let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a); (y1...yn,b)),
+      z1...zo
+   );
+   let proc a():A = f(z1...zo,b);
+   return (y1...yn);
+">
+</applet>
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec a;
+   let ((y1:Y1...yn:Yn, proc b():B),z1:Z1...zo:Zo) = (
+      (let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a); (y1...yn,b)),
+      z1...zo
+   );
+   let proc a():A = f(
+      z1...zo, (
+         local rec b1;
+         let proc b2():B = b1;
+         let proc b1():B = b;
+         b2
+      )
+   );
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Yanking)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec a;
+   local rec b;
+   let ((y1:Y1...yn:Yn, proc b():B),z1:Z1...zo:Zo,proc b1():B) = (
+      (let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a); (y1...yn,b)),
+      z1...zo,
+      b
+   );
+   let (proc a():A,proc b():B) = (f(z1...zo, b1),b);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Naturality of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec a;
+   local rec b;
+   let ((y1:Y1...yn:Yn, proc b():B),z1:Z1...zo:Zo,proc b1():B) = (
+      (let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a); (y1...yn,b)),
+      z1...zo,
+      b
+   );
+   let proc a():A = f(z1...zo, b1);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Naturality of <font color=blue>symm</font>)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec a;
+   local rec b;
+   let (x1:X1...xm:Xm,proc a1():A,proc a():A) = (x1...xm,a,f(z1...zo, b));
+   let ((y1:Y1...yn:Yn,proc b():B),proc a():A) = (g(x1...xm,a1),a);
+   let (y1:Y1...yn:Yn,proc b():B,proc a():A) = (y1...yn,b,a);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Functoriality of <img src="img-otimes.gif">)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec b;
+   local rec a;
+   let (x1:X1...xm:Xm,proc a1():A,proc a():A) = (x1...xm,a,f(z1...zo, b));
+   let ((y1:Y1...yn:Yn,proc b():B),proc a():A) = (g(x1...xm,a1),a);
+   let (y1:Y1...yn:Yn,proc b():B,proc a():A) = (y1...yn,b,a);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Symmetry sliding)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=240 height=160 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec b;
+   local rec a;
+   let (x1:X1...xm:Xm,proc a():A,proc a1():A) = (x1...xm,f(z1...zo, b),a);
+   let ((y1:Y1...yn:Yn,proc b():B),proc a():A) = (g(x1...xm,a1),a);
+   let (y1:Y1...yn:Yn,proc b():B,proc a():A) = (y1...yn,b,a);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Naturality of <font color=blue>symm</font>)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=220 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec b;
+   let (x1:X1...xm:Xm,proc a():A) = (x1...xm,f(z1...zo, b));
+   let (y1:Y1...yn:Yn,proc b():B) = g(
+      x1...xm, (
+         local rec a1;
+         let proc a2():A = a1;
+         let proc a1():A = a;
+         a2
+      )
+   );
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Naturality of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=220 height=130 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="base" value="
+   val f (Z1...Zo,proc():B):proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn,proc():B);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm,z1:Z1...zo:Zo) = (x1...xm,z1...zo);
+   local rec b;
+   let (x1:X1...xm:Xm,proc a():A) = (x1...xm,f(z1...zo, b));
+   let (y1:Y1...yn:Yn,proc b():B) = g(x1...xm,a);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Yanking)
+</td></tr>
+</table></center>
+<img src="img-Box.gif">
+<p>
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html#paramdinat">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

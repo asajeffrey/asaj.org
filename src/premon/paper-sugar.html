@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Syntax sugar</h1>
+<p>
+
+The core language defined in the body of the paper is quite sparse,
+but can be made quite readable with the addition of some simple syntax
+sugar, for terms such as infix functions and curried functions.  This
+sugar has been used in all of the examples in the paper, and is
+implemented in the Java applet.
+<p>
+
+The syntax has been designed to resemble a C- or Pascal-like language,
+and is parsable (once some ambiguities are resolved) by an LL(1)
+grammar.  The Java applet uses a 
+<a href="http://www.suntest.com/JavaCC/">JavaCC</a> grammar, and is
+<a href="PremonJJTParser.jjt">available electronically</a>.
+<p>
+
+Infix constructors and functions:
+<p>
+<center>
+   <i>M c N</i> = <i>c</i> (<i>M</i>, <i>N</i>) <br>
+   <i>M x N</i> = <i>x</i> (<i>M</i>, <i>N</i>)
+</center>
+<p>
+
+Sequential composition of expressions (where <i>T</i> is the type of
+<i>M</i> and <i>x</i> is fresh):
+<p>
+<center>
+   (<i>M</i>; <i>N</i>) = 
+   (<b>let</b> <i>x</i>:<i>T</i> = <i>M</i>; <i>N</i>)
+</center>
+<p>
+
+If the second expression is missing, it defaults to the empty tuple:
+<p>
+<center>
+   (<i>M</i>;) = (<i>M</i>; ())
+</center>
+<p>
+
+For fans of C syntax, a <b>return</b> expression:
+<p>
+<center>
+   <b>return</b> <i>M</i>; = <i>M</i>
+</center>
+<p>
+
+Syntax sugar for curried function types:
+<p>
+<center>
+   (<b>C</b> <i>T</i><sub>0</sub> ... <i>T<sub>n</sub></i> : <i>T</i>)
+ =
+   <font color=blue>val</font> <i>T</i><sub>0</sub> :
+      (<b>C</b> <i>T</i><sub>1</sub> ... <i>T<sub>n</sub></i> : <i>T</i>)
+</center>
+<p>
+for example the type of a fibonnaci function might be:
+<p>
+<center>
+   <font color=red>proc</font> <i>int int int</i> : <i>list</i>
+ =
+   <font color=blue>val</font> <i>int</i> :
+   <font color=blue>val</font> <i>int</i> :
+   <font color=red>proc</font> <i>int</i> : <i>list</i>
+</center>
+<p>
+Note that all but the last function type is a <font
+color=blue>val</font> function, thus we have recorded in the type
+system the fact that applying the function to up to two arguments
+involves no significant computation, but applying it to a third
+argument begins a computation.
+<p>
+
+Syntax sugar for multiple curried arguments in anonymous functions,
+which matches the curried type:
+<p>
+<center>
+   (<b>fn C</b> <i>P</i><sub>0</sub> ... <i>P<sub>n</sub></i> {<i>M</i>})
+
+      =  (<b>fn</b> <font color=blue>val</font> <i>P</i><sub>0</sub>
+         {
+            <b>fn C</b> <i>P</i><sub>1</sub> ... <i>P<sub>n</sub></i> {<i>M</i>}
+         })
+</center>
+<p>
+Again, note that it is only the last function which requires any
+computation.
+<p>
+
+Pascal-style declaration of named functions (where each
+<i>P<sub>i</sub></i> has type <i>T<sub>i</sub></i>):
+<p>
+<center>
+   <b>C</b> <i>x</i> <i>P</i><sub>0</sub>...<i>P<sub>n</sub></i> : <i>T</i> {<i>M</i>}
+ =
+   <b>let</b> <i>x</i> : 
+   (<b>C</b> <i>T</i><sub>0</sub>...<i>T<sub>n</sub></i> : <i>T</i>)
+   =
+   <b>fn C</b> <i>P</i><sub>0</sub>...<i>P<sub>n</sub></i> {<i>M</i>};
+</center>
+<p>
+for example:
+<p>
+<center><table><tr><td>
+   <b>local rec</b> <i>fibR</i>; 
+</td></tr><tr><td>
+   <font color=red>proc</font> <i>fibR</i> 
+      (<i>x</i> : <i>int</i>)
+      (<i>y</i> : <i>int</i>)
+      (<i>n</i> : <i>int</i>) 
+      : <i>list</i>
+   {
+</td></tr><tr><td>&nbsp;
+      <i>if</i> (<i>n</i> == 0) {
+         <b>return</b> <i>nil</i>;
+      } {
+         <b>return</b> <i>x</i> :: <i>fib</i> (<i>y</i>) (<i>x</i> + <i>y</i>) (<i>n</i> - 1);
+      }
+</td></tr><tr><td>
+   }
+</td></tr>
+</td></tr><tr><td>
+   <font color=red>proc</font> <i>fib</i> 
+      (<i>n</i> : <i>int</i>) 
+      : <i>list</i>
+   {
+</td></tr><tr><td>&nbsp;
+      <b>return</b> <i>fibR</i> (0) (1) (<i>n</i>);
+</td></tr><tr><td>
+   }
+</td></tr>
+</table>
+</center>
+<p>
+
+The return value of a function is optional, with default ():
+<p>
+<center>
+   <b>fn C</b> <i>P</i><sub>1</sub>...<i>P<sub>n</sub></i> { } 
+ = 
+   <b>fn C</b> <i>P</i><sub>1</sub>...<i>P<sub>n</sub></i> { () }
+</center>
+<p>
+and similarly for named functions:
+<p>
+<center>
+   <b>fn C</b> <i>x</i> <i>P</i><sub>1</sub>...<i>P<sub>n</sub></i> { } 
+ = 
+   <b>fn C</b> <i>x</i> <i>P</i><sub>1</sub>...<i>P<sub>n</sub></i> { () } 
+</center>
+<p>
+
+Pascal-style type notation for functions in patterns and contexts:
+<p>
+<center>
+   <b>C</b> <i>x</i> <i>T</i><sub>1</sub> <i>T<sub>n</sub></i> : <i>T<img src="img-primesup.gif"></i> 
+ =
+   <i>x</i> : <b>C</b> <i>T</i><sub>1</sub> <i>T<sub>n</sub></i> : <i>T<img src="img-primesup.gif"></i> 
+</center>
+<p>
+for example:
+<p>
+<center><table><tr><td>
+   <b>rec</b> <i>map</i>; 
+</td></tr><tr><td>
+   <font color=red>proc</font> <i>map</i> 
+      (<font color=red>proc</font> <i>f</i> (<i>int</i>) : <i>int</i>)
+      (<i>xs</i> : <i>list</i>)
+      : <i>list</i>
+   {
+</td></tr><tr><td>&nbsp;
+      <i>if</i> (<i>isNil</i> (<i>xs</i>)) {
+         <i>nil</i>
+      } {
+         <i>f</i> (<i>hd</i> (<i>xs</i>)) :: 
+            <i>map</i> (<i>f</i>) (<i>tl</i> (<i>xs</i>))
+      }
+</td></tr><tr><td>
+   }
+</td></tr></table>
+</center>
+<p>
+
+Recursive function declarations (where <i>x</i> has type <i>T</i> in
+<i>D</i> and <i>y</i> is fresh):
+<p>
+<center>
+   <b>rec</b> <i>x</i>; <i>D</i>
+
+   = <b>local rec</b> <i>y</i>;
+        <b>let</b> <i>x</i>:<i>T</i> = <i>y</i>; 
+        <i>D</i> 
+        <b>let</b> <i>y</i>:<i>T</i> = <i>x</i>; 
+</center>
+<p>
+
+Multiple variables in recursive declarations:
+<p>
+<center>
+   <b>rec</b> <i>x</i><sub>0</sub>,..., <i>x<sub>n</sub></i>; <i>D</i>
+
+   = <b>rec</b> <i>x</i><sub>0</sub>;
+        <b>rec</b> <i>x</i><sub>1</sub>,..., <i>x<sub>n</sub></i>; <i>D</i>
+</center>
+<p>
+and in local recursive declarations:
+<p>
+<center>
+   <b>local rec</b> <i>x</i><sub>0</sub>,..., <i>x<sub>n</sub></i>; <i>D</i>
+
+   = <b>local rec</b> <i>x</i><sub>0</sub>;
+        <b>local rec</b> <i>x</i><sub>1</sub>,..., <i>x<sub>n</sub></i>; <i>D</i>
+</center>
+<p>
+
+Some handy syntax sugar for thunks:
+<p>
+<center>
+   {<i>M</i>} 
+      = <b>fn</b> <font color=red>proc</font> () {<i>M</i>}
+<br>
+   { } 
+      = <b>fn</b> <font color=red>proc</font> () { }
+</center>
+<p>
+For example if we have an appropriately typed <i>if</i> function:
+<p>
+<center>
+   <font color=red>proc</font> <i>if</i> 
+      (<i>bool</i>)
+      (<font color=red>proc</font> ())
+      (<font color=red>proc</font> ())
+</center>
+<p>
+then we can write if-statements as:
+<p>
+<center>
+   <i>if</i> (<i>conditional</i>) {<i>true-case</i>} {<i>false-case</i>}
+</center>
+<p>
+For example, a while function can be written:
+<p>
+<center><table>
+<tr><td>
+   <b>rec</b> <i>while</i>;
+   <font color=red>proc</font> <i>while</i>
+      (<font color=red>proc</font> <i>b</i> () : <i>bool</i>)
+      (<font color=red>proc</font> <i>p</i> ()) {
+</td></tr><tr><td>
+   &nbsp;
+   <i>x</i> : <i>bool</i> = <i>b</i> ();
+</td></tr><tr><td>
+   &nbsp;
+   <i>if</i> (<i>x</i>) { } { <i>p</i> (); <i>while</i> (<i>b</i>) (<i>p</i>) }
+</td></tr><tr><td>
+   }
+</td></tr>
+</table></center>
+<p>
+For example:
+<p>
+<center>
+   <i>while</i> { !(<i>x</i>) > 0 } { <i>x</i> := (!(<i>x</i>) - 1);
+	<i>f</i> (<i>x</i>) }
+</center>
+<p>
+
+<nolatex>
+<center>
+<a href="paper-future.html">Previous</a> |
+<a href="paper-implement.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

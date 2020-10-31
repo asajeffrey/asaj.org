@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Process category</font></b></center>
+<p>
+
+<center><i><font size="+1">Syntax</font></i></center>
+<p>
+
+<center>
+<table>
+   <tr><td><b>C</b> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td> <font color=red>proc</font></td></tr>
+</table>
+</center>
+<p>
+
+
+<center><i><font size="+1">Type system</font></i></center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=magenta>central</font>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=red>proc</font>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <i>C'</i> in <font color=magenta>central</font>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <i>C'</i> in <font color=red>proc</font>
+   </tr>
+</table>
+</center>
+<p>
+
+
+<center><i><font size="+1">Equations</font></i></center>
+<p>
+
+The equations for <font color=red>proc</font> are the same as those
+for <font color=magenta>central</font>, except that the following is 
+<i>not</i> valid:
+<p><center><table>
+   <tr>
+      <td align=right><i>D</i> <i>D'</i></td>
+      <td>=</td>
+      <td><i>D'</i> <i>D</i></td>
+      <td>
+         (bv <i>D</i> <img src="img-cap.gif"> fv <i>D'</i> =
+         fv <i>D</i> <img src="img-cap.gif"> bv <i>D'</i> =
+         &Oslash;)
+      </td>
+   </tr>
+</table></center><p>
+
+
+<center><i><font size="+1">Syntactic categories</font></i></center>
+<p>
+
+We can construct the category <font color=red>proc</font> as
+for <font color=blue>val</font>.  Because there are fewer axioms
+for <font color=magenta>proc</font> than for <font color=magenta>central</font>,
+<font color=red>proc</font> is not a symmetric monoidal category.
+It is instead <i>premonoidal</i>, a notion introduced (in slightly 
+different form) by <a href="bib.html#pr??">Power and Robinson</a>.
+<p>
+
+A <i>premonoidal category</i> is a category <font color=red>P</font>
+together with:
+<ul>
+
+<li> A symmetric monoidal category 
+   <font color=magenta>C</font> 
+   with the same objects as <font color=red>P</font>
+   (called the <i>center</i> of <font color=red>P</font>.<p>
+
+<li> An identity on objects inclusion
+   <font color=magenta>C</font> <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>.<p>
+
+<li> Two functors:
+<p><center>
+   <img src="img-red-oslash.gif"> : 
+   <font color=magenta>C</font> <img src="img-times.gif"> 
+   <font color=red>P</font> <img src="img-rightarrow.gif">
+   <font color=red>P</font>
+<br>
+   <img src="img-red-obslash.gif"> : 
+   <font color=red>P</font> <img src="img-times.gif"> 
+   <font color=magenta>C</font> <img src="img-rightarrow.gif">
+   <font color=red>P</font>
+</center><p>
+   such that:<p>
+   <ul>
+   <li> the three functors 
+      <img src="img-magenta-otimes.gif">,
+      <img src="img-red-oslash.gif"> and
+      <img src="img-red-obslash.gif"> coincide on objects,
+   <li> the three `obvious' functors from
+      <font color=magenta>C</font> <img src="img-times.gif"> 
+      <font color=magenta>C</font> to <font color=red>P</font>
+      coincide, and
+   <li> the symmetry in <font color=magenta>C</font> 
+      is a natural isomorphism
+         <i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>
+         <img src="img-simeq.gif">
+         <i>Y</i> <img src="img-red-obslash.gif"> <i>X</i>
+      in <font color=red>P</font>.
+   </ul>
+</ul>
+<p>
+The syntactic category <font color=red>proc</font> is premonoidal,
+with centre <font color=magenta>central</font>, and has closed structure given
+by an adjunction (natural in <i>X</i> and <i>Z</i>):
+<p>
+<center>
+   <font color=blue>val</font>[<i>X</i>, <i>Y</i> <img src="img-red-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=red>proc</font>[<i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>, <i>Z</i>]
+<p>
+</center>
+
+<center><i><font size="+1">Graphical presentation</font></i></center>
+<p>
+
+The graphical presentation of <font color=red>proc</font> is rather
+different from that of <font color=magenta>central</font> and <font
+color=blue>val</font>.  If we were to use the `obvious' presentation, then
+we would discover that not all graph-isomorphic terms are equal.  In
+particular, in <font color=magenta>central</font> we have:
+<center>
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   u:U; v:V;
+">
+<param name="base" value="
+   central f(U):W; central g(V):X;
+">
+<param name="exp" value="
+   let (u:U, x:X) = (u, g(v)); (f(u),x)
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   u:U; v:V;
+">
+<param name="base" value="
+   central f(U):W; central g(V):X;
+">
+<param name="exp" value="
+   let (w:W, v:V) = (f(u), v); (w,g(v))
+">
+</applet>
+</center>
+This equation is not true in <font color=red>proc</font> where order
+of evaluation is important.  We would like to retain the notion that 
+if two terms have isomorphic graphs then they are provably equal, so
+we shall not use the `obvious' graphical presentation.  Instead we
+shall introduce new <i>control</i> arcs in addition to the existing
+data arcs.  Each generator now has incoming and outgoing control
+arcs in addition to its data arcs, for example:
+<center>
+<applet code="AppletPremon.class" width=300 height=90 align=absmiddle>
+<param name="base" value="
+   proc print (string) ;
+   hello : string;
+   world : string;
+">
+<param name="exp" value="
+   let (h:string, w:string) = (hello, world);
+   print (h); print (w)
+">
+</applet>
+</center>
+
+<p>
+The values <font color=blue>hello</font> and <font color=blue>world</font>
+come from <font color=blue>val</font>, so order of evaluation is unimportant.
+The <font color=red>print</font> statements, however, come from 
+<font color=red>proc</font>, where order of evaluation is significant,
+so <font color=red>print</font> has an incoming and outgoing control arc
+as well as its incoming data arc:
+<p>
+
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   proc print (string) ;
+">
+<param name="free" value="
+   x : string;
+">
+<param name="exp" value="
+   print (x)
+">
+</applet>
+</center>
+<p>
+
+As another example, the ML reference functions can be typed
+(using only integer references for this example):
+<p>
+<center><table>
+   <tr>
+      <td align=right><font color=magenta>ref</font></td>
+      <td>:</td>
+      <td><font color=magenta>central</font> (int) : ref</td>
+   </tr>
+   <tr>
+      <td align=right><font color=red>:=</font></td>
+      <td>:</td>
+      <td><font color=red>proc</font> (ref,int) : ()</td>
+   </tr>
+   <tr>
+      <td align=right><font color=red>!</font></td>
+      <td>:</td>
+      <td><font color=red>proc</font> (ref) : int</td>
+   </tr>
+</table></center>
+<p>
+
+or graphically:
+<p>
+
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   ref (x)
+">
+</applet>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   proc := (ref,int) ;
+">
+<param name="free" value="
+   r:ref; x:int;
+">
+<param name="exp" value="
+   r := x
+">
+</applet>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   proc !(ref):int;
+">
+<param name="free" value="
+   r:ref;
+">
+<param name="exp" value="
+   !(r)
+">
+</applet>
+</center>
+<p>
+
+For example:
+<center>
+<applet code="AppletPremon.class" width=200 height=90 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="exp" value="
+   let r:ref = ref(0); r := (1 + (!(r)))
+">
+</applet>
+</center>
+<p>
+
+Graphs with one incoming control arc and one outgoing control arc
+form a premonoidal category.
+<p>
+
+<center>
+<table>
+<tr>
+<td>Identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   x:X;
+">
+<param name="exp" value="
+   x
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   proc f(X):Y; proc g(Y):Z;
+">
+<param name="exp" value="
+   let y:Y = f(x); g(y)
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Tensor left:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=85 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="base" value="
+   proc f(X):X1; central g(Y):Y1;
+">
+<param name="exp" value="
+   (f(x),g(y))
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Tensor right:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=85 align=absmiddle>
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="base" value="
+   central f(X):X1; proc g(Y):Y1;
+">
+<param name="exp" value="
+   (f(x),g(y))
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Symmetry:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   x:X; y:Y;
+">
+<param name="exp" value="
+   let (x1:X, y1:Y) = (x,y); (y1,x1)
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+We can also introduce graphical representation for the closed
+structure, in a similar way as for <font color=magenta>central</font>,
+although we now need to take a control line as an extra parameter to a
+curried morphism, and the evaluation morphism now takes an extra
+control line argument.
+<p>
+
+<center>
+<table>
+<tr>
+<td>Currying:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   proc f(X,Y):Z;
+">
+<param name="exp" value="
+   fn proc (y:Y) { f(x,y) }
+">
+</applet>
+</td>
+</tr>
+
+<tr>
+<td>Evaluation:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   x:X; proc f(X):Y;
+">
+<param name="exp" value="
+   f(x)
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+The axiomatization for these graphs is the same as for 
+<font color=magenta>central</font>, that is to say 
+the graph isomorphism axioms, plus beta, eta, and naturality
+axioms for the closed structure.
+
+<p>
+
+<nolatex>
+<center>
+<a href="central.html">Previous</a> |
+<a href="trace.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

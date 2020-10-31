@@ -1,0 +1,60 @@
+/**
+ * A printer which uses LaTeX control sequences to control the formatting
+ * (useful for pretty-printing programs).
+ * @author Alan Jeffrey
+ * @version v1.0 1998/06/11
+ */
+public class LaTeX
+extends Printer
+{
+  private Printer p;
+
+  /**
+   * Create a new printer.
+   * @param p where to print to.
+   */
+  public LaTeX (Printer p) {
+    this.p = p;
+    p.printString ("$\\begin{array}{l}\n");
+  }
+
+  public void printRawString (String s)  {
+    p.printString (s);
+  }
+  public void printNewLine ()  {
+    p.printString ("\\\\\n\\hspace*{" + indentation + "em}");      
+  }
+  public void printRoman (String s)  { 
+    p.printString ("\\mathrm{" + s + "}"); 
+  }
+  public void printItalic (String s)  { 
+    p.printString ("\\mathit{" + s + "}"); 
+  }
+  public void printBold (String s)  { 
+    p.printString ("\\mathbf{" + s + "}"); 
+   }
+  public void printTypewriter (String s)  { 
+    p.printString ("\\texttt{" + s + "}"); 
+  }
+  public void printSubscript (Printable p)  { 
+    this.printString ("{}_{"); this.print (p); this.printString ("}");
+  }
+  public void printSpace ()  { 
+    p.printString ("\\,");
+  }
+  public void printLBrace ()  { 
+    p.printString ("\\{");
+  }
+  public void printRBrace ()  { 
+    p.printString ("\\}");
+  }
+  public void printArrow ()  { 
+    p.printString ("\\mapsto ");
+  }
+  public void printOtimes ()  { 
+    p.printString ("\\otimes ");
+  }
+  public void close ()  {
+    p.printString ("\n\\end{array}$\n");
+  }
+}

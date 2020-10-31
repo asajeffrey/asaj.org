@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>Premonoidal categories and graphical views of programs</title>
+</head>
+
+<body bgcolor=#ffffff>
+
+<center>
+<b><font size="+3">Premonoidal categories and a<br>
+graphical view of programs</font></b>
+<p>
+<b><font size="+1">DRAFT of 1997/08/19</font></b>
+<p>
+<applet code="AppletPremon.class" width=500 height=210>
+<param name="base" value="
+   val == (int, int) : bool;
+   val * (int, int) : int;
+   val - (int, int) : int;
+   proc if (bool) (proc () : int) (proc () : int) : int;
+">
+<param name="exp" value="
+   local rec factr;
+   proc factr (x : int, a : int) : int { 
+      if (x == 0) 
+         { return a; }
+         { return factr (x-1, x*a); }
+   }
+   proc fact (x : int) : int {
+      return factr (x,1);
+   }
+   return fact (5);
+">
+</applet>
+<p>
+This paper is currently under construction, and describes work in
+progress.
+<br>
+It may contain errors.  All comments welcome.
+<p>
+This paper contains Java, and it will take a while to download this
+page.  Be patient.  You may need to switch Java on (under Netscape 4
+this is Edit / Preferences / Advanced / Enable Java).  Unfortunately,
+Netscape refuses to print Java applets, so I've produced a <a
+href="paper.ps.gz">PostScript</a> version.
+<p>
+The latest version of the applet is now much more interactive.  Try
+clicking on the above graph, and then typing in some sample programs.
+<p>
+
+<address>Alan Jeffrey<br>
+   School of Cognitive and Computing Sciences<br>
+   University of Sussex<br>
+   Brighton BN1 9QH<br>
+   UK<br>
+   alanje@cogs.susx.ac.uk
+</address>
+<p>
+Previous |
+<a href="frontmatter.html">Next</a>
+</center>
+</body>
+</html>

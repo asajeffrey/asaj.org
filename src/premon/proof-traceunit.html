@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of trace respecting unit</h1>
+<p>
+
+<a href="paper-complete-ptm.html#traceunit"><b>Proposition (Trace respects unit)</b></a>
+(for 
+   <font color=blue>f</font> : 
+   <i>I
+      <img src="img-rightarrow.gif"> 
+   U A</i>
+and
+   <font color=blue>g</font> : 
+   <i>X <img src="img-otimes.gif"> U A
+      <img src="img-rightarrow.gif"> 
+   Y</i>
+in <b>C</b>):
+
+
+<center><table><tr><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   local rec a; 
+   let (y1:Y1...yn:Yn) = g(x1...xm,a);
+   let proc a():A = f();
+   return (y1...yn);
+">
+</applet></td><td>
+   =
+</td><td align=center>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = g(x1...xm,f());
+   return (y1...yn);
+">
+</applet></td></tr><tr><td align=center>
+   Tr<sub><i>X Y A</i></sub> 
+   (<font color=blue>g</font>;
+    <font color=blue>id</font><sub><i>Y</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>)
+</td><td>
+   = 
+</td><td align=center>
+   (<font color=blue>id</font><sub><i>X</i></sub>
+    <img src="img-otimes.gif"> 
+    <font color=blue>f</font>);
+   <font color=blue>g</font>
+</td></tr></table></center>
+
+</nolatex>
+
+<p>
+<b>Proof.</b>
+<p><center>
+<table>
+<tr><td></td><td>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   local rec a; 
+   let (y1:Y1...yn:Yn) = g(x1...xm,a);
+   let proc a():A = f();
+   return (y1...yn);
+">
+</applet>
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   local rec a; 
+   let (x1:X1...xm:Xm,proc a():A, proc a1():A) = (x1...xm,f(),a);
+   let ((y1:Y1...yn:Yn),proc a():A) = (g(x1...xm,a1),a);
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Acyclic graph iso)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = g(
+      x1...xm, (
+         let proc a():A = f();
+         local rec a1;
+         let proc a2():A = a1;
+         let proc a1():A = a;
+         a2
+      )
+   );
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Naturality of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val f ():proc():A; 
+   val g (X1...Xm,proc():A):(Y1...Yn);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = g(x1...xm,f());
+   return (y1...yn);
+">
+</applet>
+</td><td>
+(Yanking)
+</td></tr>
+</table></center>
+<img src="img-Box.gif">
+<p>
+
+<nolatex>
+<center>
+<a href="paper-complete-ptm.html#traceunit">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

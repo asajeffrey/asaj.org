@@ -1,0 +1,1050 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Functions</h1>
+<p>
+
+<h2>Syntax</h2>
+<p>
+
+Define the language
+RecFun(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) 
+as extending RecExp(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) with
+new types:<p>
+<center>
+<table>
+   <tr><td><i>T</i> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td> <b>C</b> <i>T</i> : <i>T</i></td></tr>
+</table>
+</center>
+<p>
+and new expressions:<p>
+<center>
+<table>
+   <tr><td><i>M</i> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td><b>fn C</b> <i>P</i> {<i>M</i>}</td><td>(Anonymous function)</td></tr>
+   <tr><td></td> <td>|</td> <td><i>M M</i></td><td>(Function application)</td></tr>
+</table>
+</center>
+<p>
+The typing for anonymous functions is:<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<i>P</i> : <i>T</i>) : <img src="img-Gamma.gif"><img src="img-primesup.gif"></td>
+   </tr>
+   <tr>
+      <td><img src="img-Gamma.gif">, <img src="img-Gamma.gif"><img src="img-primesup.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T<img src="img-primesup.gif"></i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><b>fn C</b> <i>P</i> {<i>M</i>} : (<b>C</b> <i>T</i> : <i>T<img src="img-primesup.gif"></i>) in <font color=blue>val</font></td>
+   </tr>
+</table>
+</center>
+<p>
+and for function application is:<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<b>C</b> <i>T</i> : <i>T<img src="img-primesup.gif"></i>) in <font color=blue>val</font></td>
+   </tr>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M<img src="img-primesup.gif"></i> : <i>T</i> in <b>C</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M M<img src="img-primesup.gif"></i> : <i>T<img src="img-primesup.gif"></i> in <b>C</b></td>
+   </tr>
+</table>
+</center>
+<p>
+In particular, note that anonymous functions are always values,
+even if the function body is central or process.  This agrees with
+the usual definition of normal forms for operational semantics.
+
+<h2>Graphical semantics</h2>
+<p>
+
+<h3>Cartesian closed</h3>
+<p>
+
+To give a graphical semantics for the cartesian closed structure, 
+we extend the category of cyclic flow graphs 
+<font color=blue>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+to that of <i>closed</i> cyclic flow graphs
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+by allowing edges to be labelled by value function types:<p>
+<center>
+   <i>A</i>,<i>B</i>,<i>C</i> ::= <i>X</i> 
+              | <i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>
+                <img src="img-blue-Rightarrow.gif">
+                <i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+</center>
+<p>
+and allowing nodes of the form:
+<center>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   val f (Y1...Yn) : (Z1...Zo);
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn val (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+</center>
+with labellings:
+<center>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   val f (Y1...Yn) : (Z1...Zo);
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+:
+(<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-blue-Rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>),
+<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>
+in
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+<br>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn val (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+: 
+<i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>
+<img src="img-rightarrow.gif">
+(<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-blue-Rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>)
+in
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+</center>
+where:
+<center>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   val G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+: 
+<i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>,
+<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>
+in
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+</center>
+These graphs are factored up to the equivalence required for a cartesian
+closed category:<p>
+<center>
+   <font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)[<b>A</b>, <b>B</b> <img src="img-blue-Rightarrow.gif"> <b>C</b>]
+   <img src="img-simeq.gif">
+   <font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)[<b>A</b> <img src="img-blue-times.gif"> <b>B</b>, <b>C</b>]
+</center>
+<p>
+Graphically these axioms are:
+<center>
+<table>
+   <tr>
+      <td>Beta:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   val G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   val f (y1:Y1...yn:Yn) : (Z1...Zo) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   } 
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   val G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td>Eta:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=90 align=absmiddle>
+<param name="free" value="
+   val f (X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   return fn val (x1:X1...xm:Xm) {
+      let (y1:Y1...yn:Yn) = f(x1...xm);
+      return (y1...yn);
+   };
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=50 align=absmiddle>
+<param name="free" value="
+   val f (X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   return f;
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td>Naturality:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=120 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+">
+<param name="base" value="
+   val G(W1...Wl):(X1...Xm);
+   val H(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = G(w1...wl);
+   return fn val (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = H(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=120 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+">
+<param name="base" value="
+   val G(W1...Wl):(X1...Xm);
+   val H(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn val (y1:Y1...yn:Yn) { 
+      let (x1:X1...xm:Xm) = G(w1...wl);
+      let (z1:Z1...zo:Zo) = H(x1...xm,y1...yn);
+      return (z1...zo);
+   }; 
+">
+</applet>
+      </td>
+   </tr>
+</table>
+</center>
+The graphical semantics is extended with:
+<center>
+<table>
+<tr>
+   <td>[[<b>fn</b> <font color=blue>val</font> <i>P</i> {<i>M</i>} in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val M(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn val (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = M(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>M N</i> in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=150 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val M(X1...Xm) : val (Y1...Yn) : (Z1...Zo);
+   val N(X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm); (
+      let val f (Y1...Yn) : (Z1...Zo) = M(x1...xm);
+      let (y1:Y1...yn:Yn) = N(x1...xm);
+      let (z1:Z1...zo:Zo) = f(y1...yn);
+      return (z1...zo);
+   )
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+
+<h3>Symmetric monoidal closed</h3>
+<p>
+
+To give a semantics for the symmetric monoidal closed structure:
+<ul>
+
+<li> we extend the category of cyclic flow graphs 
+<font color=magenta>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+to that of closed cyclic flow graphs
+<font color=magenta>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>), and<p>
+
+<li> we extend the category 
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+to 
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>).<p>
+
+</ul>
+by allowing edges to be labelled by central function types:<p>
+<center>
+   <i>A</i>,<i>B</i>,<i>C</i> ::= ...
+              | <i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>
+                <img src="img-magenta-Rightarrow.gif">
+                <i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+</center>
+<p>
+We extend flow graphs to allow nodes of the form:
+<center>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   central f (Y1...Yn) : (Z1...Zo);
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   central G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn central (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+</center>
+with labellings:
+<center>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   central f (Y1...Yn) : (Z1...Zo);
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+:
+(<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-magenta-Rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>),
+<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>
+in
+<font color=magenta>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+<br>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   central G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn central (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+: 
+<i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>
+<img src="img-rightarrow.gif">
+(<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-magenta-Rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>)
+in
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+</center>
+where:
+<center>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   central G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+: 
+<i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>,
+<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>
+in <font color=magenta>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+</center>
+These graphs are factored up to the equivalence required for 
+the adjunction:<p>
+<center>
+   <font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)[<b>A</b>, <b>B</b> <img src="img-magenta-Rightarrow.gif"> <b>C</b>]
+   <img src="img-simeq.gif">
+   <font color=magenta>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)[<b>A</b> <img src="img-magenta-otimes.gif"> <b>B</b>, <b>C</b>]
+</center>
+<p>
+Graphically:
+<center>
+<table>
+   <tr>
+      <td>Beta:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=150 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   central G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   central f (y1:Y1...yn:Yn) : (Z1...Zo) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   } 
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   central G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td>Eta:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=90 align=absmiddle>
+<param name="free" value="
+   central f (X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   return fn central (x1:X1...xm:Xm) {
+      let (y1:Y1...yn:Yn) = f(x1...xm);
+      return (y1...yn);
+   };
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=50 align=absmiddle>
+<param name="free" value="
+   central f (X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   return f;
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td>Naturality:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=120 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+">
+<param name="base" value="
+   val G(W1...Wl):(X1...Xm);
+   central H(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = G(w1...wl);
+   return fn central (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = H(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=120 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+">
+<param name="base" value="
+   val G(W1...Wl):(X1...Xm);
+   central H(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn central (y1:Y1...yn:Yn) { 
+      let (x1:X1...xm:Xm) = G(w1...wl);
+      let (z1:Z1...zo:Zo) = H(x1...xm,y1...yn);
+      return (z1...zo);
+   }; 
+">
+</applet>
+      </td>
+   </tr>
+</table>
+</center>
+The graphical semantics is extended with:
+<center>
+<table>
+<tr>
+   <td>[[<b>fn</b> <font color=magenta>central</font> <i>P</i> {<i>M</i>} in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=100 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   central M(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn central (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = M(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>M N</i> in <font color=magenta>central</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=150 height=100 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val M(X1...Xm) : central (Y1...Yn) : (Z1...Zo);
+   central N(X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm); (
+      let central f (Y1...Yn) : (Z1...Zo) = M(x1...xm);
+      let (y1:Y1...yn:Yn) = N(x1...xm);
+      let (z1:Z1...zo:Zo) = f(y1...yn);
+      return (z1...zo);
+   )
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+
+<h3>Symmetric premonoidal closed</h3>
+<p>
+
+
+To give a semantics for the symmetric monoidal closed structure:
+<ul>
+
+<li> we extend the category of cyclic flow graphs 
+<font color=red>CGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+to that of closed cyclic flow graphs
+<font color=red>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>),<p>
+
+<li> we extend the category 
+<font color=magenta>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+to 
+<font color=magenta>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>), and<p>
+
+<li> we extend the category 
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+to 
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>).<p>
+
+</ul>
+by allowing edges to be labelled with process function types:<p>
+<center>
+   <i>A</i>,<i>B</i>,<i>C</i> ::= ...
+              | <i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>
+                <img src="img-red-Rightarrow.gif">
+                <i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+</center>
+<p>
+and allowing nodes of the form:
+<center>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   proc f (Y1...Yn) : (Z1...Zo);
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+<applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   proc G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn proc (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+</center>
+with labellings:
+<center>
+<applet code="AppletPremon.class" width=100 height=110 align=absmiddle>
+<param name="free" value="
+   proc f (Y1...Yn) : (Z1...Zo);
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+:
+(<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-red-Rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>),
+<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>
+in
+<font color=red>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+<br>
+<applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   proc G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn proc (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+: 
+<i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>
+<img src="img-rightarrow.gif">
+(<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-red-Rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>)
+in
+<font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+</center>
+where:
+<center>
+<applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   proc G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+: 
+<i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>,
+<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+<img src="img-rightarrow.gif">
+<i>C</i><sub>1</sub>,...,<i>C<sub>o</sub></i>
+in
+<font color=red>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+</center>
+These graphs are factored up to the equivalence required for 
+the adjunction:<p>
+<center>
+   <font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)[<b>A</b>, <b>B</b> <img src="img-red-Rightarrow.gif"> <b>C</b>]
+   <img src="img-simeq.gif">
+   <font color=red>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)[<b>A</b> <img src="img-red-oslash.gif"> <b>B</b>, <b>C</b>]
+</center>
+<p>
+Graphically:
+<center>
+<table>
+   <tr>
+      <td>Beta:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=180 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   proc G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   proc f (y1:Y1...yn:Yn) : (Z1...Zo) { 
+      let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+      return (z1...zo);
+   } 
+   let (z1:Z1...zo:Zo) = f(y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm; y1:Y1; yn:Yn;
+">
+<param name="base" value="
+   proc G(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (z1:Z1...zo:Zo) = G(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td>Eta:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=110 align=absmiddle>
+<param name="free" value="
+   proc f (X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   return fn proc (x1:X1...xm:Xm) {
+      let (y1:Y1...yn:Yn) = f(x1...xm);
+      return (y1...yn);
+   };
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=50 align=absmiddle>
+<param name="free" value="
+   proc f (X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   return f;
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td>Naturality:</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=140 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+">
+<param name="base" value="
+   val G(W1...Wl):(X1...Xm);
+   proc H(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = G(w1...wl);
+   return fn proc (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = H(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+      </td>
+      <td>=</td>
+      <td>
+<applet code="AppletPremon.class" width=140 height=140 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+">
+<param name="base" value="
+   val G(W1...Wl):(X1...Xm);
+   proc H(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn proc (y1:Y1...yn:Yn) { 
+      let (x1:X1...xm:Xm) = G(w1...wl);
+      let (z1:Z1...zo:Zo) = H(x1...xm,y1...yn);
+      return (z1...zo);
+   }; 
+">
+</applet>
+      </td>
+   </tr>
+</table>
+</center>
+The graphical semantics is extended with:
+<center>
+<table>
+<tr>
+   <td>[[<b>fn</b> <font color=red>proc</font> <i>P</i> {<i>M</i>} in <font color=blue>val</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=100 height=140 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   proc M(X1...Xm,Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   return fn proc (y1:Y1...yn:Yn) { 
+      let (z1:Z1...zo:Zo) = M(x1...xm,y1...yn);
+      return (z1...zo);
+   };
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>M N</i> in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=150 height=120 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   val M(X1...Xm) : proc (Y1...Yn) : (Z1...Zo);
+   proc N(X1...Xm) : (Y1...Yn);
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm); (
+      let proc f (Y1...Yn) : (Z1...Zo) = M(x1...xm);
+      let (y1:Y1...yn:Yn) = N(x1...xm);
+      let (z1:Z1...zo:Zo) = f(y1...yn);
+      return (z1...zo);
+   )
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+
+<h2>Recursive functions</h2>
+
+To allow recursive functions, we just add a new judgement:<p>
+<center>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=red>proc</font> <i>T</i> : <i>T<img src="img-primesup.gif"></i> <b>traceable</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+For example, with appropriate string and I/O primitives, we can write a 
+simple `hello' program:
+<p>
+<center>
+<applet code="AppletPremon.class" width=300 height=125 align=absmiddle>
+<param name="base" value="
+   hello : string;
+   val ^ (string,string) : string;
+   proc read() : string;
+   proc print(string);
+">
+<param name="exp" value="
+   rec hi;
+   proc hi() {
+      hi (print (hello ^ (read ())))
+   }
+   hi
+">
+</applet>
+</center>
+<p>
+No change is required to the graphical semantics, except to make 
+edges labelled with types of the form
+<i>A</i><sub>1</sub>,...,<i>A<sub>m</sub></i>&nbsp;<img src="img-red-Rightarrow.gif">&nbsp;<i>B</i><sub>1</sub>,...,<i>B<sub>n</sub></i>
+traceable.
+
+<h2>Initiality</h2>
+
+Since we have taken the initial cartesian/monoidal/premonoidal categories
+and factored them by equations for the closed structure, the categories:<p>
+<center>
+   <font color=blue>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+   <img src="img-hookrightarrow.gif">
+   <font color=red>CCGraph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+</center>
+<p>
+form the initial triple of categories:<p>
+<center>
+   <font color=blue>V</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>C</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>
+</center>
+<p>
+with:<p>
+<ul>
+
+<li> <font color=blue>V</font> a partially traced cartesian category
+   over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.<p>
+
+<li> <font color=magenta>C</font> a strict symmetric monoidal category
+   over <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>.<p>
+
+<li> <font color=red>P</font> a strict symmetric premonoidal category
+   over <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>.<p>
+
+<li> The inclusions are identity on objects symmetric premonoidal functors.<p>
+
+<li> Adjunctions:<p>
+<center>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-blue-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=blue>V</font>[<i>X</i> <img src="img-blue-times.gif"> <i>Y</i>, <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-magenta-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=magenta>C</font>[<i>X</i> <img src="img-magenta-otimes.gif"> <i>Y</i>, <i>Z</i>]
+<br>
+   <font color=blue>V</font>[<i>X</i>, <i>Y</i> <img src="img-red-Rightarrow.gif"> <i>Z</i>]
+   <img src="img-simeq.gif">
+   <font color=red>P</font>[<i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>, <i>Z</i>]
+</center>
+   <p>
+
+<li> All objects of the form
+   <i>X</i>&nbsp;<img src="img-red-Rightarrow.gif">&nbsp;<i>Y</i> 
+   are traceable.<p>
+
+</ul>
+Thus the
+graphical semantics defined above uniquely determines a semantics in
+<i>any</i> such triples of categories.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-trace.html">Previous</a> |
+<a href="paper-opsem.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

@@ -1,0 +1,141 @@
+import java.awt.*;
+/**
+ * A simple layout manager for adding scrollbars to a component.
+ * This has since been superceded by AWT 1.1, but is still necessary
+ * in order to run on AWT 1.0 browsers (eg Netscape 4).
+ * @author Alan Jeffrey
+ * @version v1.0 1998/06/02
+ */
+public class ScrollableLayout
+implements LayoutManager
+{
+  private Component contents;
+  private Component horiz;
+  private Component vert;
+  private int gap;
+  public ScrollableLayout () {
+    gap = 3;
+  }
+  /**
+   * Components can be added to the centre, south or east.
+   * @param name the location
+   * @param comp the component to add.
+   */
+  public void addLayoutComponent (String name, Component comp)  {
+    if (name.equals ("Center")) {
+      contents = comp;
+    } else if (name.equals ("South")) {
+      horiz = comp;
+    } else if (name.equals ("East")) {
+      vert = comp;
+    }
+  }
+
+  /**
+   * A dummy method (removing components isn't implemented).
+   */
+  public void removeLayoutComponent (Component comp)  {
+  }
+
+  /**
+   * Find the preferred layout size.
+   * @param parent the container.
+   * @return the preferred size.
+   */
+  public Dimension preferredLayoutSize (Container parent)  {
+    int horizHeight = horiz.minimumSize ().height;
+    int horizWidth = horiz.minimumSize ().width;
+    int vertWidth = vert.minimumSize ().width;
+    int vertHeight = vert.minimumSize ().height;
+    Insets insets = parent.insets ();
+    return new Dimension (
+      insets.left +
+      Math.min (
+	contents.preferredSize ().width,
+        horizWidth
+      ) +
+      gap +
+      vertWidth +
+      insets.right,
+      insets.top +
+      Math.min (
+        contents.preferredSize ().height,
+        vertHeight
+      ) +
+      gap +
+      horizHeight +
+      insets.bottom
+    );
+  }
+
+  /**
+   * Find the preferred layout size.
+   * @param parent the container.
+   * @return the preferred size.
+   */
+  public Dimension minimumLayoutSize (Container parent)  {
+    int horizHeight = horiz.minimumSize ().height;
+    int horizWidth = horiz.minimumSize ().width;
+    int vertWidth = vert.minimumSize ().width;
+    int vertHeight = vert.minimumSize ().height;
+    Insets insets = parent.insets ();
+    return new Dimension (
+      insets.left +
+      Math.min (
+        contents.minimumSize ().width,
+        horizWidth
+      ) +
+      gap +
+      vertWidth +
+      insets.right,
+      insets.top +
+      Math.min (
+        contents.minimumSize ().height,
+        vertHeight
+      ) +
+      gap +
+      horizHeight +
+      insets.bottom
+    );
+  }
+
+  /**
+   * Lay out the contents.
+   * @param parent the container.
+   * @return the preferred size.
+   */
+  public void layoutContainer (Container parent)  {
+    int horizHeight = horiz.minimumSize ().height;
+    int horizWidth = horiz.minimumSize ().width;
+    int vertWidth = vert.minimumSize ().width;
+    int vertHeight = vert.minimumSize ().height;
+    Insets insets = parent.insets ();
+    int contentsWidth = Math.max (
+      parent.size ().width - insets.left - insets.right - vertWidth,
+      horizWidth
+    ) - gap;
+    int contentsHeight = Math.max (
+      parent.size ().height - insets.top - insets.bottom - horizHeight,
+      vertHeight
+    ) - gap;
+    contents.reshape (
+      insets.left,
+      insets.top,
+      contentsWidth,
+      contentsHeight
+    );
+    horiz.reshape (
+      insets.left,
+      insets.top + contentsHeight + gap,
+      contentsWidth,
+      horizHeight
+    );
+    vert.reshape (
+      insets.left + contentsWidth + gap,
+      insets.top,
+      vertWidth,
+      contentsHeight
+    );
+  }
+}
+

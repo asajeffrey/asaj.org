@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<center><b><font size="+2">Partial trace</font></b></center>
+<p>
+
+<center><i><font size="+1">Syntax</font></i></center>
+<p>
+
+<center>
+<table>
+   <tr><td><i>D</i> </td> <td> ::= </td> <td>...as before...</td> </tr>
+   <tr><td></td> <td>|</td> <td> <b>local rec</b> <i>x</i>; <i>D</i>
+</table>
+</center>
+<p>
+
+<center><i><font size="+1">Type rules</font></i></center>
+<p>
+
+<center>
+<table>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=red>proc</font> <i>T</i> : <i>T'</i> <b>traceable</b></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>T'</i> <b>traceable</b></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=blue>val</font> <i>T</i> : <i>T'</i> <b>traceable</b>
+   </tr>
+</table>
+</center>
+<p>
+
+<center>
+<table>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>T</i> <b>traceable</b>
+   </tr>
+   <tr>
+      <td><i>C</i> <i>x</i> : <i>T</i>;</td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : (<i>C</i><sub>1</sub> <i>x</i> : <i>T</i>; <i>C</i><sub>2</sub>) in <font color=blue>val</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><i>C</i></td>
+      <td><img src="img-vdash.gif"></td>
+      <td>(<b>local rec</b> <i>x</i>; <i>D</i>) : (<i>C</i><sub>1</sub> <i>C</i><sub>2</sub>) in <font color=blue>val</font></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<center><i><font size="+1">Equations</font></i></center>
+<p>
+
+<p>
+<center><table>
+   <tr>
+      <td align=right><b>local rec</b> <i>x</i>; <b>let</b> <i>y</i>:<i>T</i> = <i>x</i>; <b>let</b> <i>x</i>:<i>T</i> = <i>M</i></td>
+      <td>=</td>
+      <td><b>let</b> <i>y</i>:<i>T</i> = <i>M</i></td>
+      <td>(<i>x</i> <img src="img-nin.gif"> fv <i>M</i>)</td>
+   </tr>
+   <tr>
+      <td align=right>(<b>local rec</b> <i>x</i>; <i>D</i>) <i>D'</i></td>
+      <td>=</td>
+      <td><b>local rec</b> <i>x</i>; (<i>D</i> <i>D'</i>)</td>
+      <td>(<i>x</i> <img src="img-nin.gif"> fv <i>D'</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><i>D</i> (<b>local rec</b> <i>x</i>; <i>D'</i>)</td>
+      <td>=</td>
+      <td><b>local rec</b> <i>x</i> (<i>D</i>; <i>D'</i>)</td>
+      <td>(<i>x</i> <img src="img-nin.gif"> fv <i>D</i>)</td>
+   </tr>
+   <tr>
+      <td align=right><b>local rec</b> <i>x</i>; <b>local rec</b> <i>y</i>; <i>D</i></td>
+      <td>=</td>
+      <td><b>local rec</b> <i>y</i>; <b>local rec</b> <i>x</i>; <i>D</i></td>
+   </tr>
+</table></center>
+<p>
+
+<center><i><font size="+1">Syntactic categories</font></i></center>
+<p>
+
+The recursive structure we have added allows us to find fixed points in
+<font color=blue>val</font>, on objects from <font color=red>proc</font>.
+This is a familiar story to domain theorists, where it is common to
+find fixed points on (non-strict) <b>Cpo</b> morphisms on
+(pointed) <b>Cpo</b><sub><img src="img-bot.gif"></sub> objects.
+<p>
+
+To give a categorical account of recursive declarations, we borrow
+<a href="bib.html#hasegawa??">Hasegawa's</a> presentation of recursive
+declarations, adapting <a href="bib.html#jsv??">Joyal, Street and 
+Verity's</a> traced monoidal structure.  However, there is a crucial
+difference between our presentation and Hasegawa's: we are considering
+call-by-value semantics (such as 
+the <b>Cpo</b><sub><img src="img-bot.gif"></sub> example above) where
+Hasegawa is considering call-by-name.  The call-by-value category
+<b>Cpo</b><sub><img src="img-bot.gif"></sub> has smash product as its 
+monoidal structure, so does not support a trace, whereas the call-by-name 
+equivalent has non-strict product, and so does support a trace.
+<p>
+
+A <i>trace</i> on a symmetric monoidal category is given by a natural
+transformation:
+<p>
+<center>
+   Tr<sub><i>X Y Z</i></sub> : 
+   <b>C</b>[X <img src="img-otimes.gif"> Z, Y <img src="img-otimes.gif"> Z]
+   <img src="img-rightarrow.gif">
+   <b>C</b>[X, Y]
+</center>
+<p>
+satisfying certain axioms.  For example, Hasegawa shows that the category
+of pointed cpos with non-strict product has a trace given by fixed points.
+<p>
+
+As noted above, the category <b>Cpo</b><sub><img src="img-bot.gif"></sub>
+(of pointed cpos with smash product) does <i>not</i> have a trace, since the
+obvious fixed-point construction is the trivial one, since the fixed point
+of any strict map is the constant bottom map, and smash producting bottom
+with any other map yields bottom.  Thus the attempt to duplicate Hasegawa's
+construction in the call-by-value case yields the constant bottm natural
+transformation, which fails to satisfy the trace axioms.
+<p>
+
+We need to generalize the trace construction to include cases such as
+<b>Cpo</b><sub><img src="img-bot.gif"></sub>, and fortunately there is
+an obvious such generalization.
+Given a symmetric monoidal category <b>C</b> with a 
+full subcategory (not necessarily symmetric monoidal) <b>TC</b>
+<p>
+<center>
+   <i>U</i> :
+   <b>TC</b>
+   <img src="img-hookrightarrow.gif">
+   <b>C</b>
+</center>
+<p>
+
+a <i>partial trace</i> is a natural transformation:
+<p>
+<center>
+   Tr<sub><i>X Y A</i></sub> : 
+   <b>C</b>[<i>X</i> <img src="img-otimes.gif"> <i>U A</i>, <i>Y</i> <img src="img-otimes.gif"> <i>U A</i>]
+   <img src="img-rightarrow.gif">
+   <b>C</b>[<i>X</i>, <i>Y</i>]
+</center>
+<p>
+satisfying certain axioms (given in <a href="tracedef.html">an appendix</a>).
+<p>
+
+Adding <b>local rec</b> declarations gives the syntactic category
+<font color=blue>val</font> a partial trace (where 
+<font color=blue>TC</font> is the full subcategory of <b>traceable</b>
+types) where the trace of
+<p>
+<center>
+   <b>x</b><i>z</i> : <b>T</b><i>V</i>
+         <img src="img-vdash.gif"> 
+         <i>M</i> : (<b>U</b><i>V</i>)
+         in <font color=blue>val</font>
+</center>
+<p>
+is given by a <b>local rec</b> declaration:
+<p>
+<center>
+   <b>x</b><i>z</i> : <b>T</b><i>V</i>
+         <img src="img-vdash.gif"> 
+         <b>local rec</b> <i>z</i>;
+         <b>let</b> (<b>y</b><i>z</i> : <b>U</b><i>V</i>) = M;
+         (<b>y</b>) : (<b>U</b>)
+         in <font color=blue>val</font>
+</center>
+<p>
+
+This trace is partial because of the condition that <i>T</i> has to be
+<b>traceable</b>.  
+
+<p>
+
+<center><i><font size="+1">Graphical presentation</font></i></center>
+<p>
+
+Previously, all of the graphs we have described have been acyclic.
+Adding a trace structure to graphs is just allowing cyclic graphs:
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val v(X,proc():Z):(Y,proc():Z);
+">
+<param name="exp" value="
+   local rec z;
+   let (y:Y, proc z():Z) = v(x,z);
+   y
+">
+</applet>
+</center>
+<p>
+
+Traces were initially proposed as a categorical model of cycles in
+knots, and this graphical presentation is just a simplified version of
+the knot diagrams presented by <a href="bib.html#jsv??">Joyal, Street
+and Verity</a>.  Where they were concerned with knots, we are just
+concerned with graphs, so we have replaced their braided monoidal 
+setting with a simpler symmetric monoidal one.
+<p>
+
+For partial traces, we use the same graphical presentation, but with
+the restriction that the type of the feedback arc has to be traceable,
+that is of the form 
+<i>X</i><sub>1</sub>&nbsp;<img src="img-blue-Rightarrow.gif"><img src="img-cdots.gif"><img src="img-blue-Rightarrow.gif">&nbsp;<i>X<sub>n</sub></i>&nbsp;<img src="img-red-Rightarrow.gif">&nbsp;<i>Y</i>.
+<p>
+
+For example, with appropriate string and I/O primitives, we can write a 
+simple `hello' program:
+<p>
+<center>
+<applet code="AppletPremon.class" width=300 height=125 align=absmiddle>
+<param name="base" value="
+   hello : string;
+   val ^ (string,string) : string;
+   proc read() : string;
+   proc print(string);
+">
+<param name="exp" value="
+   rec hi;
+   proc hi() {
+      hi (print (hello ^ (read ())))
+   }
+   hi
+">
+</applet>
+</center>
+<p>
+
+Or with an appropriate `if' primitive, we can define a while loop:
+<p>
+<center>
+<applet code="AppletPremon.class" width=500 height=210 align=absmiddle>
+<param name="base" value="
+   proc if (bool) (proc ()) (proc ());
+">
+<param name="exp" value="   
+   rec while;
+   proc while (proc b () : bool) (proc p ()) {
+      let a : bool = b ();
+      if (a) { p (); while (b) (p) } { }
+   }
+   while
+">
+</applet>
+</center>
+<p>
+For example:
+<p>
+<center>
+<applet code="AppletPremon.class" width=300 height=125 align=absmiddle>
+<param name="base" value="
+   hello : string;
+   val ^ (string,string) : string;
+   proc read() : string;
+   proc print(string);
+   proc while (proc():bool) (proc());
+   true:bool;
+">
+<param name="exp" value="
+   while {true} {
+      print (hello ^ (read ()))
+   }
+">
+</applet>
+</center>
+<p>
+
+
+<p>
+Adding a partial trace allows us to build cyclic graphs, but does
+it allow us to define recursive functions?  The answer is yes,
+provided there is a natural diagonal and a natural 
+strength in <b>C</b>.
+<p>
+
+The fixed point of <font color=blue>f</font> 
+(for <font color=blue>f</font> : 
+(<i>X</i> <img src="img-otimes.gif"> <i>U</i>(<i>A</i>)) 
+<img src="img-rightarrow.gif"> <i>U</i>(<i>A</i>) and natural diagonal
+<font color=blue>copy</font><sub>X</sub> : <i>X <img src="img-rightarrow.gif"> X <img src="img-otimes.gif"> X</i>):
+<p>
+<center>
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   local rec z1;
+   let proc z():Z = f(x,z1);
+   let proc z1():Z = z;
+   z
+">
+</applet>
+<br>
+Tr<sub><i>X U(A) U(A)</i></sub> (<font color=blue>f</font>; <font color=blue>copy</font><sub><i>U(A)</i></sub>)
+</center>
+<p>
+
+This is an indexed fixed point becase:
+<p><center>
+<table>
+<tr><td></td><td>
+<applet code="AppletPremon.class" width=150 height=75 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   local rec z1;
+   let proc z():Z = f(x,z1);
+   let proc z1():Z = z;
+   z
+">
+</applet>
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=150 height=100 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   local rec z1;
+   let (proc z():Z, proc z1():Z) = (f(x,z1), f(x,z1));
+   z
+">
+</applet>
+</td><td>
+(Naturality of <font color=blue>copy</font>)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=150 height=100 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   let x:X = x;
+   local rec z1;
+   let (proc z():Z, proc z1():Z) = (z1, f(x,z1));
+   f(x,z)
+">
+</applet>
+</td><td>
+(Naturality of Tr)
+</td></tr>
+<tr><td>=</td><td>
+<applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+<param name="free" value="
+   x:X;
+">
+<param name="base" value="
+   val f(X,proc():Z) : proc():Z;
+">
+<param name="exp" value="
+   let x:X = x;
+   local rec z1;
+   let (proc z():Z, proc z1():Z) = (let proc z1():Z = f(x,z1); (z1,z1));
+   f(x,z)
+">
+</applet>
+</td><td>
+(Indexed dinaturality of Tr)
+</td></tr>
+</table></center>
+<p>
+
+<nolatex>
+<center>
+<a href="process.html">Previous</a> |
+<a href="future.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>
+
+

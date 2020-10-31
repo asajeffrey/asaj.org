@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<nolatex>
+
+<h1>Proof of normalization of permutations</h1>
+<p>
+
+<a href="paper-complete-smc.html#permute-normal">
+<b>Proposition (Normalization of permutations).</b></a><i>
+   For any permutation 
+   <font color=magenta>p</font> : <b>X<sub>1</sub></b>,X,<b>X<sub>2</sub></b> 
+   <img src="img-rightarrow.gif"> <b>Y</b> we can find
+   <b>Y<sub>1</sub></b>,X,<b>Y<sub>2</sub></b> = <b>Y</b> 
+   and <font color=magenta>q</font> : <b>X<sub>1</sub></b>,<b>X<sub>2</sub></b> 
+   <img src="img-rightarrow.gif"> <b>Y<sub>1</sub></b>,<b>Y<sub>2</sub></b>
+   such that:
+   <p>
+   <center>
+      <img src="img-vdash.gif">
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         central p (X1,X,X2):(Y1,Y,Y2);
+      ">
+      <param name="exp" value="
+         p(x1,x,x2)
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=85 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         central q (X1,X2):(Y1,Y2);
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x2:X2) = (x1,x,x2);
+         (let (y1:Y1, y2:Y2) = q(x1,x2); (y1,x,y2))
+      ">
+      </applet>
+   </center>
+</i><p>
+
+</nolatex>
+
+<b>Proof.</b>
+   Induction on <font color=magenta>p</font>.<p>
+   <ul>
+   <li> If <font color=magenta>p</font> = <font color=magenta>id</font>
+      then let <font color=magenta>q</font> = <font color=magenta>id</font>,
+      and:
+   <p>
+   <center>
+      <img src="img-vdash.gif">
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="exp" value="
+         (x1,x,x2)
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x2:X2) = (x1,x,x2);
+         (let (x1:X1, x2:X2) = (x1,x2); (x1,x,x2))
+      ">
+      </applet>
+   </center>
+
+   <li> If <font color=magenta>p</font> =  <font color=magenta>p1 ; p2</font>
+        then by induction we can find appropriate 
+        <font color=magenta>q1 ; q2</font> such that:
+   <center>
+      <img src="img-vdash.gif">
+      <applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         central p1 (X1,X,X2):(Y1,Y,Y2); central p2 (Y1,Y,Y2):(Z1,Z,Z2);
+      ">
+      <param name="exp" value="
+         p2(p1(x1,x,x2))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=160 height=85 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         central q1 (X1,X2):(Y1,Y2); central q2 (Y1,Y2):(Z1,Z2);
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x2:X2) = (x1,x,x2);
+         (let (y1:Y1, y2:Y2) = q1(x1,x2); 
+          (let (y1:Y1, x:X, y2:Y2) = (y1,x,y2);
+           (let (z1:Z1, z2:Z2) = q2(y1,y2); (z1,x,z2))))
+      ">
+      </applet>
+      =
+      <applet code="AppletPremon.class" width=130 height=85 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         central q1 (X1,X2):(Y1,Y2); central q2 (Y1,Y2):(Z1,Z2);
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x2:X2) = (x1,x,x2);
+         (let (y1:Y1, y2:Y2) = q1(x1,x2); 
+          (let (z1:Z1, z2:Z2) = q2(y1,y2); (z1,x,z2)))
+      ">
+      </applet>
+   </center>
+
+   <li> If <font color=magenta>p</font> = 
+        <font color=magenta>p1 <img src="img-magenta-otimes.gif"> p2</font>
+        then either:<p>
+
+        <ul>
+
+        <li> we can induct on <font color=magenta>p1</font>, and:
+   <center>
+      <img src="img-vdash.gif">
+      <applet code="AppletPremon.class" width=80 height=100 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x21:X21; x22:X22;
+      ">
+      <param name="base" value="
+         central p1 (X1,X,X21):(Y1,X,Y21); central p2 (X22):Y22;
+      ">
+      <param name="exp" value="
+         (p1(x1,x,x21),p2(x22))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x21:X21; x22:X22;
+      ">
+      <param name="base" value="
+         central q1 (X1,X21):(Y1,Y21); central p2 (X22):Y22;
+      ">
+      <param name="exp" value="
+         (let (x1:X1, x:X, x21:X21) = (x1,x,x21);
+          (let (y1:Y1, y21:Y21) = q1(x1,x21); (y1,x,y21)),
+          p2(x22))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=130 height=100 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x21:X21; x22:X22;
+      ">
+      <param name="base" value="
+         central q1 (X1,X21):(Y1,Y21); central p2 (X22):Y22;
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x21:X21, x22:X22) = (x1, x, x21, x22);
+         (let (x1:X1, x21:X21, x:X, x22:X22) = (x1, x21, x, x22);
+         (let (x1:X1, x21:X21, x22:X22, x:X) = (x1, x21, x22, x);
+         (let ((y1:Y1, y21:Y21), x:X, y22:Y22) = (q1(x1,x21), x, p2(x22));
+         (y1,x,y21,y22))))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=130 height=100 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x21:X21; x22:X22;
+      ">
+      <param name="base" value="
+         central q1 (X1,X21):(Y1,Y21); central p2 (X22):Y22;
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x21:X21, x22:X22) = (x1, x, x21, x22);
+         (let (x1:X1, x21:X21, x:X, x22:X22) = (x1, x21, x, x22);
+         (let ((y1:Y1, y21:Y21), y22:Y22, x:X) = (q1(x1,x21), p2(x22), x);
+         (let (y1:Y1, y21:Y21, x:X, y22:Y22) = (y1, y21, x, y22);
+         (y1,x,y21,y22))))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=130 height=100 align=absmiddle>
+      <param name="free" value="
+         x1:X1; x:X; x21:X21; x22:X22;
+      ">
+      <param name="base" value="
+         central q1 (X1,X21):(Y1,Y21); central p2 (X22):Y22;
+      ">
+      <param name="exp" value="
+         let (x1:X1, x:X, x21:X21, x22:X22) = (x1, x, x21, x22);
+         (let ((y1:Y1, y21:Y21), y22:Y22, x:X) = (q1(x1,x21), p2(x22), x);
+         (y1,x,y21,y22))
+      ">
+      </applet>      
+   </center>
+
+        <li> or we can induct on <font color=magenta>p2</font>, and:
+   <center>
+      <img src="img-vdash.gif">
+      <applet code="AppletPremon.class" width=80 height=100 align=absmiddle>
+      <param name="free" value="
+         x11:X11; x12:X12; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         central p1 (X11):Y11; central p2 (X12,X,X2):(Y12,X,Y2);
+      ">
+      <param name="exp" value="
+         (p1(x11),p2(x12,x,x2))
+      ">
+      </applet>      
+      =
+      <applet code="AppletPremon.class" width=90 height=100 align=absmiddle>
+      <param name="free" value="
+         x11:X11; x12:X12; x:X; x2:X2;
+      ">
+      <param name="base" value="
+         central p1 (X11):Y11; central q2(X12,X2):(Y12,Y2);
+      ">
+      <param name="exp" value="
+         (p1(x11),
+          let (x12:X12, x:X, x2:X2) = (x12, x, x2);
+          (let (y12:Y12, y2:Y2) = q2(x12,x2);
+           (y12,x,y2)))
+      ">
+      </applet>      
+   </center>
+
+        </ul>
+
+   </ul>
+<img src="img-Box.gif"><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-smc.html#permute-normal">Back</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

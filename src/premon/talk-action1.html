@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Comparison with action calculi</h1>
+
+This style of semantics is most similar to Milner's action
+calculi, except that in this presentation control edges are
+used to control order of evaluation, where in Milner's presentation,
+evaluation is delayed by placing sub-graphs inside controls, 
+for example (using slightly different notation):
+<center>
+<table>
+<tr><td></td>
+<td><applet code="AppletPremon.class" width=300 height=100 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+   print (
+      'hello', 
+      fn central () { 
+         print (
+            'world',
+            fn central () {}
+         )
+      }
+   )
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-magenta-eq.gif"><font color=magenta>'hello'</font><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+         print (
+            'world',
+            fn central () {}
+         )
+">
+</applet></td>
+</tr>
+<tr><td><img src="img-magenta-eq.gif"><font color=magenta>'world'</font><img src="img-magenta-Rightarrow.gif"></td>
+<td><applet code="AppletPremon.class" width=300 height=70 align=absmiddle>
+<param name="base" value="
+   central print (string, central());
+">
+<param name="exp" value="
+   ()
+">
+</applet></td>
+</tr>
+</table>
+</center>
+There is a trade-off here between categorical simplicity
+(monoidal categories <i>v</i>. premonoidal pre-2-cagegories)
+and graphical simplicity 
+(control edges <i>v</i>. controls containing sub-graphs).
+
+  </body>
+</html>

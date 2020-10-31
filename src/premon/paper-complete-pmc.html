@@ -1,0 +1,905 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Completeness proof: premonoidal categories</h1>
+<p>
+
+<p>
+
+A <i>strict symmetric premonoidal category</i> is a category <font color=red>P</font>
+together with:
+<ul>
+
+<li> A strict symmetric monoidal category 
+   <font color=magenta>C</font> 
+   with the same objects as <font color=red>P</font>
+   (called the <i>centre</i> of <font color=red>P</font>).<p>
+
+<li> An identity on objects inclusion
+   <font color=magenta>C</font> <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>.<p>
+
+<li> Two functors:
+<p><center>
+   <img src="img-red-oslash.gif"> : 
+   <font color=magenta>C</font> <img src="img-times.gif"> 
+   <font color=red>P</font> <img src="img-rightarrow.gif">
+   <font color=red>P</font>
+<br>
+   <img src="img-red-obslash.gif"> : 
+   <font color=red>P</font> <img src="img-times.gif"> 
+   <font color=magenta>C</font> <img src="img-rightarrow.gif">
+   <font color=red>P</font>
+</center><p>
+   such that:<p>
+   <ul>
+   <li> the three functors 
+      <img src="img-magenta-otimes.gif">,
+      <img src="img-red-oslash.gif"> and
+      <img src="img-red-obslash.gif"> coincide on objects,
+   <li> the three `obvious' functors from
+      <font color=magenta>C</font> <img src="img-times.gif"> 
+      <font color=magenta>C</font> to <font color=red>P</font>
+      coincide, and
+   <li> the symmetry in <font color=magenta>C</font> 
+      is a natural isomorphism
+         <i>X</i> <img src="img-red-oslash.gif"> <i>Y</i>
+         <img src="img-simeq.gif">
+         <i>Y</i> <img src="img-red-obslash.gif"> <i>X</i>
+      in <font color=red>P</font>.
+   </ul>
+</ul>
+<p>
+This definition is based on <a href="paper-bib.html#pow96">Power's</a>
+presentation of <a href="paper-bib.html#pr96">Power and Robinson's</a>
+definition.
+<p>
+A <em>three-coloured flow graph</em> over three signatures
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,
+<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> and
+<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub> 
+with the same sorts
+is a two-coloured flow graph over 
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub> and
+<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>
+except that:
+<ul>
+
+<li> Each edge is either labelled 
+   <i>E</i>&nbsp;:&nbsp;<i>X</i>
+   or 
+   <i>E</i>&nbsp;:&nbsp;<font color=red>S</font>.<p>
+
+<li> Each node is either labelled 
+   <i>N</i>&nbsp;:&nbsp;<font color=blue>c</font>,
+   <i>N</i>&nbsp;:&nbsp;<font color=magenta>c</font>
+   or 
+   <i>N</i>&nbsp;:&nbsp;<font color=red>c</font>.<p>
+
+<li> If 
+   <i>N</i>&nbsp;:&nbsp;<b>E&nbsp;<img src="img-rightarrow.gif">&nbsp;F</b>,
+   <i>N</i>&nbsp;:&nbsp;<font color=red>c</font> and
+   <font color=red>c</font>&nbsp;:&nbsp;<b>X</b>&nbsp;<img src="img-rightarrow.gif">&nbsp;<b>Y</b>,
+   then
+   <b>E</b>&nbsp;:&nbsp;<b>X</b><font color=red>S</font> 
+   and 
+   <b>F</b>&nbsp;:&nbsp;<b>Y</b><font color=red>S</font>.<p>
+
+<li> Each <font color=red>S</font>-labelled
+   edge occurs exactly once either as an outgoing edge of the
+   graph, or an incoming edge of a node.<p>
+
+</ul>
+A simulation between three-coloured flow graphs is the same as for
+two-coloured flow graphs except that:
+<ul>
+
+<li> <i>R</i> is a function on nodes labelled by 
+   <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>
+   (that is for any node <i>N</i>&nbsp;:&nbsp;<font color=red>c</font> 
+   of <i>G</i> there is
+   precisely one node <i>N<img src="img-primesup.gif"></i> of <i>G<img src="img-primesup.gif"></i> such that
+   <i>N&nbsp;R&nbsp;N<img src="img-primesup.gif"></i>).<p>
+
+</ul>
+We can define the following operations on graphs
+(and below we shall show that they satisfy the equations necessary to
+be a premonoidal category):
+<p>
+
+<center>
+<table>
+<tr>
+<td>Identity:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   return (x1...xm);
+">
+</applet>
+</td>
+</tr>
+<td>Composition:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   proc G(X1...Xm):(Y1...Yn); 
+   proc H(Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G(x1...xm);
+   let (z1:Z1...zo:Zo) = H(y1...yn);
+   return (z1...zo);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Tensor left:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=130 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   proc G(W1...Wl):(Y1...Yn); 
+   central H(X1...Xm):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G(w1...wl);
+   let (z1:Z1...zo:Zo) = H(x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Tensor right:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=130 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   central G(W1...Wl):(Y1...Yn); 
+   proc H(X1...Xm):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = G(w1...wl);
+   let (z1:Z1...zo:Zo) = H(x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+</td>
+</tr>
+<tr>
+<td>Symmetry:</td>
+<td>
+<applet code="AppletPremon.class" width=100 height=130 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   x1:X1; xm:Xm;
+   y1:Y1; yn:Yn;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = (y1...yn);
+   return (y1...yn,x1...xm);
+">
+</applet>
+</td>
+</tr>
+</table>
+</center>
+<p>
+
+We can now replay the same proof of soundness and completeness
+as in the <a href="paper-complete-cfp.html">finite products</a> case.
+In each case, the proof of the theorems is so similar to that in
+the finite products case that we elide it.
+<p>
+Let <font color=red>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) be the category of acyclic flow graphs
+over (<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+where the morphisms from <b>X</b> to <b>Y</b> are graphs from
+<b>X</b><font color=red>S</font> to <b>Y</b><font color=red>S</font>,
+viewed up to bisimulation.
+<p>
+
+<b>Proposition (Bisimulation is a congruence).</b><i>
+Bisimulation is a congruence wrt 
+the graph operations.
+</i>
+<p>
+
+<b>Proposition (Flow graphs form a premonoidal category).</b>
+<i>
+   <font color=red>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) is a premonoidal category
+   over <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub> with centre
+   <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>).
+</i>
+<p>
+
+Define 
+<font color=red>Term</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-Sigma.gif"><sub>P</sub>)
+as the free premonoidal category over 
+<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>
+with central category <font color=magenta>Term</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>).
+<center><table>
+   <tr>
+      <td><font color=red>f</font>,<font color=red>g</font></td>
+      <td>::=</td>
+      <td><font color=magenta>f</font></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   central f(X1...Xm):(Y1...Yn); 
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = f(x1...xm);
+   return (y1...yn);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=red>f ; g</font></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   proc f(X1...Xm):(Y1...Yn); 
+   proc g(Y1...Yn):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = f(x1...xm);
+   let (z1:Z1...zo:Zo) = g(y1...yn);
+   return (z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=magenta>f</font> <img src="img-red-oslash.gif"> <font color=red>g</font></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=130 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   central f(W1...Wl):(Y1...Yn); 
+   proc g(X1...Xm):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = f(w1...wl);
+   let (z1:Z1...zo:Zo) = g(x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=red>f</font> <img src="img-red-obslash.gif"> <font color=magenta>g</font></td>
+      <td>
+<applet code="AppletPremon.class" width=100 height=130 align=absmiddle>
+<param name="free" value="
+   w1:W1; wl:Wl;
+   x1:X1; xm:Xm;
+">
+<param name="base" value="
+   proc f(W1...Wl):(Y1...Yn); 
+   central g(X1...Xm):(Z1...Zo);
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = f(w1...wl);
+   let (z1:Z1...zo:Zo) = g(x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td><font color=red>c</font></td>
+      <td>
+   <applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+   <param name="base" value="
+      proc c(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = c(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+      </td>
+   </tr>
+</table></center>
+<p>
+If terms can be proved equal using the axioms for a premonoidal category
+we shall write
+<img src="img-vdash.gif">&nbsp;<font color=red>f&nbsp;=&nbsp;g</font>.
+<p>
+
+<b>Proposition (Soundness).</b>
+<i>If <img src="img-vdash.gif">&nbsp;<font color=red>f&nbsp;=&nbsp;g</font>
+then [[<font color=red>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=red>g</font>]].</i>
+<p>
+
+<b>Proposition (Expressivity).</b>
+<i>For any graph G, there is a term <font color=red>f</font>
+such that [[<font color=red>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;G.</i>
+<p>
+
+A term is in <i>normal form</i> 
+(ranged over by <font color=red>n</font>) iff it is of the form:
+<center><table>
+   <tr>
+      <td><font color=red>n</font></td>
+      <td>::=</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+   <param name="red" value="true">
+   <param name="base" value="
+      central n(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = n(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+   <param name="base" value="
+      proc n(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = n(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=210 align=absmiddle>
+   <param name="base" value="
+      proc n(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val c(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = n (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = c(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=160 align=absmiddle>
+   <param name="base" value="
+      proc n(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      central c(W1...Wl) : (Y1...Yn);
+      val s(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = n (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn) = c(w1...wl); 
+          let (z1:Z1...zo:Zo) = s(y1...yn);
+          return (z1...zo);),
+         x1...xm
+      );
+   ">
+   </applet>
+      </td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>|</td>
+      <td>
+   <applet code="AppletPremon.class" width=150 height=170 align=absmiddle>
+   <param name="base" value="
+      proc n(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      proc c(W1...Wl) : (Y1...Yn);
+      val s(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = n (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn) = c(w1...wl); 
+          let (z1:Z1...zo:Zo) = s(y1...yn);
+          return (z1...zo);),
+         x1...xm
+      );
+   ">
+   </applet>
+      </td>
+   </tr>
+</table></center>
+
+<b>Proposition (Normalization).</b>
+<i>For any <font color=red>f</font> we can find 
+normal <font color=red>g</font>
+such that 
+<img src="img-vdash.gif">&nbsp;<font color=red>f&nbsp;=&nbsp;g</font>.</i>
+<p>
+
+<b>Proposition (Cancellation of permutations).</b>
+<i>For any:</i>
+<center>
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+   <param name="base" value="
+      proc g(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = g(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+</center>
+<i>we can find <font color=red>h</font> such that:</i>
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=red>=</font>
+   <applet code="AppletPremon.class" width=150 height=90 align=absmiddle>
+   <param name="base" value="
+      proc h(X1...Xm) : (Y1...Yn);
+      val p(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = h(x1...xm);
+      let (z1:Z1...zo:Zo) = p(y1...yn);
+      return (z1...zo);
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc h(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = h(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc g(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = g(x1...xm);
+      return (y1...yn);
+   ">
+   </applet>
+</center>
+<p>
+
+<b>Proposition (Cancellation of val nodes).</b>
+<i>For any:</i>
+<center>
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=210 align=absmiddle>
+   <param name="base" value="
+      proc g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+<i>we can find <font color=red>h</font> such that:</i>
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=red>=</font>
+   <applet code="AppletPremon.class" width=150 height=210 align=absmiddle>
+   <param name="base" value="
+      proc h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      val d(W1...Wl) : (Y1...Yn,R,Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = d(w1...wl); 
+          let (y1:Y1...yn:Yn, r:R, z1:Z1...zo:Zo) = (y1...yn, r, z1...zo); 
+          r),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=160 align=absmiddle>
+   <param name="base" value="
+      proc h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=160 align=absmiddle>
+   <param name="base" value="
+      proc g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+</center>
+<p>
+
+<b>Proposition (Cancellation of central nodes).</b>
+<i>For any:</i>
+<center>
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=160 align=absmiddle>
+   <param name="base" value="
+      proc g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      central c(W1...Wl) : (Y1...Yn);
+      val s(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn) = c(w1...wl); 
+          let (z1:Z1...zo:Zo) = s(y1...yn);
+          return (z1...zo);),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+<i>we can find <font color=red>h</font> such that:</i>
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=red>=</font>
+   <applet code="AppletPremon.class" width=150 height=160 align=absmiddle>
+   <param name="base" value="
+      proc h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      central c(W1...Wl) : (Y1...Yn);
+      val s(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn) = c(w1...wl); 
+          let (z1:Z1...zo:Zo) = s(y1...yn);
+          return (z1...zo);),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=160 align=absmiddle>
+   <param name="base" value="
+      proc h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=160 align=absmiddle>
+   <param name="base" value="
+      proc g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+</center>
+<p>
+
+<b>Proposition (Cancellation of proc nodes).</b>
+<i>For any:</i>
+<center>
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=150 height=160 align=absmiddle>
+   <param name="base" value="
+      proc g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      proc c(W1...Wl) : (Y1...Yn);
+      val s(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn) = c(w1...wl); 
+          let (z1:Z1...zo:Zo) = s(y1...yn);
+          return (z1...zo);),
+         x1...xm
+      );
+   ">
+   </applet>
+</center>
+<i>we can find <font color=red>h</font> such that:</i>
+<center>
+<img src="img-vdash.gif">
+   <applet code="AppletPremon.class" width=100 height=90 align=absmiddle>
+   <param name="base" value="
+      proc f(X1...Xm) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (z1:Z1...zo:Zo) = f(x1...xm);
+      return (z1...zo);
+   ">
+   </applet>
+<font color=red>=</font>
+   <applet code="AppletPremon.class" width=150 height=160 align=absmiddle>
+   <param name="base" value="
+      proc h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+      proc c(W1...Wl) : (Y1...Yn);
+      val s(Y1...Yn) : (Z1...Zo);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (
+         v1...vk,
+         (let (y1:Y1...yn:Yn) = c(w1...wl); 
+          let (z1:Z1...zo:Zo) = s(y1...yn);
+          return (z1...zo);),
+         x1...xm
+      );
+   ">
+   </applet>
+<br>
+   <applet code="AppletPremon.class" width=100 height=160 align=absmiddle>
+   <param name="base" value="
+      proc h(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = h (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+<img src="img-sim.gif">
+   <applet code="AppletPremon.class" width=100 height=160 align=absmiddle>
+   <param name="base" value="
+      proc g(U1...Uj) : (V1...Vk,W1...Wl,X1...Xm);
+   ">
+   <param name="free" value="
+      u1:U1; uj:Uj;
+   ">
+   <param name="exp" value="
+      let (v1:V1...vk:Vk, w1:W1...wl:Wl, x1:X1...xm:Xm) = g (u1...uj); 
+      return (v1...vk, w1...wl, x1...xm);
+   ">
+   </applet>
+</center>
+<p>
+
+<b>Proposition (Completeness).</b><i>
+   If [[<font color=red>f</font>]]&nbsp;<img src="img-sim.gif">&nbsp;[[<font color=red>g</font>]]
+   then <img src="img-vdash.gif"><font color=red>f&nbsp;=&nbsp;g</font>.
+</i><p>
+
+
+<b>Proposition (Initiality).</b><i>
+   <font color=red>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) is the initial strict symmetric premonoidal
+   category over <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub> with 
+   <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>) as centre.
+</i><p>
+
+<nolatex>
+<center>
+<a href="paper-complete-smc.html">Previous</a> |
+<a href="paper-complete-ptm.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>

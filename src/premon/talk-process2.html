@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+  <body bgcolor=#ffffff>
+
+<h1>Semantics</h1>
+
+Premonoidal structure (together with an interpretation of base types
+and constructors) is exactly what is required to give a semantics
+of <font color=red>process</font> terms.  For example:
+<ul>
+
+<li> <font color=blue>V</font> <img src="img-hookrightarrow.gif"> 
+   <font color=magenta>C</font> <img src="img-hookrightarrow.gif"> 
+   <font color=red>State</font><sub><i>Z</i></sub>(<font color=magenta>C</font>), 
+   where <font color=red>State</font><sub><i>Z</i></sub>(<font color=magenta>C</font>)[<i>X</i>,<i>Y</i>] is
+   <font color=magenta>C</font>[<i>X</i>&nbsp;<img src="img-magenta-otimes.gif">&nbsp;<i>Z</i>,<i>Y</i>&nbsp;<img src="img-magenta-otimes.gif">&nbsp;<i>Z</i>].<p>
+
+<li> <font color=blue>V</font> <img src="img-hookrightarrow.gif"> 
+   <font color=blue>V</font><sub><i>T</i></sub> <img src="img-hookrightarrow.gif"> 
+   <font color=blue>V</font><sub><i>U</i></sub>,
+   where <i>T</i> is any commutative monad satisfying the monic condition,
+   <i>U</i> is any monad satisfying the monic condition, and there
+   is an appropriate natural transform from <i>T</i> to <i>U</i>.<p>
+
+<li> <font color=blue>Term</font>(<img src="img-blue-Sigma.gif">) <img src="img-hookrightarrow.gif"> <font color=magenta>Term</font>(<img src="img-blue-Sigma.gif">,<img src="img-magenta-Sigma.gif">) <img src="img-hookrightarrow.gif"> <font color=red>Term</font>(<img src="img-blue-Sigma.gif">,<img src="img-magenta-Sigma.gif">,<img src="img-red-Sigma.gif">).<p>
+
+<li> <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif">) <img src="img-hookrightarrow.gif"> <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif">,<img src="img-magenta-Sigma.gif">) <img src="img-hookrightarrow.gif"> <font color=red>Graph</font>(<img src="img-blue-Sigma.gif">,<img src="img-magenta-Sigma.gif">,<img src="img-red-Sigma.gif">).<p>
+
+</ul>
+
+<b>Proposition</b>
+   <i><font color=red>Graph</font>(<img src="img-blue-Sigma.gif">,<img src="img-magenta-Sigma.gif">,<img src="img-red-Sigma.gif">) is the
+   initial strict symmetric premonoidal category over
+   over <img src="img-red-Sigma.gif">
+   with <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif">,<img src="img-magenta-Sigma.gif">) as its centre.</i><p>
+
+  </body>
+</html>

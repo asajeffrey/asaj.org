@@ -1,0 +1,621 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Premonoidal categories and a graphical view of programs</title>
+  </head>
+
+<body bgcolor=#ffffff>
+
+<h1>Process category</h1>
+<p>
+
+<h2>Syntax</h2>
+<p>
+
+Given three signatures 
+<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,
+<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub> and 
+<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub> 
+with the same sorts, define 
+Exp(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) as extending Exp(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>) with:<p>
+<center>
+<table>
+   <tr><td><i>M</i> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td><font color=red>c</font> <i>M</i></td><td>(Process constructor, <font color=red>c</font> in <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)</td></tr>
+</table>
+</center>
+<p>
+and add a new category:<p>
+<center>
+<table>
+   <tr><td><b>C</b> </td> <td> ::= </td> <td>...as before...</td></tr>
+   <tr><td></td> <td>|</td> <td> <font color=red>proc</font></td></tr>
+</table>
+</center>
+<p>
+The judgements 
+<img src="img-Gamma.gif"> <img src="img-vdash.gif"> <i>M</i> : <i>T</i>
+in <font color=magenta>central</font> are as before, but we now have
+three new rules, one for value constructors:<p>
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i>) in <font color=red>proc</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=blue>c</font> <i>M</i> : (<i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub>) in <font color=red>proc</font></td>
+   </tr>
+</table>
+</td><td>
+[<font color=blue>c</font> : <i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i> <img src="img-rightarrow.gif"> <i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub> in <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>]
+</td></tr>
+</table>
+</center>
+<p>
+one for central constructors:<p>
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i>) in <font color=red>proc</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=magenta>c</font> <i>M</i> : (<i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub>) in <font color=red>proc</font></td>
+   </tr>
+</table>
+</td><td>
+[<font color=magenta>c</font> : <i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i> <img src="img-rightarrow.gif"> <i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub> in <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>]
+</td></tr>
+</table>
+</center>
+<p>
+and one for process constructors:<p>
+<center>
+<table>
+<tr><td>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : (<i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i>) in <font color=red>proc</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><font color=red>c</font> <i>M</i> : (<i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub>) in <font color=red>proc</font></td>
+   </tr>
+</table>
+</td><td>
+[<font color=red>c</font> : <i>B</i><sub>1</sub>,...,<i>B<sub>m</sub></i> <img src="img-rightarrow.gif"> <i>C</i><sub>1</sub>,...,<i>C</i><sub><i>n</i></sub> in <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>]
+</td></tr>
+</table>
+</center>
+<p>
+Again, we have the soundness of the two subsumption rules, one for
+expressions:<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=magenta>central</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>M</i> : <i>T</i> in <font color=red>proc</font></td>
+   </tr>
+</table>
+</center>
+<p>
+and one for declarations:<p>
+<center>
+<table>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <img src="img-Gamma.gif"><img src=img-primesup.gif> in <font color=magenta>central</font></td>
+   </tr>
+<latexhline>
+   <tr> <td colspan=3><hr></td></tr>
+</latexhline>
+   <tr>
+      <td><img src="img-Gamma.gif"></td>
+      <td><img src="img-vdash.gif"></td>
+      <td><i>D</i> : <img src="img-Gamma.gif"><img src=img-primesup.gif> in <font color=red>proc</font></td>
+   </tr>
+</table>
+</center>
+<p>
+
+<h2>Graphical semantics</h2>
+<p>
+
+The graphical presentation of <font color=red>proc</font> is rather
+different from that of <font color=magenta>central</font> and <font
+color=blue>val</font>.  If we were to use the `obvious' semantics, then
+we would discover that not all graph-isomorphic terms are equal.  In
+particular, in <font color=magenta>central</font> we have:
+<center>
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   u:U; v:V;
+">
+<param name="base" value="
+   central f(U):W; central g(V):X;
+">
+<param name="exp" value="
+   let (u:U, x:X) = (u, g(v)); (f(u),x)
+">
+</applet>
+=
+<applet code="AppletPremon.class" width=100 height=75 align=absmiddle>
+<param name="free" value="
+   u:U; v:V;
+">
+<param name="base" value="
+   central f(U):W; central g(V):X;
+">
+<param name="exp" value="
+   let (w:W, v:V) = (f(u), v); (w,g(v))
+">
+</applet>
+</center>
+This is not true in <font color=red>proc</font> where order of
+evaluation is important.  We would like to retain the notion that if
+two terms have isomorphic graphs then they are provably equal, so we
+shall not use this graphical presentation.  Instead we shall
+introduce new <i>control</i> arcs in addition to the existing data
+arcs.  Each <font color=red>proc</font> node has incoming and
+outgoing control arcs in addition to its data arcs, for example:
+<center>
+<applet code="AppletPremon.class" width=300 height=90 align=absmiddle>
+<param name="base" value="
+   proc print (string) ;
+">
+<param name="exp" value="
+   let (h:string, w:string) = ('hello', 'world');
+   print (h); print (w);
+">
+</applet>
+<br>
+<table>
+<tr><td><b>let</b> (<i>h</i>:string, <i>w</i>:string) =
+   (<font color=blue>'hello'</font>, <font color=blue>'world'</font>);</td></tr>
+<tr><td><font color=red>print</font> (<i>h</i>);</td></tr>
+<tr><td><font color=red>print</font> (<i>w</i>);</td></tr>
+</table>
+</center>
+<p>
+The values <font color=blue>'hello'</font> and <font color=blue>'world'</font>
+come from <font color=blue>val</font>, so order of evaluation is unimportant.
+The <font color=red>print</font> nodes, however, come from 
+<font color=red>proc</font>, where order of evaluation is significant,
+so <font color=red>print</font> has an incoming and outgoing control arc
+as well as its incoming data arc:
+<p>
+
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   proc print (string) ;
+">
+<param name="free" value="
+   x : string;
+">
+<param name="exp" value="
+   print (x)
+">
+</applet>
+</center>
+<p>
+
+As another example, the ML reference functions can be typed
+(using only integer references for this example):
+<p>
+<center><table>
+   <tr>
+      <td align=right><font color=magenta>ref</font></td>
+      <td>:</td>
+      <td><font color=magenta>central</font> (int) : ref</td>
+   </tr>
+   <tr>
+      <td align=right><font color=red>:=</font></td>
+      <td>:</td>
+      <td><font color=red>proc</font> (ref,int) : ()</td>
+   </tr>
+   <tr>
+      <td align=right><font color=red>!</font></td>
+      <td>:</td>
+      <td><font color=red>proc</font> (ref) : int</td>
+   </tr>
+</table></center>
+<p>
+
+or graphically:
+<p>
+
+<center>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref;
+">
+<param name="free" value="
+   x:int;
+">
+<param name="exp" value="
+   ref (x)
+">
+</applet>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   proc := (ref,int) ;
+">
+<param name="free" value="
+   r:ref; x:int;
+">
+<param name="exp" value="
+   r := x
+">
+</applet>
+<applet code="AppletPremon.class" width=100 height=60 align=absmiddle>
+<param name="base" value="
+   proc !(ref):int;
+">
+<param name="free" value="
+   r:ref;
+">
+<param name="exp" value="
+   !(r)
+">
+</applet>
+</center>
+<p>
+
+For example:
+<center>
+<applet code="AppletPremon.class" width=200 height=110 align=absmiddle>
+<param name="base" value="
+   central ref (int) : ref ;
+   proc := (ref,int) ;
+   proc !(ref) : int ;
+   val +(int,int) : int ;
+">
+<param name="exp" value="
+   let r:ref = ref(0); r := (1 + !(r)); return r;
+">
+</applet>
+<br>
+<table>
+<tr><td><b>let</b> <i>r</i>:ref = 
+   <font color=magenta>ref</font>(<font color=blue>0</font>);</td></tr>
+<tr><td><i>r</i> <font color=red>:=</font> 
+   (<font color=blue>1</font> <font color=blue>+</font> 
+      <font color=red>!</font>(<i>r</i>));</td></tr>
+<tr><td><b>return</b> <i>r</i>;</td></tr>
+</table>
+</center>
+<p>
+
+The semantics of <font color=red>proc</font> terms is given as a graph
+with one incoming and one outgoing control edge:<p>
+<center>
+   <applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+   <param name="base" value="
+      proc G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+Note that we can embed <font color=magenta>central</font> graphs into
+<font color=red>proc</font> graphs by adding a control edge:
+<center>
+   <applet code="AppletPremon.class" width=100 height=100 align=absmiddle>
+   <param name="red" value="true">
+   <param name="base" value="
+      central G(X1...Xm) : (Y1...Yn);
+   ">
+   <param name="free" value="
+      x1:X1; xm:Xm;
+   ">
+   <param name="exp" value="
+      let (y1:Y1...yn:Yn) = G(x1...xm);
+      (y1...yn)
+   ">
+   </applet>
+</center>
+The graphical semantics of <font color=red>proc</font>
+expressions is (we give the semantics for nullary tuples and pairs
+below, other tuples are similar):
+<center>
+<table>
+<tr>
+   <td>[[<i>x</i> in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=160 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   y1:Y1; yn:Yn; x1:X1; xm:Xm; z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm,z1:Z1...zo:Zo) = (y1...yn,x1...xm,z1...zo);
+   return (x1...xm);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<font color=blue>c</font> <i>M</i> in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=80 align=absmiddle>
+<param name="base" value="
+   val c (B1...Bm) : (C1...Cn);
+   proc M (Z1...Zo) : (B1...Bm);
+">
+<param name="free" value="
+   z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (b1:B1...bm:Bm) = M(z1...zo);
+   let (c1:C1...cn:Cn) = c(b1...bm);
+   return (c1...cn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<font color=magenta>c</font> <i>M</i> in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=80 align=absmiddle>
+<param name="base" value="
+   central c (B1...Bm) : (C1...Cn);
+   proc M (Z1...Zo) : (B1...Bm);
+">
+<param name="free" value="
+   z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (b1:B1...bm:Bm) = M(z1...zo);
+   let (c1:C1...cn:Cn) = c(b1...bm);
+   return (c1...cn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<font color=red>c</font> <i>M</i> in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=80 align=absmiddle>
+<param name="base" value="
+   proc c (B1...Bm) : (C1...Cn);
+   proc M (Z1...Zo) : (B1...Bm);
+">
+<param name="free" value="
+   z1:Z1; zo:Zo;
+">
+<param name="exp" value="
+   let (b1:B1...bm:Bm) = M(z1...zo);
+   let (c1:C1...cn:Cn) = c(b1...bm);
+   return (c1...cn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[() in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=90 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   return ();
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[(<i>M</i>,<i>N</i>) in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=130 align=absmiddle>
+<param name="base" value="
+   proc M (W1...Wl) : (X1...Xm);
+   proc N (W1...Wl) : (Z1...Zo);
+">
+<param name="free" value="
+   w1:W1; wl:Wl;
+">
+<param name="exp" value="
+   let (w1:W1...wl:Wl) = (w1...wl);
+   let ((x1:X1...xm:Xm),(z1:Z1...zo:Zo)) = (M(w1...wl),N(w1...wl));
+   return (x1...xm,z1...zo);
+">
+</applet>
+</td>
+</tr>
+<tr>
+   <td>[[<i>D M</i> in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=120 align=absmiddle>
+<param name="base" value="
+   proc D (X1...Xm) : (Y1...Yn);
+   proc M (X1...Xm,Y1...Yn) : (Z1...Zo);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn) = D(x1...xm);
+   let (z1:Z1...zo:Zo) = M(x1...xm,y1...yn);
+   return (z1...zo);
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+The graphical semantics of <font color=red>proc</font>
+expressions is:
+<center>
+<table>
+<tr>
+   <td>[[<b>let</b> <i>P</i> = <i>M</i>; in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=100 align=absmiddle>
+<param name="base" value="
+   proc M (X1...Xm) : (Y1...Yn);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (y1:Y1...yn:Yn) = M(x1...xm);
+   return (y1...yn);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[<i>D1 D2</i> in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=140 align=absmiddle>
+<param name="base" value="
+   proc D1 (X1...Xm) : (Y1...Yn);
+   proc D2 (Y1...Yn,X1...Xm) : (Z1...Zo);
+">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm) = (D1(x1...xm),x1...xm);
+   let (y1:Y1...yn:Yn,x1:X1...xm:Xm) = (y1...yn,x1...xm);
+   let (z1:Z1...zo:Zo) = D2(y1...yn,x1...xm);
+   return (y1...yn,z1...zo);
+">
+</applet>
+   </td>
+</tr>
+<tr>
+   <td>[[  in <font color=red>proc</font>]]</td>
+   <td>=</td>
+   <td>
+<applet code="AppletPremon.class" width=200 height=90 align=absmiddle>
+<param name="red" value="true">
+<param name="free" value="
+   x1:X1; xm:Xm;
+">
+<param name="exp" value="
+   let (x1:X1...xm:Xm) = (x1...xm);
+   return ();
+">
+</applet>
+   </td>
+</tr>
+</table>
+</center>
+
+Graphs with one incoming control arc and one outgoing control arc
+form a <i>strict symmetric premonoidal</i> category, a notion introduced (in slightly 
+different form) by <a href="paper-bib.html#pr96">Power and Robinson</a>.
+
+In <a href="paper-complete-pmc.html">an appendix</a> we construct a
+category <font color=red>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>) 
+of graphs with one control line, with:<p>
+<center>
+   <font color=blue>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>)
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>)
+   <img src="img-hookrightarrow.gif">
+   <font color=red>Graph</font>(<img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>,<img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>,<img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>)
+</center>
+<p>
+and show that this is the initial triple of categories:<p>
+<center>
+   <font color=blue>V</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=magenta>C</font>
+   <img src="img-hookrightarrow.gif">
+   <font color=red>P</font>
+</center>
+<p>
+with:<p>
+<ul>
+<li> <font color=blue>V</font> a strict cartesian category
+   over <img src="img-blue-Sigma.gif"><sub><font color=blue>V</font></sub>.<p>
+<li> <font color=magenta>C</font> a strict symmetric monoidal category
+   over <img src="img-magenta-Sigma.gif"><sub><font color=magenta>C</font></sub>.<p>
+<li> <font color=red>P</font> a strict symmetric premonoidal category
+   over <img src="img-red-Sigma.gif"><sub><font color=red>P</font></sub>.<p>
+<li> The inclusions are identity on objects symmetric premonoidal functors.<p>
+</ul>
+Thus the
+graphical semantics defined above uniquely determines a semantics in
+<i>any</i> such triples of categories.
+<p>
+Such triples of categories have been studied by 
+<a href="paper-bib.html#pt97">Power and Thielecke</a>, 
+and compared with indexed categories.  The presentation here
+is slightly different, in that we have presented 
+<font color=blue>V</font> and
+<font color=magenta>C</font> <em>a priori</em> rather than synthesizing
+it from <font color=red>P</font>.  Since central constructors play
+an important role in languages such as the 
+<img src="img-nu.gif">-calculus, it seems natural to include 
+<font color=magenta>C</font> in the categorical presentation.  
+See <a href="paper-bib.html#sel98">Selinger's</a> discussion in his
+presentation of control categories.  Our presentation of premonoidal
+categories is based on <a href="paper-bib.html#pow96">Power's</a>
+presentation using <b>Subset</b>-enriched categories.
+<p>
+
+<nolatex>
+<center>
+<a href="paper-central.html">Previous</a> |
+<a href="paper-trace.html">Next</a>
+</center>
+</nolatex>
+
+  </body>
+</html>
